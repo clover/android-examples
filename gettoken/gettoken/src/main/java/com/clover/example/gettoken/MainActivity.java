@@ -33,6 +33,7 @@ public class MainActivity extends Activity {
   protected void onResume() {
     super.onResume();
 
+    // Retrieve the Clover account
     if (mAccount == null) {
       mAccount = CloverAccount.getAccount(this);
 
@@ -41,11 +42,13 @@ public class MainActivity extends Activity {
         finish();
       }
 
+      // Use this account to get the access token (and other Clover authentication data)
       getCloverAuth();
     }
   }
 
   private void getCloverAuth() {
+    // This needs to be done on a background thread
     new AsyncTask<Void, Void, CloverAuth.AuthResult>() {
       @Override
       protected CloverAuth.AuthResult doInBackground(Void... params) {
@@ -62,6 +65,9 @@ public class MainActivity extends Activity {
       @Override
       protected void onPostExecute(CloverAuth.AuthResult result) {
         mCloverAuth = result;
+
+        // To get a valid auth result you need to have installed the app from the App Market. The Clover servers
+        // only creates the token once installed the first time.
         if (mCloverAuth != null && mCloverAuth.authToken !=null) {
           mToken.setText(getString(R.string.token) + mCloverAuth.authToken);
         } else {
