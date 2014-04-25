@@ -6,5 +6,4 @@
   * at minimum write a one to two sentence summary of the objective of the tutorial.
   * list the connectors/services that you use. 
 
-List of examples are on the wiki at
-[a link](https://github.com/kristalinc/android-examples/wiki)
+List of examples are [on the wiki](https://github.com/kristalinc/android-examples/wiki) , please claim them.
