@@ -31,7 +31,7 @@
 
 # SDK Additions we should do
 * In employees add a getOwner() method, currently people have to getAllEmployees and then loop for the owner.
-* 
+
 # Hooks we should do
 * 'Modify Order' buttons on the tender page. 
    *  These are similar to the external tender buttons but they wont trigger a payment. Basically they buttons that can be added which indicate an app can modify an order. For example a loyalty app (groupon etc) could place a button here.
