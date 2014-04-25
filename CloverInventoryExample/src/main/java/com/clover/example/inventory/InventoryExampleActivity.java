@@ -8,13 +8,20 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Debug;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v3.inventory.InventoryContract;
 
+/**
+ * In this example app the InventoryContract is used with a standard Android Loader to query the Clover inventory
+ * ContentProvider for all the inventory items and displays them in a list on screen.
+ * <p/>
+ * You should be familiar with the Android
+ * <a href="http://developer.android.com/guide/topics/ui/layout/listview.html">ListView</a> class.
+ */
 public class InventoryExampleActivity extends Activity {
 
   private static final int LOADER_ID_INVENTORY = 0;
@@ -26,8 +33,6 @@ public class InventoryExampleActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    Debug.waitForDebugger();
-
     mCloverAccount = CloverAccount.getAccount(this);
 
     initUi();
@@ -38,6 +43,8 @@ public class InventoryExampleActivity extends Activity {
   private void initUi() {
     setContentView(R.layout.main);
 
+    // The adapter controls the appearance of the items in the list, this could be customized but for now we just use
+    // the built-in simple_list_item_2
     mInventoryCursorAdapter = new SimpleCursorAdapter(
         this,
         android.R.layout.simple_list_item_2,
@@ -55,8 +62,10 @@ public class InventoryExampleActivity extends Activity {
     LoaderManager.LoaderCallbacks<Cursor> callbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
       @Override
       public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        // The uri points to Item which are the items in the inventory
         Uri uri = InventoryContract.Item.contentUriWithAccount(mCloverAccount);
-        return new CursorLoader(InventoryExampleActivity.this, uri, null, null, null, null);
+        String sortOrder = InventoryContract.Item.NAME;
+        return new CursorLoader(InventoryExampleActivity.this, uri, null, null, null, sortOrder);
       }
 
       @Override
