@@ -3,6 +3,7 @@ package com.clover.example.getcurrentemployee;
 import android.accounts.Account;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.IInterface;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -10,11 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v1.ResultStatus;
+import com.clover.sdk.v1.ServiceConnector;
 import com.clover.sdk.v3.employees.Employee;
 import com.clover.sdk.v3.employees.EmployeeConnector;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements ServiceConnector.OnServiceConnectedListener, EmployeeConnector.OnActiveEmployeeChangedListener {
   private String TAG = "GetEmployeeExample";
   private EmployeeConnector mEmployeeConnector;
   private Account account;
@@ -67,15 +69,8 @@ public class MainActivity extends Activity {
     Log.v(TAG, "Connecting...");
     if (account != null) {
       Log.v(TAG, "Account is not null");
-      mEmployeeConnector = new EmployeeConnector(this, account, null);
+      mEmployeeConnector = new EmployeeConnector(this, account, this);
       mEmployeeConnector.connect();
-      mEmployeeConnector.addOnActiveEmployeeChangedListener(new EmployeeConnector.OnActiveEmployeeChangedListener() {
-        @Override
-        public void onActiveEmployeeChanged(Employee employee) {
-          Log.v(TAG, "Employee change!");
-          name.setText(employee.getName());
-        }
-      });
     }
   }
 
@@ -104,4 +99,21 @@ public class MainActivity extends Activity {
     });
   }
 
+  @Override
+  public void onActiveEmployeeChanged(Employee employee) {
+    Log.v(TAG, "Employee change!");
+    if (employee != null) {
+      name.setText(employee.getName());
+    }
+  }
+
+  @Override
+  public void onServiceConnected(ServiceConnector<? extends IInterface> serviceConnector) {
+
+  }
+
+  @Override
+  public void onServiceDisconnected(ServiceConnector<? extends IInterface> serviceConnector) {
+
+  }
 }
