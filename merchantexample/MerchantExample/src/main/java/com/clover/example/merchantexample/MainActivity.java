@@ -7,12 +7,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v1.ResultStatus;
 import com.clover.sdk.v1.merchant.Merchant;
 import com.clover.sdk.v1.merchant.MerchantConnector;
-
 
 public class MainActivity extends Activity {
 
