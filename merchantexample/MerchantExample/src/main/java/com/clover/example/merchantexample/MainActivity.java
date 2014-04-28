@@ -2,14 +2,18 @@ package com.clover.example.merchantexample;
 
 import android.accounts.Account;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.clover.sdk.util.CloverAccount;
-import com.clover.sdk.v1.ResultStatus;
+import com.clover.sdk.v1.BindingException;
+import com.clover.sdk.v1.ClientException;
+import com.clover.sdk.v1.ServiceException;
 import com.clover.sdk.v1.merchant.Merchant;
 import com.clover.sdk.v1.merchant.MerchantConnector;
 
@@ -32,7 +36,7 @@ public class MainActivity extends Activity {
   private ProgressBar progressBar;
 
   @Override
-   protected void onCreate(Bundle savedInstanceState) {
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
@@ -95,38 +99,56 @@ public class MainActivity extends Activity {
   }
 
   private void getMerchant() {
-    // Show progressBar while waiting
-    progressBar.setVisibility(View.VISIBLE);
 
-    merchantConnector.getMerchant(new MerchantConnector.MerchantCallback<Merchant>() {
+    new AsyncTask<Void, Void, Merchant>() {
+
       @Override
-      public void onServiceSuccess(Merchant result, ResultStatus status) {
-        super.onServiceSuccess(result, status);
+      protected void onPreExecute() {
+        super.onPreExecute();
 
-        // Hide the progressBar
-        progressBar.setVisibility(View.GONE);
-
-        // Populate the merchant information
-        merchantName.setText(result.getName());
-        address1.setText(result.getAddress().getAddress1());
-        address2.setText(result.getAddress().getAddress2());
-        address3.setText(result.getAddress().getAddress3());
-        city.setText(result.getAddress().getCity());
-        state.setText(result.getAddress().getState());
-        zip.setText(result.getAddress().getZip());
-        country.setText(result.getAddress().getCountry());
-        phone.setText(result.getPhoneNumber());
+        // Show progressBar while waiting
+        progressBar.setVisibility(View.VISIBLE);
       }
 
       @Override
-      public void onServiceFailure(ResultStatus status) {
-        super.onServiceFailure(status);
+      protected Merchant doInBackground(Void... params) {
+        Merchant merchant = null;
+        try {
+          merchant = merchantConnector.getMerchant();
+        } catch (RemoteException e) {
+          e.printStackTrace();
+        } catch (ClientException e) {
+          e.printStackTrace();
+        } catch (ServiceException e) {
+          e.printStackTrace();
+        } catch (BindingException e) {
+          e.printStackTrace();
+        }
+        return merchant;
       }
 
       @Override
-      public void onServiceConnectionFailure() {
-        super.onServiceConnectionFailure();
+      protected void onPostExecute(Merchant merchant) {
+        super.onPostExecute(merchant);
+
+        if (!isFinishing()) {
+          // Populate the merchant information
+          if (merchant != null) {
+            merchantName.setText(merchant.getName());
+            address1.setText(merchant.getAddress().getAddress1());
+            address2.setText(merchant.getAddress().getAddress2());
+            address3.setText(merchant.getAddress().getAddress3());
+            city.setText(merchant.getAddress().getCity());
+            state.setText(merchant.getAddress().getState());
+            zip.setText(merchant.getAddress().getZip());
+            country.setText(merchant.getAddress().getCountry());
+            phone.setText(merchant.getPhoneNumber());
+          }
+
+          // Hide the progressBar
+          progressBar.setVisibility(View.GONE);
+        }
       }
-    });
+    }.execute();
   }
 }
