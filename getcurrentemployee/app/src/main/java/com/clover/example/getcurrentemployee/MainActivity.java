@@ -22,6 +22,7 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
   private Account account;
 
   private TextView name;
+  private TextView role;
   private ProgressBar progressBar;
 
   @Override
@@ -30,6 +31,7 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
     setContentView(R.layout.activity_main);
 
     name = (TextView) findViewById(R.id.name);
+    role = (TextView) findViewById(R.id.role);
     progressBar = (ProgressBar) findViewById(R.id.progressBar);
   }
 
@@ -74,7 +76,7 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
     }
   }
 
-  private void disconnect() {
+  private void disconnect() {   //TODO: remember to disconnect!
     Log.v(TAG, "Disconnecting...");
     if (mEmployeeConnector != null) {
       mEmployeeConnector.disconnect();
@@ -95,6 +97,7 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
         progressBar.setVisibility(View.GONE);
 
         name.setText(result.getName());
+        role.setText(result.getRole().toString());
       }
     });
   }
@@ -104,6 +107,7 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
     Log.v(TAG, "Employee change!");
     if (employee != null) {
       name.setText(employee.getName());
+      role.setText(employee.getRole().toString());
     }
   }
 
