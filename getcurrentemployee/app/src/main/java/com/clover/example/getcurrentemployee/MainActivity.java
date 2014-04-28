@@ -59,10 +59,10 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
       }
     }
 
-    // Create and Connect to the MerchantConnector
+    // Create and Connect to the EmployeeConnector
     connect();
 
-    // Get the merchant object
+    // Get the employee object
     getEmployee();
   }
 
