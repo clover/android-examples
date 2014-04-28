@@ -76,7 +76,7 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
     }
   }
 
-  private void disconnect() {   //TODO: remember to disconnect!
+  private void disconnect() {   //remember to disconnect!
     Log.v(TAG, "Disconnecting...");
     if (mEmployeeConnector != null) {
       mEmployeeConnector.disconnect();
