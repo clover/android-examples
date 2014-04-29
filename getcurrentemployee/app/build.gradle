@@ -1,0 +1,30 @@
+repositories {
+    // TODO: Remove mavenLocal() reference below
+    mavenLocal()
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.9.2'
+    }
+}
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 'android-17'
+    buildToolsVersion '19.0.3'
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFile getDefaultProguardFile('proguard-android.txt')
+        }
+    }
+}
+
+dependencies {
+    compile 'com.clover.sdk:clover-android-sdk:20-SNAPSHOT'
+}
