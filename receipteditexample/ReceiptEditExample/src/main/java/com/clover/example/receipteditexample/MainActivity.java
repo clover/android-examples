@@ -41,8 +41,9 @@ public class MainActivity extends Activity {
     buttonPrint.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        // Set the add on text and print the last order's bill receipt
         ReceiptRegistrationProvider.updateReceiptAddOnText(((EditText) findViewById(R.id.additional_text)).getText().toString());
-        loadLastOrder();
+        new MyAsyncTask().execute();
       }
     });
 
@@ -132,11 +133,7 @@ public class MainActivity extends Activity {
     }
   }
 
-  private void loadLastOrder() {
-    new OrderAsyncTask().execute();
-  }
-
-  private class OrderAsyncTask extends AsyncTask<Void, Void, Order> {
+  private class MyAsyncTask extends AsyncTask<Void, Void, Order> {
 
     @Override
     protected final Order doInBackground(Void... params) {
