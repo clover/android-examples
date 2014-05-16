@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_name">PayWithRegisterExample</string>
+
+  <string name="no_account">There is no Clover account.</string>
+
+  <string name="pay">Pay</string>
+</resources>
