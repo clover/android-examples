@@ -88,8 +88,9 @@ public class MainActivity extends Activity {
       @Override
       protected App doInBackground(Void... params) {
         try {
-          App app = connector.getApp();
-          return app;
+          if (connector != null) {
+            return connector.getApp();
+          }
         } catch (RemoteException e) {
           e.printStackTrace();
         } catch (ServiceException e) {
@@ -107,7 +108,7 @@ public class MainActivity extends Activity {
       protected void onPostExecute(App app) {
         super.onPostExecute(app);
 
-        if (app != null) {
+        if (!isFinishing() && app != null) {
           appName.setText(getString(R.string.merchant_app_name, app.getName()));
           if (app.getCurrentSubscription() != null) {
             AppSubscription subscription = app.getCurrentSubscription();
