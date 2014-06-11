@@ -73,7 +73,6 @@ public class InventoryExampleActivity extends ListActivity implements LoaderMana
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         // Get a Clover Account
-        super.onCreate(savedInstanceState);
         mCloverAccount = CloverAccount.getAccount(context);
 
         // Connect to Clover Inventory Service
