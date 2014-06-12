@@ -3,9 +3,11 @@ package com.clover.example.employeemanagement;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.IInterface;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
 import android.accounts.Account;
+import android.content.res.Configuration;
 
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v1.ResultStatus;
@@ -19,11 +21,24 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
     private Account account;
     private EmployeeConnector mEmployeeConnector;
     private AccountRole mRole;
+    private TextView permissionView;
+    private boolean employeeFacing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        permissionView = (TextView) findViewById(R.id.currentUser);
+        // Gets starting orientation
+        if(getOrientation() == Configuration.ORIENTATION_LANDSCAPE){
+            employeeFacing = true;
+        } else {
+            employeeFacing = false;
+        }
+    }
+
+    private int getOrientation(){
+        return getResources().getConfiguration().orientation;
     }
 
     @Override
@@ -40,8 +55,11 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
                 return;
             }
         }
+
+        // Connect to the EmployeeConnector
         connect();
 
+        // Get the employee's role
         getEmployee();
     }
 
@@ -72,6 +90,7 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
             public void onServiceSuccess(Employee result, ResultStatus status) {
                 super.onServiceSuccess(result, status);
                 mRole = result.getRole();
+                permissionView.setText("Currently logged in as an " + mRole.toString());
             }
         });
     }
@@ -80,6 +99,7 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
     public void onActiveEmployeeChanged(Employee employee) {
         if (employee != null) {
             mRole = employee.getRole();
+            permissionView.setText("Currently logged in as a " + mRole.toString());
         }
     }
 
@@ -92,15 +112,15 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
     }
 
     public void adminClick(View view){
-        if (mRole == AccountRole.ADMIN) {
+        if (mRole == AccountRole.ADMIN && employeeFacing) {
             Toast.makeText(this, "You have admin permissions.", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "You do not have admin rights.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You do not have admin permissions.", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void employeeClick(View view){
-        if (mRole == AccountRole.EMPLOYEE) {
+        if (mRole == AccountRole.EMPLOYEE && employeeFacing) {
             Toast.makeText(this, "You have employee permissions.", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "You do not have employee permissions.", Toast.LENGTH_SHORT).show();
@@ -108,11 +128,10 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
     }
 
     public void managerClick(View view){
-        if (mRole == AccountRole.MANAGER) {
+        if (mRole == AccountRole.MANAGER && employeeFacing) {
             Toast.makeText(this, "You have manager permissions", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "You do not have manager permissions", Toast.LENGTH_SHORT).show();
         }
     }
-
 }
