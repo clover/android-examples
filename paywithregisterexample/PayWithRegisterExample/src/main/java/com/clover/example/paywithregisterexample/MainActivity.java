@@ -60,8 +60,9 @@ public class MainActivity extends Activity {
       @Override
       public void onClick(View v) {
         // start intent to launch clover's register pay activity
-        Intent intent = new Intent(Intents.ACTION_CLOVER_REGISTER_PAY);
-        intent.putExtra(Intents.EXTRA_ORDER_ID, order.getId());
+        Intent intent = new Intent(Intents.ACTION_CLOVER_PAY);
+        intent.putExtra(Intents.EXTRA_CLOVER_ORDER_ID, order.getId());
+        intent.putExtra(Intents.EXTRA_OBEY_AUTO_LOGOUT, false);
         startActivity(intent);
       }
     });
