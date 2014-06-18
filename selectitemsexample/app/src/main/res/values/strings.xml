@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_name">Select Items Example</string>
+  <string name="no_account">There is no Clover account.</string>
+  <string name="add_item">Add Item</string>
+
+</resources>
