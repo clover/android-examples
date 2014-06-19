@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
     }
 
     // Start intent to launch Clover's register pay activity.
-    // If true is passed in, the app will auto logout after the transaction is complete.
+    // If true is passed in, register will honor the auto-logout setting value.
     private void startRegisterIntent(boolean auto_logout) {
         Intent intent = new Intent(Intents.ACTION_CLOVER_PAY);
         intent.putExtra(Intents.EXTRA_CLOVER_ORDER_ID, order.getId());
