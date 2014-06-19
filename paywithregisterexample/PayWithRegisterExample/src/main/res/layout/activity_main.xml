@@ -10,4 +10,11 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/pay"/>
+
+    <Button
+        android:id="@+id/pay_auto_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pay_button"
+        android:text="@string/pay_auto_logout"/>
 </RelativeLayout>
