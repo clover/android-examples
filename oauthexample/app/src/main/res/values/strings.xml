@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">oauthexample</string>
+    <string name="not_logged_in">Please click the log in button</string>
+    <string name="log_in">Log In</string>
+
+</resources>
