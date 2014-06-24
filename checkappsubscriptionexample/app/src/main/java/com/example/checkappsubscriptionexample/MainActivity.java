@@ -1,16 +1,17 @@
-package com.example.checkappsubscriptionexample;
+package com.example.zachsubscriptionapp.app;
 
 import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.view.View;
 import android.widget.Button;
+import android.os.RemoteException;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.clover.sdk.internal.util.Strings;
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v1.BindingException;
@@ -25,17 +26,18 @@ import com.clover.sdk.v3.apps.AppsConnector;
 public class MainActivity extends Activity {
 
   private Account account;
+  private App appObject;
   private AppsConnector connector;
   private TextView appName;
   private TextView currentSubscription;
   private LinearLayout subscriptions;
   private LinearLayout metereds;
-  private App appObject;
   private Button launchAppstoreViaPackageName;
   private Button launchAppstoreViaAppId;
   private Button launchAppstoreViaAppObject;
   private Button upgradeSubscription;
   private static final int RESULT_CODE = 0;
+  private static final String TARGET_SUBSCRIPTION = "THIS IS YOUR TARGET SUBSCRIPTION ID";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,70 +49,68 @@ public class MainActivity extends Activity {
     subscriptions = (LinearLayout) findViewById(R.id.subscriptions);
     metereds = (LinearLayout) findViewById(R.id.metereds);
 
-      launchAppstoreViaPackageName = (Button) findViewById(R.id.launch_app_package);
+    launchAppstoreViaPackageName = (Button) findViewById(R.id.launch_app_package);
 
-      launchAppstoreViaAppId = (Button) findViewById(R.id.launch_app_id);
+    launchAppstoreViaAppId = (Button) findViewById(R.id.launch_app_id);
 
-      launchAppstoreViaAppObject = (Button) findViewById(R.id.launch_app_obj);
+    launchAppstoreViaAppObject = (Button) findViewById(R.id.launch_app_obj);
 
-      upgradeSubscription = (Button) findViewById(R.id.change_subscription_btn);
+    upgradeSubscription = (Button) findViewById(R.id.change_subscription_btn);
 
-      launchAppstoreViaPackageName.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              Intent intent = new Intent();
-              intent.setAction(Intents.ACTION_START_APP_DETAIL);
-              intent.putExtra(Intents.EXTRA_APP_PACKAGE_NAME, "INSERT YOUR PACKAGE NAME HERE");
-              startActivityForResult(intent, RESULT_CODE);
-          }
-      });
+    launchAppstoreViaPackageName.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent();
+        intent.setAction(Intents.ACTION_START_APP_DETAIL);
+        intent.putExtra(Intents.EXTRA_APP_PACKAGE_NAME, "com.example.zachsubscriptionapp.app");
+        startActivityForResult(intent, RESULT_CODE);
+      }
+    });
 
-      launchAppstoreViaAppId.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              Intent intent = new Intent();
-              intent.setAction(Intents.ACTION_START_APP_DETAIL);
-              // Pass in the App's ID
-              intent.putExtra(Intents.EXTRA_APP_ID, "INSERT APP ID HERE");
-              startActivityForResult(intent, RESULT_CODE);
-          }
-      });
+    launchAppstoreViaAppId.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent();
+        intent.setAction(Intents.ACTION_START_APP_DETAIL);
+        // Pass in the App's ID
+        intent.putExtra(Intents.EXTRA_APP_ID, "PGGD0KS56PJB8");
+        startActivityForResult(intent, RESULT_CODE);
+      }
+    });
 
-      launchAppstoreViaAppObject.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              Intent intent = new Intent();
-              intent.setAction(Intents.ACTION_START_APP_DETAIL);
-              // Pass in the whole app object
-              intent.putExtra(Intents.EXTRA_APP, appObject);
-              startActivityForResult(intent, RESULT_CODE);
-          }
-      });
+    launchAppstoreViaAppObject.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent();
+        intent.setAction(Intents.ACTION_START_APP_DETAIL);
+        // Pass in the whole app object
+        intent.putExtra(Intents.EXTRA_APP, appObject);
+        startActivityForResult(intent, RESULT_CODE);
+      }
+    });
 
-      upgradeSubscription.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              Intent intent = new Intent();
-              intent.setAction(Intents.ACTION_START_APP_DETAIL);
-              intent.putExtra(Intents.EXTRA_APP_PACKAGE_NAME, "INSERT YOUR PACKAGE NAME HERE");
-              // Pass in one of the App's Subscription IDs. 
-              // IDs can be found under the Subscriptions section of your App's developer page.
-              intent.putExtra(Intents.EXTRA_TARGET_SUBSCRIPTION_ID, "INSERT SUBSCRIPTION ID HERE");
-              startActivityForResult(intent, RESULT_CODE);
-          }
-      });
+    upgradeSubscription.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent();
+        intent.setAction(Intents.ACTION_START_APP_DETAIL);
+        intent.putExtra(Intents.EXTRA_APP_PACKAGE_NAME, "com.example.zachsubscriptionapp.app");
+        // Pass in one of the App's Subscription Id
+        intent.putExtra(Intents.EXTRA_TARGET_SUBSCRIPTION_ID, TARGET_SUBSCRIPTION);
+        startActivityForResult(intent, RESULT_CODE);
+      }
+    });
   }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // If a subscription is updated, display "Upgraded", otherwise "Not Upgraded"
-        if (requestCode == RESULT_CODE && resultCode == RESULT_OK && data != null) {
-            Toast.makeText(this, "Upgraded", Toast.LENGTH_SHORT).show();
-        } else{
-            Toast.makeText(this, "Not Upgraded", Toast.LENGTH_SHORT).show();
-        }
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == RESULT_CODE && resultCode == RESULT_OK && data.getExtras().getString("EXTRA_TARGET_SUBSCRIPTION") == TARGET_SUBSCRIPTION && data != null) {
+      Toast.makeText(this, "Upgraded", Toast.LENGTH_SHORT).show();
+    } else {
+      Toast.makeText(this, "Not Upgraded", Toast.LENGTH_SHORT).show();
     }
+  }
 
   @Override
   protected void onResume() {
@@ -172,7 +172,6 @@ public class MainActivity extends Activity {
         } catch (ClientException e) {
           e.printStackTrace();
         }
-
         return null;
       }
 
