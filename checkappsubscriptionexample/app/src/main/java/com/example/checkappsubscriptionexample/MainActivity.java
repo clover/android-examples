@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
           public void onClick(View v) {
               Intent intent = new Intent();
               intent.setAction(Intents.ACTION_START_APP_DETAIL);
-              intent.putExtra(Intents.EXTRA_APP_PACKAGE_NAME, "com.example.zachsubscriptionapp.app");
+              intent.putExtra(Intents.EXTRA_APP_PACKAGE_NAME, "INSERT YOUR PACKAGE NAME HERE");
               startActivityForResult(intent, RESULT_CODE);
           }
       });
@@ -71,7 +71,7 @@ public class MainActivity extends Activity {
               Intent intent = new Intent();
               intent.setAction(Intents.ACTION_START_APP_DETAIL);
               // Pass in the App's ID
-              intent.putExtra(Intents.EXTRA_APP_ID, "PGGD0KS56PJB8");
+              intent.putExtra(Intents.EXTRA_APP_ID, "INSERT APP ID HERE");
               startActivityForResult(intent, RESULT_CODE);
           }
       });
@@ -92,9 +92,10 @@ public class MainActivity extends Activity {
           public void onClick(View v) {
               Intent intent = new Intent();
               intent.setAction(Intents.ACTION_START_APP_DETAIL);
-              intent.putExtra(Intents.EXTRA_APP_PACKAGE_NAME, "com.example.zachsubscriptionapp.app");
-              // Pass in one of the App's Subscription Id
-              intent.putExtra(Intents.EXTRA_TARGET_SUBSCRIPTION_ID, "D1HHFKB8QF67T");
+              intent.putExtra(Intents.EXTRA_APP_PACKAGE_NAME, "INSERT YOUR PACKAGE NAME HERE");
+              // Pass in one of the App's Subscription IDs. 
+              // IDs can be found under the Subscriptions section of your App's developer page.
+              intent.putExtra(Intents.EXTRA_TARGET_SUBSCRIPTION_ID, "INSERT SUBSCRIPTION ID HERE");
               startActivityForResult(intent, RESULT_CODE);
           }
       });
@@ -103,6 +104,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // If a subscription is updated, display "Upgraded", otherwise "Not Upgraded"
         if (requestCode == RESULT_CODE && resultCode == RESULT_OK && data != null) {
             Toast.makeText(this, "Upgraded", Toast.LENGTH_SHORT).show();
         } else{
@@ -127,7 +129,7 @@ public class MainActivity extends Activity {
 
     connect();
 
-    // get the app object from AppsConnector and populate the UI fields
+    // Get the app object from AppsConnector and populate the UI fields
     getAppObject();
   }
 
