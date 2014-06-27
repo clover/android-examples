@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == RESULT_CODE && resultCode == RESULT_OK && data != null && data.getExtras().getString("EXTRA_TARGET_SUBSCRIPTION") == TARGET_SUBSCRIPTION) {
+    if (requestCode == RESULT_CODE && resultCode == RESULT_OK && data != null && data.getExtras().getString(Intents.EXTRA_TARGET_SUBSCRIPTION) == TARGET_SUBSCRIPTION) {
       Toast.makeText(this, "Upgraded", Toast.LENGTH_SHORT).show();
     } else {
       Toast.makeText(this, "Not Upgraded", Toast.LENGTH_SHORT).show();
