@@ -20,5 +20,5 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-  compile 'com.clover.sdk:clover-android-sdk:23-SNAPSHOT'
+  compile 'com.clover.sdk:clover-android-sdk:25-SNAPSHOT'
 }
