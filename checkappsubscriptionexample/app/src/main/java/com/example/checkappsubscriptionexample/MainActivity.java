@@ -1,16 +1,17 @@
-package com.example.checkappsubscriptionexample;
+package com.example.zachsubscriptionapp.app;
 
 import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.view.View;
 import android.widget.Button;
+import android.os.RemoteException;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.clover.sdk.internal.util.Strings;
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v1.BindingException;
