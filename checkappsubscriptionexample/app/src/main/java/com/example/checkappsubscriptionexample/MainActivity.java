@@ -1,4 +1,4 @@
-package com.example.zachsubscriptionapp.app;
+package com.example.checkappsubscriptionexample.app;
 
 import android.accounts.Account;
 import android.app.Activity;
