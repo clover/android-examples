@@ -1,17 +1,16 @@
-package com.example.zachsubscriptionapp.app;
+package com.example.checkappsubscriptionexample;
 
 import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.view.View;
 import android.widget.Button;
-import android.os.RemoteException;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.clover.sdk.internal.util.Strings;
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v1.BindingException;
@@ -105,7 +104,7 @@ public class MainActivity extends Activity {
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == RESULT_CODE && resultCode == RESULT_OK && data != null && data.getExtras().getString(Intents.EXTRA_TARGET_SUBSCRIPTION) == TARGET_SUBSCRIPTION) {
+    if (requestCode == RESULT_CODE && resultCode == RESULT_OK && data != null && data.getExtras().getString(Intents.EXTRA_TARGET_SUBSCRIPTION_ID) == TARGET_SUBSCRIPTION) {
       Toast.makeText(this, "Upgraded", Toast.LENGTH_SHORT).show();
     } else {
       Toast.makeText(this, "Not Upgraded", Toast.LENGTH_SHORT).show();
