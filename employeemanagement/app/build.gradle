@@ -2,7 +2,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 17
-    buildToolsVersion '19.1.0'
+    buildToolsVersion '19.0.3'
     defaultConfig {
         packageName 'com.clover.example.employeemanagement'
         minSdkVersion 16
@@ -22,5 +22,5 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.clover.sdk:clover-android-sdk:21'
+    compile 'com.clover.sdk:clover-android-sdk:26'
 }
