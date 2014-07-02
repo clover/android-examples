@@ -13,20 +13,20 @@
 
     <TextView
         android:id="@+id/app_name"
-        style="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"
+        style="@android:style/TextAppearance.DeviceDefault.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/current_subscription"
-        style="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"
+        style="@android:style/TextAppearance.DeviceDefault.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/no_subscription" />
 
     <TextView
-        style="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"
+        style="@android:style/TextAppearance.DeviceDefault.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -41,7 +41,7 @@
     </LinearLayout>
 
     <TextView
-        style="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"
+        style="@android:style/TextAppearance.DeviceDefault.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -60,6 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginTop="50dp"
         android:text="@string/package_name_intent" />
 
     <Button
