@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- This is a hack that only works on Clover Stations.  It will hide the System Bar and not allow customer to use any of the buttons. -->
+  <!-- It will not work on other ROMs -->
+  <integer name="CLOVER_CUSTOMER_UI_VISIBILITY">0x10000000</integer>
+</resources>

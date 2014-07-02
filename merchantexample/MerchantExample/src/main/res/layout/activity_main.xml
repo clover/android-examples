@@ -1,0 +1,69 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    tools:context="com.clover.example.merchantexample.MainActivity">
+
+  <ProgressBar
+      android:id="@+id/progressBar"
+      android:layout_width="wrap_content"
+      android:layout_height="fill_parent"
+      android:layout_gravity="center"/>
+
+  <TextView
+      android:id="@+id/merchant_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"/>
+
+  <TextView
+      android:id="@+id/merchant_address1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"/>
+
+  <TextView
+      android:id="@+id/merchant_address2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"/>
+
+  <TextView
+      android:id="@+id/merchant_address3"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"/>
+
+  <TextView
+      android:id="@+id/merchant_city"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"/>
+
+  <TextView
+      android:id="@+id/merchant_state"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"/>
+
+  <TextView
+      android:id="@+id/merchant_zip"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"/>
+
+  <TextView
+      android:id="@+id/merchant_country"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"/>
+
+  <TextView
+      android:id="@+id/merchant_phone"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"/>
+</LinearLayout>

@@ -1,0 +1,14 @@
+# IntelliJ project files
+*.iml
+*.iws
+*.ipr
+.idea/
+# Gradle build folder
+.gradle/
+build/
+# Mac HFS+ files
+.DS_Store
+# Unix editor backup files
+*~
+*.swp
+local.properties
