@@ -1,10 +1,8 @@
-This project was created with the following command:
+# Clover Inventory Example
 
-android create project \
---target 1 \
---name CloverInventoryExample \
---path ./CloverInventoryExample \
---activity InventoryExampleActivity \
---package  com.clover.example.inventory \
---gradle \
---gradle-version 0.9.2
+This is an application that shows how you can read and display inventory information from Clover Station
+
+# Connectors Used
+
+* MerchantConnetor
+* InventoryConnector
