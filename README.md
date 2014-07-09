@@ -58,3 +58,7 @@ Example to select an item and add to order.
 [barcodereceiver](https://github.com/clover/android-example/tree/master/barcodereceiver)
 ---
 Example of listening for the result of a barcode scan.
+
+[receipteditexample](https://github.com/clover/android-example/tree/master/receipteditexample)
+---
+Example to add extra text at the end of the receipt.
