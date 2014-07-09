@@ -62,3 +62,7 @@ Example of listening for the result of a barcode scan.
 [receipteditexample](https://github.com/clover/android-example/tree/master/receipteditexample)
 ---
 Example to add extra text at the end of the receipt.
+
+[modifyorder](https://github.com/clover/android-example/tree/master/modifyorder)
+---
+Example that adds a custom button to the pay page. Clicking on this button opens an activity which allows the user to add a 10% discount to the current order
