@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_name">Receipt Edit Example</string>
+
+  <string name="no_account">There is no Clover account.</string>
+
+  <string name="input_receipt_text">Add text to end of the receipt</string>
+  <string name="test_print">Test Print</string>
+</resources>
