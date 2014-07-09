@@ -54,3 +54,7 @@ Example to read current open order.
 [selectitemsexample](https://github.com/clover/android-example/tree/master/selectitemsexample)
 ---
 Example to select an item and add to order.
+
+[barcodereceiver](https://github.com/clover/android-example/tree/master/barcodereceiver)
+---
+Example of listening for the result of a barcode scan.
