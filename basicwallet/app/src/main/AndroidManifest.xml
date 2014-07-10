@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.clover.example.basicwallet.app">
+          package="com.clover.example.basicwallet.app"
+          xmlns:tools="http://schemas.android.com/tools">
+
+
+
+  <uses-sdk
+      android:minSdkVersion="16"
+      android:targetSdkVersion="17"
+      />
 
   <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
   <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
   <uses-permission android:name="android.permission.INTERNET"/>
 
   <application
+      tools:replace="android:label" 
       android:allowBackup="true"
       android:icon="@drawable/ic_launcher"
       android:label="@string/app_name"
