@@ -1,3 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Basic Wallet</string>
+
+    <string name="app_name">Basic Wallet Example</string>
+    <string name="pay_with_wallet">Pay with Basic Wallet</string>
+
 </resources>
