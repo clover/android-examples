@@ -1,0 +1,17 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 'android-17'
+    buildToolsVersion '19.1.0'
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFile getDefaultProguardFile('proguard-android.txt')
+        }
+    }
+}
+
+dependencies {
+    compile 'com.clover.sdk:clover-android-sdk:27-SNAPSHOT'
+}
