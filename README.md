@@ -66,3 +66,7 @@ Example to add extra text at the end of the receipt.
 [modifyorderbutton](https://github.com/clover/android-example/tree/master/modifyorderbutton)
 ---
 Example that adds a custom button to the pay page. Clicking on this button opens an activity which allows the user to add a 10% discount to the current order
+
+[rotatetomerchantfragment](https://github.com/clover/android-example/tree/master/rotatetomerchantfragment)
+---
+Example that shows how to use RotateToMerchantDialogFragment for a smooth transition between customer facing mode to merchant facing mode.
