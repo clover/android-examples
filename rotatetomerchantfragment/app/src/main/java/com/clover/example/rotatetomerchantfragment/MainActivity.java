@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
     }
 
     private void showRotateToMerchantDialog() {
-        RotateToMerchantDialogFragment dialogFragment = RotateToMerchantDialogFragment.newInstance();
+        RotateToMerchantDialogFragment dialogFragment = RotateToMerchantDialogFragment.newInstance(getString(R.string.sample_instruction));
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
         if (prev != null) {
