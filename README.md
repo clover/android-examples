@@ -1,7 +1,7 @@
 android-example
 ===============
 
-Android examples showing different Android APIs in clover-android-sdk.
+Android examples showing different Android APIs in [clover-android-sdk](https://github.com/clover/clover-android-sdk).
 
 
 The examples are made to work with Android Studio 0.8.1 and Gradle 1.12.
@@ -62,3 +62,7 @@ Example of listening for the result of a barcode scan.
 [receipteditexample](https://github.com/clover/android-example/tree/master/receipteditexample)
 ---
 Example to add extra text at the end of the receipt.
+
+[modifyorderbutton](https://github.com/clover/android-example/tree/master/modifyorderbutton)
+---
+Example that adds a custom button to the pay page. Clicking on this button opens an activity which allows the user to add a 10% discount to the current order
