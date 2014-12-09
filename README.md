@@ -70,3 +70,7 @@ Example that adds a custom button to the pay page. Clicking on this button opens
 [rotatetomerchantfragment](https://github.com/clover/android-example/tree/master/rotatetomerchantfragment)
 ---
 Example that shows how to use RotateToMerchantDialogFragment for a smooth transition between customer facing mode to merchant facing mode.
+
+[pushnotificationexample](https://github.com/clover/android-examples/tree/master/pushnotificationexample)
+---
+Example that shows how you can receive clover push notifications
