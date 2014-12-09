@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">pushnotificationexample</string>
+    <string name="instruction">POST to \"/v2/merchant/{mId}/apps/{appId}/notify\" with the following json to test your notification receiver: \n{\n \"notification\": {\n\u00A0\u00A0\"appEvent\": \"test_notification\",\n\u00A0\u00A0\"payload\": \"Up to 4k of data\" \n }\n}</string>
+    <string name="result">Result: %s</string>
+</resources>
