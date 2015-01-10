@@ -12,3 +12,11 @@ To properly try this example, create your own version of this example (with your
 }
 
 After the api is called, you will receive a notification on the device and see the text "Result: Up to 4k of data" show up on the app screen.
+
+
+Note: to use this in v3 go to https://dev1.dev.clover.com/api_docs and find POST /v3/apps/{aId}/merchants/{mId}/notifications, you will have to fill out the API Token and mID on top of the page with the app's App Secret (not API Token) and merchant's mID. The basic body of the notification is something like this:
+
+{
+  "event": "test_notification",
+  "data": "Up to 4k of data"
+}
