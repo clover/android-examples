@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_name">Modify Amount Example</string>
+  <string name="notes">This app has now added a \'Modify Amount Example\' button on the Terminal Sale Activity</string>
+  <string name="action_settings">Settings</string>
+  <string name="title_activity_add_discount">Add Discount</string>
+  <string name="add_discount_instruction">Click this button to modify the amount with a 10% discount</string>
+  <string name="add_discount">Add</string>
+
+</resources>
