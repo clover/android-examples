@@ -47,6 +47,10 @@ Example for getting merchant information.
 ---
 Example that adds a custom button to the pay page. Clicking on this button opens an activity which allows the user to add a 10% discount to the current order
 
+[modifyamountbutton](https://github.com/clover/android-example/tree/master/modifyamountbutton)
+---
+Example that adds a custom button to the sale page. Clicking on this button opens an activity which allows the user to add a 10% discount to the current sale amount
+
 [oauthexample](https://github.com/clover/android-example/tree/master/oauthexample)
 ---
 Example for getting OAuth 2.0 information like Access Token, Merchant ID, and Employee ID.
