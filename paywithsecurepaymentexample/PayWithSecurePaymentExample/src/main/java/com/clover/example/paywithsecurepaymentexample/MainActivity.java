@@ -1,4 +1,4 @@
-package com.clover.example.paywithregisterexample;
+package com.clover.example.paywithsecurepaymentexample;
 
 import android.accounts.Account;
 import android.app.Activity;

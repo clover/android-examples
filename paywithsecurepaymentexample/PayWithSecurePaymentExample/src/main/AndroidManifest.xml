@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.clover.example.paywithregisterexample"
+    package="com.clover.example.paywithsecurepaymentexample"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.clover.example.paywithregisterexample.MainActivity"
+            android:name="com.clover.example.paywithsecurepaymentexample.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
