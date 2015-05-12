@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="clover.permission.ACTION_PAY"/>
+
 
     <application
         tools:replace="android:label"

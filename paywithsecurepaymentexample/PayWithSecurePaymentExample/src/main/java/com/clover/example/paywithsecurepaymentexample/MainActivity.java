@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -70,24 +71,29 @@ public class MainActivity extends Activity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startRegisterIntent(false);
+                startSecurePaymentIntent(false);
             }
         });
 
         payWithAutoLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startRegisterIntent(true);
+                startSecurePaymentIntent(true);
             }
         });
     }
 
     // Start intent to launch Clover's register pay activity.
     // If true is passed in, register will honor the auto-logout setting value.
-    private void startRegisterIntent(boolean autoLogout) {
-        Intent intent = new Intent(Intents.ACTION_CLOVER_PAY);
-        intent.putExtra(Intents.EXTRA_CLOVER_ORDER_ID, order.getId());
-        intent.putExtra(Intents.EXTRA_OBEY_AUTO_LOGOUT, autoLogout);
+    private void startSecurePaymentIntent(boolean autoLogout) {
+        Intent intent = new Intent(Intents.ACTION_SECURE_PAY);
+        //EXTRA_ORDER_ID and EXTRA_AMOUNT are required for secure payment
+        intent.putExtra(Intents.EXTRA_ORDER_ID, order.getId());
+        intent.putExtra(Intents.EXTRA_AMOUNT, order.getTotal());
+
+
+
+        //intent.putExtra(Intents.EXTRA_OBEY_AUTO_LOGOUT, autoLogout);
         startActivity(intent);
     }
 
@@ -149,6 +155,9 @@ public class MainActivity extends Activity {
                 } else { // The item must be of a VARIABLE PriceType
                     orderConnector.addVariablePriceLineItem(mOrder.getId(), mItem.getId(), 5, null, null);
                 }
+                // Update local representation of the order
+                mOrder = orderConnector.getOrder(mOrder.getId());
+
                 return mOrder;
             } catch (RemoteException e) {
                 e.printStackTrace();
