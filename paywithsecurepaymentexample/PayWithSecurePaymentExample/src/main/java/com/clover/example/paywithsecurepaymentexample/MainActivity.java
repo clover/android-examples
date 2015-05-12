@@ -6,9 +6,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.clover.sdk.util.CloverAccount;
@@ -32,7 +33,10 @@ public class MainActivity extends Activity {
     private InventoryConnector inventoryConnector;
     private Order order;
     private Button payButton;
-    private Button payWithAutoLogout;
+    private static final int SECURE_PAY_REQUEST_CODE = 1;
+    //This bit value is used to store selected card entry methods, which can be combined with bitwise or and passed to EXTRA_CARD_ENTRY_METHODS
+    private int cardEntryMethodsAllowed = Intents.CARD_ENTRY_METHOD_MAG_STRIPE | Intents.CARD_ENTRY_METHOD_ICC_CONTACT | Intents.CARD_ENTRY_METHOD_NFC_CONTACTLESS | Intents.CARD_ENTRY_METHOD_MANUAL;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +66,37 @@ public class MainActivity extends Activity {
         payButton = (Button) findViewById(R.id.pay_button);
         payButton.setEnabled(false);
 
-        payWithAutoLogout = (Button) findViewById(R.id.pay_auto_logout);
-        payWithAutoLogout.setEnabled(false);
+        CheckBox magStripeCheckBox = (CheckBox) findViewById(R.id.mag_stripe_check_box);
+        CheckBox chipCardCheckBox = (CheckBox) findViewById(R.id.chip_card_check_box);
+        CheckBox nfcCheckBox = (CheckBox) findViewById(R.id.nfc_check_box);
+        CheckBox manualEntryCheckBox = (CheckBox) findViewById(R.id.manual_entry_check_box);
+
+        magStripeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cardEntryMethodsAllowed = cardEntryMethodsAllowed ^ Intents.CARD_ENTRY_METHOD_MAG_STRIPE;
+            }
+        });
+        chipCardCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cardEntryMethodsAllowed = cardEntryMethodsAllowed ^ Intents.CARD_ENTRY_METHOD_ICC_CONTACT;
+            }
+        });
+        nfcCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cardEntryMethodsAllowed = cardEntryMethodsAllowed ^ Intents.CARD_ENTRY_METHOD_NFC_CONTACTLESS;
+            }
+        });
+        manualEntryCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cardEntryMethodsAllowed = cardEntryMethodsAllowed ^ Intents.CARD_ENTRY_METHOD_MANUAL;
+            }
+        });
+
+
 
         // create order
         new OrderAsyncTask().execute();
@@ -71,30 +104,29 @@ public class MainActivity extends Activity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startSecurePaymentIntent(false);
+                startSecurePaymentIntent();
             }
         });
 
-        payWithAutoLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSecurePaymentIntent(true);
-            }
-        });
     }
 
     // Start intent to launch Clover's register pay activity.
     // If true is passed in, register will honor the auto-logout setting value.
-    private void startSecurePaymentIntent(boolean autoLogout) {
+    private void startSecurePaymentIntent() {
         Intent intent = new Intent(Intents.ACTION_SECURE_PAY);
-        //EXTRA_ORDER_ID and EXTRA_AMOUNT are required for secure payment
-        intent.putExtra(Intents.EXTRA_ORDER_ID, order.getId());
+        //EXTRA_AMOUNT is required for secure payment
         intent.putExtra(Intents.EXTRA_AMOUNT, order.getTotal());
 
+        //Pass the generated order's id
+        intent.putExtra(Intents.EXTRA_ORDER_ID, order.getId());
+        //If no order id were passed to EXTRA_ORDER_ID a new empty order would be generated for the payment
+        //The new order's id would be passed back in the activity result
 
 
-        //intent.putExtra(Intents.EXTRA_OBEY_AUTO_LOGOUT, autoLogout);
-        startActivity(intent);
+        //Allow all selected card entry methods
+        intent.putExtra(Intents.EXTRA_CARD_ENTRY_METHODS, cardEntryMethodsAllowed);
+
+        startActivityForResult(intent, SECURE_PAY_REQUEST_CODE);
     }
 
     @Override
@@ -178,7 +210,6 @@ public class MainActivity extends Activity {
                 MainActivity.this.order = order;
                 if (order != null) {
                     payButton.setEnabled(true);
-                    payWithAutoLogout.setEnabled(true);
                 }
             }
         }
