@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
     private Order order;
     private Button payButton;
     private static final int SECURE_PAY_REQUEST_CODE = 1;
-    //This bit value is used to store selected card entry methods, which can be combined with bitwise or and passed to EXTRA_CARD_ENTRY_METHODS
+    //This bit value is used to store selected card entry methods, which can be combined with bitwise 'or' and passed to EXTRA_CARD_ENTRY_METHODS
     private int cardEntryMethodsAllowed = Intents.CARD_ENTRY_METHOD_MAG_STRIPE | Intents.CARD_ENTRY_METHOD_ICC_CONTACT | Intents.CARD_ENTRY_METHOD_NFC_CONTACTLESS | Intents.CARD_ENTRY_METHOD_MANUAL;
 
 
@@ -72,6 +72,7 @@ public class MainActivity extends Activity {
         CheckBox nfcCheckBox = (CheckBox) findViewById(R.id.nfc_check_box);
         CheckBox manualEntryCheckBox = (CheckBox) findViewById(R.id.manual_entry_check_box);
 
+        //These methods toggle the bitvalue storing which card entry methods are allowed
         magStripeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -109,38 +110,6 @@ public class MainActivity extends Activity {
             }
         });
 
-    }
-
-    // Start intent to launch Clover's register pay activity.
-    // If true is passed in, register will honor the auto-logout setting value.
-    private void startSecurePaymentIntent() {
-        Intent intent = new Intent(Intents.ACTION_SECURE_PAY);
-        //EXTRA_AMOUNT is required for secure payment
-        intent.putExtra(Intents.EXTRA_AMOUNT, order.getTotal());
-
-        //Pass the generated order's id
-        intent.putExtra(Intents.EXTRA_ORDER_ID, order.getId());
-        //If no order id were passed to EXTRA_ORDER_ID a new empty order would be generated for the payment
-        //The new order's id would be passed back in the activity result
-
-
-        //Allow all selected card entry methods
-        intent.putExtra(Intents.EXTRA_CARD_ENTRY_METHODS, cardEntryMethodsAllowed);
-
-        startActivityForResult(intent, SECURE_PAY_REQUEST_CODE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == SECURE_PAY_REQUEST_CODE){
-            if (resultCode == RESULT_OK){
-                //Once the secure payment activity completes the result and its extras can be worked with
-                Payment payment = data.getParcelableExtra(Intents.EXTRA_PAYMENT);
-                Toast.makeText(getApplicationContext(), getString(R.string.payment_successful, payment.getOrder().getId()), Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getApplicationContext(), getString(R.string.payment_failed), Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     @Override
@@ -225,6 +194,39 @@ public class MainActivity extends Activity {
                 if (order != null) {
                     payButton.setEnabled(true);
                 }
+            }
+        }
+    }
+
+    // Start intent to launch Clover's secure payment activity
+    //NOTE: ACTION_SECURE_PAY requires that your app has "clover.permission.ACTION_PAY" in it's AndroidManifest.xml file
+    private void startSecurePaymentIntent() {
+        Intent intent = new Intent(Intents.ACTION_SECURE_PAY);
+
+        //EXTRA_AMOUNT is required for secure payment
+        intent.putExtra(Intents.EXTRA_AMOUNT, order.getTotal());
+
+        //Pass the generated order's id
+        intent.putExtra(Intents.EXTRA_ORDER_ID, order.getId());
+        //If no order id were passed to EXTRA_ORDER_ID a new empty order would be generated for the payment
+        //The new order's id would be passed back in the activity result
+
+
+        //Allow only selected card entry methods
+        intent.putExtra(Intents.EXTRA_CARD_ENTRY_METHODS, cardEntryMethodsAllowed);
+
+        startActivityForResult(intent, SECURE_PAY_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SECURE_PAY_REQUEST_CODE){
+            if (resultCode == RESULT_OK){
+                //Once the secure payment activity completes the result and its extras can be worked with
+                Payment payment = data.getParcelableExtra(Intents.EXTRA_PAYMENT);
+                Toast.makeText(getApplicationContext(), getString(R.string.payment_successful, payment.getOrder().getId()), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), getString(R.string.payment_failed), Toast.LENGTH_SHORT).show();
             }
         }
     }
