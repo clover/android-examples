@@ -18,4 +18,8 @@
   <string name="manual_entry">Manual Entry</string>
 
   <string name="empty_inventory">Please add an item to the inventory before attempting to take orders.</string>
+
+  <string name="payment_successful">Payment Succeeded for Order: %1$s</string>
+
+  <string name="payment_failed">Payment Not Successful</string>
 </resources>

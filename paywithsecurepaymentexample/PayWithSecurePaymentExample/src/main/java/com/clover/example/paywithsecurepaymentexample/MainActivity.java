@@ -22,6 +22,7 @@ import com.clover.sdk.v3.order.Order;
 import com.clover.sdk.v3.order.OrderConnector;
 import com.clover.sdk.v3.inventory.InventoryConnector;
 import com.clover.sdk.v3.inventory.Item;
+import com.clover.sdk.v3.payments.Payment;
 
 import java.util.List;
 
@@ -127,6 +128,19 @@ public class MainActivity extends Activity {
         intent.putExtra(Intents.EXTRA_CARD_ENTRY_METHODS, cardEntryMethodsAllowed);
 
         startActivityForResult(intent, SECURE_PAY_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SECURE_PAY_REQUEST_CODE){
+            if (resultCode == RESULT_OK){
+                //Once the secure payment activity completes the result and its extras can be worked with
+                Payment payment = data.getParcelableExtra(Intents.EXTRA_PAYMENT);
+                Toast.makeText(getApplicationContext(), getString(R.string.payment_successful, payment.getOrder().getId()), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), getString(R.string.payment_failed), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
