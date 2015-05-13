@@ -209,9 +209,8 @@ public class MainActivity extends Activity {
         //Pass the generated order's id
         intent.putExtra(Intents.EXTRA_ORDER_ID, order.getId());
         //If no order id were passed to EXTRA_ORDER_ID a new empty order would be generated for the payment
-        //The new order's id would be passed back in the activity result
 
-
+        
         //Allow only selected card entry methods
         intent.putExtra(Intents.EXTRA_CARD_ENTRY_METHODS, cardEntryMethodsAllowed);
 
