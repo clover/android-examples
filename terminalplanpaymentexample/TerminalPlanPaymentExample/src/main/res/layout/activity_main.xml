@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context="com.clover.example.terminalplanpaymentexample.MainActivity">
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/card_entry_methods_allowed"
+            android:id="@+id/textView" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+    <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mag_stripe"
+            android:id="@+id/mag_stripe_check_box"
+            android:checked="true" android:layout_below="@+id/textView" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+    <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chip_card_contact"
+            android:id="@+id/chip_card_check_box"
+            android:layout_alignParentStart="true" android:layout_below="@+id/mag_stripe_check_box"
+            android:layout_alignParentLeft="true" android:checked="true"/>
+    <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nfc_contactless"
+            android:id="@+id/nfc_check_box"
+            android:layout_alignParentStart="true" android:layout_below="@+id/chip_card_check_box"
+            android:layout_alignParentLeft="true" android:checked="true"/>
+    <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/manual_entry"
+            android:id="@+id/manual_entry_check_box"
+            android:layout_alignParentStart="true" android:layout_below="@+id/nfc_check_box"
+            android:layout_alignParentLeft="true" android:checked="true"/>
+    <Button
+            android:id="@+id/pay_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pay"
+            android:layout_centerVertical="true" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+
+
+</RelativeLayout>
