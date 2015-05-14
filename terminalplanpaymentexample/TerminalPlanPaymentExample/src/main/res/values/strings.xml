@@ -5,6 +5,10 @@
 
   <string name="no_account">There is no Clover account.</string>
 
+  <string name="payment_amount">Payment Amount</string>
+
+  <string name="default_payment_amount">1.50</string>
+
   <string name="pay">Pay</string>
 
   <string name="card_entry_methods_allowed">Card Entry Methods Allowed</string>

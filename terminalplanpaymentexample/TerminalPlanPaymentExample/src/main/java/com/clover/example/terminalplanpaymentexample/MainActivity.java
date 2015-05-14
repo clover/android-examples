@@ -5,10 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v1.Intents;
@@ -20,6 +17,7 @@ public class MainActivity extends Activity {
 
     private Account account;
     private Button payButton;
+    EditText paymentAmountEditText;
     private static final int SECURE_PAY_REQUEST_CODE = 1;
     //This bit value is used to store selected card entry methods, which can be combined with bitwise 'or' and passed to EXTRA_CARD_ENTRY_METHODS
     private int cardEntryMethodsAllowed = Intents.CARD_ENTRY_METHOD_MAG_STRIPE | Intents.CARD_ENTRY_METHOD_ICC_CONTACT | Intents.CARD_ENTRY_METHOD_NFC_CONTACTLESS | Intents.CARD_ENTRY_METHOD_MANUAL;
@@ -48,7 +46,7 @@ public class MainActivity extends Activity {
         }
 
 
-        payButton = (Button) findViewById(R.id.pay_button);
+
 
         CheckBox magStripeCheckBox = (CheckBox) findViewById(R.id.mag_stripe_check_box);
         CheckBox chipCardCheckBox = (CheckBox) findViewById(R.id.chip_card_check_box);
@@ -81,7 +79,9 @@ public class MainActivity extends Activity {
             }
         });
 
+        paymentAmountEditText = (EditText) findViewById(R.id.payment_amount_edit_text);
 
+        payButton = (Button) findViewById(R.id.pay_button);
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,8 +97,11 @@ public class MainActivity extends Activity {
     private void startSecurePaymentIntent() {
         Intent intent = new Intent(Intents.ACTION_SECURE_PAY);
 
+        //Convert the payment amount input value to long
+        long amount = (long) (Double.parseDouble(paymentAmountEditText.getText().toString()) * 100);
+
         //EXTRA_AMOUNT is required for secure payment
-        intent.putExtra(Intents.EXTRA_AMOUNT, 500l);
+        intent.putExtra(Intents.EXTRA_AMOUNT, amount);
 
         //Because no order id is passed to EXTRA_ORDER_ID a new empty order will be generated for the payment
 
