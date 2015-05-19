@@ -50,13 +50,12 @@
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
             android:ems="10"
             android:id="@+id/payment_amount_edit_text"
             android:text="@string/default_payment_amount"
             android:layout_below="@+id/card_entry_methods_heading" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" android:layout_alignRight="@+id/payment_amount_text_view"
-            android:layout_alignEnd="@+id/payment_amount_text_view"/>
+            android:layout_alignParentStart="false" android:layout_alignRight="@+id/payment_amount_text_view"
+            android:layout_alignEnd="@+id/payment_amount_text_view" android:inputType="number"/>
     <Button
             android:id="@+id/pay_button"
             android:layout_width="wrap_content"

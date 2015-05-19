@@ -96,19 +96,15 @@ public class MainActivity extends Activity {
     //NOTE: ACTION_SECURE_PAY requires that your app has "clover.permission.ACTION_PAY" in it's AndroidManifest.xml file
     private void startSecurePaymentIntent() {
         Intent intent = new Intent(Intents.ACTION_SECURE_PAY);
-
-        //Convert the payment amount input value to long
-        long amount = (long) (Double.parseDouble(paymentAmountEditText.getText().toString()) * 100);
+        Long amount = Long.parseLong(paymentAmountEditText.getText().toString(), 10);
 
         //EXTRA_AMOUNT is required for secure payment
         intent.putExtra(Intents.EXTRA_AMOUNT, amount);
-
-        //Because no order id is passed to EXTRA_ORDER_ID a new empty order will be generated for the payment
-
         
         //Allow only selected card entry methods
         intent.putExtra(Intents.EXTRA_CARD_ENTRY_METHODS, cardEntryMethodsAllowed);
 
+        //Because no order id is passed to EXTRA_ORDER_ID a new empty order will be generated for the payment
         startActivityForResult(intent, SECURE_PAY_REQUEST_CODE);
     }
 
