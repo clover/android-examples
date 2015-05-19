@@ -114,11 +114,11 @@ public class MainActivity extends Activity {
             if (resultCode == RESULT_OK){
                 //Once the secure payment activity completes the result and its extras can be worked with
                 Payment payment = data.getParcelableExtra(Intents.EXTRA_PAYMENT);
-                Toast.makeText(getApplicationContext(), getString(R.string.payment_successful, payment.getOrder().getId()), Toast.LENGTH_SHORT).show();
+                String amountString = String.format("%.2f", ((Double) (0.01 * payment.getAmount())));
+                Toast.makeText(getApplicationContext(), getString(R.string.payment_successful, amountString), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getApplicationContext(), getString(R.string.payment_failed), Toast.LENGTH_SHORT).show();
             }
         }
     }
-
 }

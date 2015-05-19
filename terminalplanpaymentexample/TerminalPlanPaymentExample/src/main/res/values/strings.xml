@@ -21,7 +21,7 @@
 
   <string name="manual_entry">Manual Entry</string>
 
-  <string name="payment_successful">Payment Succeeded, Created Order: %1$s</string>
+  <string name="payment_successful">%1$s paid successfully</string>
 
   <string name="payment_failed">Payment Not Successful</string>
 </resources>
