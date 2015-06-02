@@ -59,6 +59,10 @@ Example for getting OAuth 2.0 information like Access Token, Merchant ID, and Em
 ---
 Example to pay with Register App.
 
+[paywithsecurepaymentexample](https://github.com/clover/android-example/tree/master/paywithsecurepaymentexample)
+---
+Example that launches the Secure Payment App, and works with the returned payment.
+
 [pushnotificationexample](https://github.com/clover/android-examples/tree/master/pushnotificationexample)
 ---
 Example that shows how you can receive clover push notifications
@@ -78,3 +82,7 @@ Example that shows how to use RotateToMerchantDialogFragment for a smooth transi
 [selectitemsexample](https://github.com/clover/android-example/tree/master/selectitemsexample)
 ---
 Example to select an item and add to order.
+
+[terminalplanpaymentexample](https://github.com/clover/android-example/tree/master/terminalplanpaymentexample)
+---
+Example that launches a secure payment, and conforms to Terminal Plan modules.

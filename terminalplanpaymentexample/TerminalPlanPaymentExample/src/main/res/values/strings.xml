@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_name">TerminalPlanPaymentExample</string>
+
+  <string name="no_account">There is no Clover account.</string>
+
+  <string name="payment_amount">Payment Amount</string>
+
+  <string name="default_payment_amount">150</string>
+
+  <string name="pay">Pay</string>
+
+  <string name="card_entry_methods_allowed">Card Entry Methods Allowed</string>
+
+  <string name="mag_stripe">Mag Stripe</string>
+
+  <string name="chip_card_contact">Chip Card Contact</string>
+
+  <string name="nfc_contactless">NFC Contactless</string>
+
+  <string name="manual_entry">Manual Entry</string>
+
+  <string name="payment_successful">%1$s paid successfully</string>
+
+  <string name="payment_failed">Payment Not Successful</string>
+</resources>
