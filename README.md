@@ -1,7 +1,7 @@
 android-example
 ===============
 
-Android examples showing different Android APIs in clover-android-sdk.
+Android examples showing different Android APIs in [clover-android-sdk](https://github.com/clover/clover-android-sdk).
 
 
 The examples are made to work with Android Studio 0.8.1 and Gradle 1.12.
@@ -54,3 +54,23 @@ Example to read current open order.
 [selectitemsexample](https://github.com/clover/android-example/tree/master/selectitemsexample)
 ---
 Example to select an item and add to order.
+
+[barcodereceiver](https://github.com/clover/android-example/tree/master/barcodereceiver)
+---
+Example of listening for the result of a barcode scan.
+
+[receipteditexample](https://github.com/clover/android-example/tree/master/receipteditexample)
+---
+Example to add extra text at the end of the receipt.
+
+[modifyorderbutton](https://github.com/clover/android-example/tree/master/modifyorderbutton)
+---
+Example that adds a custom button to the pay page. Clicking on this button opens an activity which allows the user to add a 10% discount to the current order
+
+[rotatetomerchantfragment](https://github.com/clover/android-example/tree/master/rotatetomerchantfragment)
+---
+Example that shows how to use RotateToMerchantDialogFragment for a smooth transition between customer facing mode to merchant facing mode.
+
+[pushnotificationexample](https://github.com/clover/android-examples/tree/master/pushnotificationexample)
+---
+Example that shows how you can receive clover push notifications
