@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.checkappsubscriptionexample.MainActivity">
+
+
+    <TextView
+        android:id="@+id/app_name"
+        style="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/current_subscription"
+        style="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/no_subscription" />
+
+    <TextView
+        style="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/subscriptions" />
+
+    <LinearLayout
+        android:id="@+id/subscriptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <TextView
+        style="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/metereds" />
+
+    <LinearLayout
+        android:id="@+id/metereds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/launch_app_package"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="50dp"
+        android:text="@string/package_name_intent" />
+
+    <Button
+        android:id="@+id/launch_app_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launch_app_id" />
+
+    <Button
+        android:id="@+id/launch_app_obj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launch_app_obj" />
+
+    <Button
+        android:id="@+id/change_subscription_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/target_subscription_id" />
+
+</LinearLayout>
