@@ -2,16 +2,16 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 'android-17'
-    buildToolsVersion '19.1.0'
+    buildToolsVersion '22.0.1'
 
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFile getDefaultProguardFile('proguard-android.txt')
         }
     }
 }
 
 dependencies {
-    compile 'com.clover.sdk:clover-android-sdk:42'
+    compile 'com.clover.sdk:clover-android-sdk:86'
 }

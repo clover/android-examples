@@ -1,10 +1,10 @@
 apply plugin: 'android'
 
 android {
-    compileSdkVersion 17
-    buildToolsVersion '19.1.0'
+    compileSdkVersion 'android-17'
+    buildToolsVersion '22.0.1'
     defaultConfig {
-        packageName 'com.clover.example.employeemanagement'
+        applicationId 'com.clover.example.employeemanagement'
         minSdkVersion 16
         targetSdkVersion 17
         versionCode 1
@@ -12,7 +12,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -22,5 +22,5 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.clover.sdk:clover-android-sdk:26'
+    compile 'com.clover.sdk:clover-android-sdk:86'
 }
