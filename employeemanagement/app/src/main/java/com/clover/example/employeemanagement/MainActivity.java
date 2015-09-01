@@ -74,11 +74,13 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
         if (account != null){
             mEmployeeConnector = new EmployeeConnector(this, account, this);
             mEmployeeConnector.connect();
+            mEmployeeConnector.addOnActiveEmployeeChangedListener(this);
         }
     }
 
     private void disconnect() {
         if (mEmployeeConnector != null) {
+            mEmployeeConnector.removeOnActiveEmployeeChangedListener(this);
             mEmployeeConnector.disconnect();
             mEmployeeConnector = null;
         }
@@ -100,6 +102,7 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
         if (employee != null) {
             mRole = employee.getRole();
             permissionView.setText("Currently logged in as a " + mRole.toString());
+            Toast.makeText(getApplicationContext(), "Employee has changed to " + employee.getName(), Toast.LENGTH_LONG).show();
         }
     }
 
