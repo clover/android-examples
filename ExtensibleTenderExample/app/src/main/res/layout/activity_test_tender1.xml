@@ -17,6 +17,54 @@
         android:text="Here you would gather whats required by your payment methods (i.e scan a QR code etc) and then commuicate with your server to authenticate your payment. For this example these buttons work as if the payment was accepted or rejected."
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Request details:"
+        android:layout_marginTop="20dp"/>
+    <GridLayout
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:useDefaultMargins="true"
+        android:alignmentMode="alignBounds"
+        android:columnOrderPreserved="false"
+        android:columnCount="2">
+
+        <TextView
+            android:text="Amount:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_gravity="end"/>
+
+        <TextView
+            android:id="@+id/text_amount"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_gravity="left"/>
+
+        <TextView
+            android:text="Order ID:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_gravity="end"/>
+
+        <TextView
+            android:id="@+id/text_orderid"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_gravity="start"/>
+
+        <TextView
+            android:text="Merchant ID:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_gravity="end"/>
+
+        <TextView
+            android:id="@+id/text_merchantid"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_gravity="start"/>
+
+    </GridLayout>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"

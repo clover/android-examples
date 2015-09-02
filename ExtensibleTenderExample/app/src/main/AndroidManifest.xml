@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.clover.example.extensibletenderexample">
+    package="com.example.extensibletenderexample">
+    
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -10,7 +13,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label">
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.extensibletenderexample.TestTenderInitActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,18 +23,16 @@
         </activity>
 
         <activity
-            android:name=".TestTender1Activity"
+            android:name="com.example.extensibletenderexample.TestTender1Activity"
             android:label="@string/title_activity_test_tender"
             android:exported="true">
+
             <meta-data
-                android:name="com.clover.tender.meta.TENDER_TEXT"
-                android:resource="@string/tender1_text"/>
-            <meta-data
-                android:name="com.clover.tender.meta.TENDER_ICON"
+                android:name="clover.intent.meta.CUSTOMER_TENDER_IMAGE"
                 android:resource="@mipmap/ic_launcher"/>
             <intent-filter>
                 <action
-                    android:name="com.clover.tender.action.HANDLE_TENDER"/>
+                    android:name="clover.intent.action.CUSTOMER_TENDER"/>
                 <category
                     android:name="android.intent.category.DEFAULT"/>
             </intent-filter>

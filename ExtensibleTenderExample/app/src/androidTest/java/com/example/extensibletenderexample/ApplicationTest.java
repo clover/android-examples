@@ -1,4 +1,4 @@
-package com.clover.example.extensibletenderexample;
+package com.example.extensibletenderexample;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

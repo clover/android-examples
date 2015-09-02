@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ExtensibleTenderExample</string>
 
-    <string name="notes">This app has now added a \'Extensible Tender Example\' button in the secure payment app</string>
+    <string name="notes">This app has now added a \'Extensible Tender Example\' button in the payment app via Intent Action: com.clover.tender.action.CUSTOMER_TENDER</string>
     <string name="action_settings">Settings</string>
     <string name="tender1_text">Extensible Tender Example</string>
     <string name="title_activity_test_tender">Test Tender Activity</string>
