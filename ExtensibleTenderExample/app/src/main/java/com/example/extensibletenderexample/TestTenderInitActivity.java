@@ -3,6 +3,7 @@ package com.example.extensibletenderexample;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v1.tender.TenderConnector;
 
 public class TestTenderInitActivity extends AppCompatActivity {
+    public static final String TAG = "TestTenderInitActivity";
     private TenderConnector tenderConnector;
 
     @Override
@@ -28,7 +30,8 @@ public class TestTenderInitActivity extends AppCompatActivity {
                     tenderConnector.checkAndCreateTender(getString(R.string.tender1_text), getPackageName(), true, false);
                     return true;
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e.getCause());
+
                 }
                 return false;
             }

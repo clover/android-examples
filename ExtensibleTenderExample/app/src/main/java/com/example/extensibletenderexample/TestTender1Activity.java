@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.extensibletenderexample.R;
 import com.clover.sdk.v1.Intents;
 
 import java.math.BigInteger;
@@ -19,10 +18,6 @@ import java.util.Currency;
  * Created by mmaietta on 8/16/15.
  */
 public class TestTender1Activity extends Activity {
-
-    private long amount;
-    private String orderId;
-    private String employeeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +33,7 @@ public class TestTender1Activity extends Activity {
         final String merchantId = getIntent().getStringExtra(Intents.EXTRA_MERCHANT_ID);
 
         TextView amountText = (TextView) findViewById(R.id.text_amount);
-        NumberFormat format = NumberFormat.getCurrencyInstance();
-        format.setCurrency(currency);
-        amountText.setText(format.format(amount));
+        amountText.setText(longToAmountString(currency, amount));
 
         TextView orderIdText = (TextView) findViewById(R.id.text_orderid);
         orderIdText.setText(orderId);
@@ -76,5 +69,14 @@ public class TestTender1Activity extends Activity {
     private String nextSampleId() {
         SecureRandom random = new SecureRandom();
         return new BigInteger(130, random).toString(32);
+    }
+
+    public String longToAmountString(Currency currency, long amt) {
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        format.setCurrency(currency);
+
+        double currencyAmount = (double) amt / Math.pow(10.0D, (double) currency.getDefaultFractionDigits());
+
+        return format.format(currencyAmount);
     }
 }
