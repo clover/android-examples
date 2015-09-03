@@ -27,6 +27,8 @@ public class TestTender1Activity extends Activity {
 
         setResult(RESULT_CANCELED);
 
+        setSystemUiVisibility();
+
         final long amount = getIntent().getLongExtra(Intents.EXTRA_AMOUNT, 0);
         final Currency currency = (Currency) getIntent().getSerializableExtra(Intents.EXTRA_CURRENCY);
         final String orderId = getIntent().getStringExtra(Intents.EXTRA_ORDER_ID);
@@ -78,5 +80,16 @@ public class TestTender1Activity extends Activity {
         double currencyAmount = (double) amt / Math.pow(10.0D, (double) currency.getDefaultFractionDigits());
 
         return format.format(currencyAmount);
+    }
+
+    public void setSystemUiVisibility() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LOW_PROFILE |
+                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 }
