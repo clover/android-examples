@@ -15,9 +15,9 @@ import java.text.NumberFormat;
 import java.util.Currency;
 
 /**
- * Created by mmaietta on 8/16/15.
+ * Created by mmaietta on 9/3/15.
  */
-public class TestTender1Activity extends Activity {
+public class MerchantFacingTenderActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +26,6 @@ public class TestTender1Activity extends Activity {
         setContentView(R.layout.activity_test_tender1);
 
         setResult(RESULT_CANCELED);
-
-        setSystemUiVisibility();
 
         final long amount = getIntent().getLongExtra(Intents.EXTRA_AMOUNT, 0);
         final Currency currency = (Currency) getIntent().getSerializableExtra(Intents.EXTRA_CURRENCY);
@@ -82,14 +80,4 @@ public class TestTender1Activity extends Activity {
         return format.format(currencyAmount);
     }
 
-    public void setSystemUiVisibility() {
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                        View.SYSTEM_UI_FLAG_LOW_PROFILE |
-                        View.SYSTEM_UI_FLAG_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-    }
 }

@@ -23,7 +23,7 @@
         </activity>
 
         <activity
-            android:name="com.example.extensibletenderexample.TestTender1Activity"
+            android:name=".CustomerFacingTenderActivity"
             android:label="@string/title_activity_test_tender"
             android:exported="true">
 
@@ -33,6 +33,23 @@
             <intent-filter>
                 <action
                     android:name="clover.intent.action.CUSTOMER_TENDER"/>
+                <category
+                    android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name=".MerchantFacingTenderActivity"
+            android:label="@string/title_activity_test_tender"
+            android:exported="true">
+
+            <meta-data
+                android:name="clover.intent.meta.MERCHANT_TENDER_IMAGE"
+                android:resource="@mipmap/ic_launcher"/>
+            <intent-filter>
+                <action
+                    android:name="clover.intent.action.ACTION_MERCHANT_TENDER"/>
                 <category
                     android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
