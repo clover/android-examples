@@ -20,6 +20,10 @@ public class TestTenderInitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        createTenderType();
+    }
+
+    private void createTenderType() {
         tenderConnector = new TenderConnector(this, CloverAccount.getAccount(this), null);
         tenderConnector.connect();
 
@@ -39,7 +43,7 @@ public class TestTenderInitActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Boolean success) {
                 if (success) {
-                    Toast.makeText(TestTenderInitActivity.this, "Test tender init success!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TestTenderInitActivity.this, "Test tender init SUCCESS!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(TestTenderInitActivity.this, "Test tender init FAILURE!", Toast.LENGTH_SHORT).show();
                 }

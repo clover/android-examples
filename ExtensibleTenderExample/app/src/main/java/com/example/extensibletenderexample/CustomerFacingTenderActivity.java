@@ -62,6 +62,7 @@ public class CustomerFacingTenderActivity extends Activity {
             public void onClick(View v) {
                 Intent data = new Intent();
                 data.putExtra(Intents.EXTRA_DECLINE_REASON, "You pressed the decline button");
+
                 setResult(RESULT_CANCELED, data);
                 finish();
             }
@@ -75,9 +76,10 @@ public class CustomerFacingTenderActivity extends Activity {
 
     public String longToAmountString(Currency currency, long amt) {
         NumberFormat format = NumberFormat.getCurrencyInstance();
-        format.setCurrency(currency);
+        if (currency != null)
+            format.setCurrency(currency);
 
-        double currencyAmount = (double) amt / Math.pow(10.0D, (double) currency.getDefaultFractionDigits());
+        double currencyAmount = (double) amt / Math.pow(10.0D, (double) format.getCurrency().getDefaultFractionDigits());
 
         return format.format(currencyAmount);
     }
