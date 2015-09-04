@@ -8,8 +8,8 @@ android {
         applicationId "com.example.extensibletenderexample"
         minSdkVersion 17
         targetSdkVersion 19
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "3.0"
     }
     buildTypes {
         release {
