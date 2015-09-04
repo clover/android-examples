@@ -12,6 +12,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:replace="android:label">
+
+
+
         <activity
             android:name="com.example.extensibletenderexample.TestTenderInitActivity"
             android:label="@string/app_name" >
@@ -29,7 +32,8 @@
 
             <meta-data
                 android:name="clover.intent.meta.CUSTOMER_TENDER_IMAGE"
-                android:resource="@mipmap/ic_launcher"/>
+                android:resource="@mipmap/thirdparty_example"/>
+
             <intent-filter>
                 <action
                     android:name="clover.intent.action.CUSTOMER_TENDER"/>
@@ -46,10 +50,11 @@
 
             <meta-data
                 android:name="clover.intent.meta.MERCHANT_TENDER_IMAGE"
-                android:resource="@mipmap/ic_launcher"/>
+                android:resource="@mipmap/thirdparty_example"/>
+
             <intent-filter>
                 <action
-                    android:name="clover.intent.action.ACTION_MERCHANT_TENDER"/>
+                    android:name="clover.intent.action.MERCHANT_TENDER"/>
                 <category
                     android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
