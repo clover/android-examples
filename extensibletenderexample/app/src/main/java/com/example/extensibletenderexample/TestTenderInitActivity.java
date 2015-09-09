@@ -1,24 +1,22 @@
 package com.example.extensibletenderexample;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v1.tender.TenderConnector;
 
-public class TestTenderInitActivity extends AppCompatActivity {
+public class TestTenderInitActivity extends Activity {
     public static final String TAG = "TestTenderInitActivity";
     private TenderConnector tenderConnector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_test_tender_init);
 
         createTenderType();
     }
@@ -31,6 +29,7 @@ public class TestTenderInitActivity extends AppCompatActivity {
             @Override
             protected Boolean doInBackground(Void... params) {
                 try {
+                    tenderConnector.isConnected();
                     tenderConnector.checkAndCreateTender(getString(R.string.tender1_text), getPackageName(), true, false);
                     return true;
                 } catch (Exception e) {
@@ -58,27 +57,5 @@ public class TestTenderInitActivity extends AppCompatActivity {
             tenderConnector = null;
         }
         super.onDestroy();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

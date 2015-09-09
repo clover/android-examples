@@ -3,15 +3,17 @@ package com.example.extensibletenderexample;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.clover.sdk.v1.Intents;
+import com.clover.sdk.v3.base.Tender;
+import com.clover.sdk.v3.order.Order;
+import com.clover.sdk.v3.payments.ServiceChargeAmount;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Currency;
 
 /**
@@ -27,13 +29,31 @@ public class MerchantFacingTenderActivity extends Activity {
 
         setResult(RESULT_CANCELED);
 
+        /**
+         * @see Intents.ACTION_MERCHANT_TENDER
+         */
         final long amount = getIntent().getLongExtra(Intents.EXTRA_AMOUNT, 0);
         final Currency currency = (Currency) getIntent().getSerializableExtra(Intents.EXTRA_CURRENCY);
+        final long taxAmount = getIntent().getLongExtra(Intents.EXTRA_TAX_AMOUNT, 0);
+        final ArrayList<Parcelable> taxableAmounts = getIntent().getParcelableArrayListExtra(Intents.EXTRA_TAXABLE_AMOUNTS);
+        final ServiceChargeAmount serviceCharge = getIntent().getParcelableExtra(Intents.EXTRA_SERVICE_CHARGE_AMOUNT);
+
         final String orderId = getIntent().getStringExtra(Intents.EXTRA_ORDER_ID);
+        final String employeeId = getIntent().getStringExtra(Intents.EXTRA_EMPLOYEE_ID);
         final String merchantId = getIntent().getStringExtra(Intents.EXTRA_MERCHANT_ID);
 
+        final Tender tender = getIntent().getParcelableExtra(Intents.EXTRA_TENDER);
+
+        // Merchant Facing specific fields
+        final Order order = getIntent().getParcelableExtra("clover.intent.extra.ORDER");
+        final String note = getIntent().getStringExtra(Intents.EXTRA_NOTE);
+
+        setupViews(amount, currency, orderId, merchantId);
+    }
+
+    private void setupViews(final long amount, Currency currency, String orderId, String merchantId) {
         TextView amountText = (TextView) findViewById(R.id.text_amount);
-        amountText.setText(longToAmountString(currency, amount));
+        amountText.setText(Utils.longToAmountString(currency, amount));
 
         TextView orderIdText = (TextView) findViewById(R.id.text_orderid);
         orderIdText.setText(orderId);
@@ -46,7 +66,8 @@ public class MerchantFacingTenderActivity extends Activity {
             public void onClick(View v) {
                 Intent data = new Intent();
                 data.putExtra(Intents.EXTRA_AMOUNT, amount);
-                data.putExtra(Intents.EXTRA_CLIENT_ID, nextSampleId());
+                // Optional fields
+                data.putExtra(Intents.EXTRA_CLIENT_ID, Utils.nextRandomId());
                 data.putExtra(Intents.EXTRA_NOTE, "Thanks for using Test Tender!");
 
                 setResult(RESULT_OK, data);
@@ -65,19 +86,4 @@ public class MerchantFacingTenderActivity extends Activity {
             }
         });
     }
-
-    private String nextSampleId() {
-        SecureRandom random = new SecureRandom();
-        return new BigInteger(130, random).toString(32);
-    }
-
-    public String longToAmountString(Currency currency, long amt) {
-        NumberFormat format = NumberFormat.getCurrencyInstance();
-        format.setCurrency(currency);
-
-        double currencyAmount = (double) amt / Math.pow(10.0D, (double) currency.getDefaultFractionDigits());
-
-        return format.format(currencyAmount);
-    }
-
 }
