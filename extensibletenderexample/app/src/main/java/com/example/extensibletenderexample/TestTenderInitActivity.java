@@ -29,7 +29,7 @@ public class TestTenderInitActivity extends Activity {
             @Override
             protected Boolean doInBackground(Void... params) {
                 try {
-                    tenderConnector.checkAndCreateTender(getString(R.string.tender1_text), getPackageName(), true, false);
+                    tenderConnector.checkAndCreateTender(getString(R.string.tender_name), getPackageName(), true, false);
                     return true;
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e.getCause());
