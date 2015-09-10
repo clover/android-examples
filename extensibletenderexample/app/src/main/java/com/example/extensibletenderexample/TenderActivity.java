@@ -20,7 +20,7 @@ public class TenderActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_test_tender1);
+        setContentView(R.layout.activity_tender);
 
         setResult(RESULT_CANCELED);
     }
