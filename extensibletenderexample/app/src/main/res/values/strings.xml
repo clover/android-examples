@@ -12,7 +12,7 @@
     <string name="amount">Amount:</string>
     <string name="orderId">Order ID:</string>
     <string name="merchantId">Merchant ID:</string>
-    <string name="tender_prompt">Here you would gather what's required by your payment methods
+    <string name="tender_prompt">Here you would gather what\'s required by your payment methods
         (i.e scan a QR code, etc.) and then communicate with your server to authenticate your payment.
         For this example these buttons work as if the payment was accepted or rejected.</string>
     <string name="request_details">Request details:</string>
