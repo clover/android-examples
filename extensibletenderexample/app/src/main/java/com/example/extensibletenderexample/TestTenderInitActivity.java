@@ -85,35 +85,32 @@ public class TestTenderInitActivity extends Activity {
     }
 
     private void createTenderType() {
-        new AsyncTask<Void, Void, Boolean>() {
-            private String errorMessage;
-
+        new AsyncTask<Void, Void, Exception>() {
             @Override
-            protected Boolean doInBackground(Void... params) {
+            protected Exception doInBackground(Void... params) {
                 try {
                     tenderConnector.checkAndCreateTender(getString(R.string.tender_name), getPackageName(), true, false);
-                    return true;
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage(), e.getCause());
-                    errorMessage = e.getMessage();
+                } catch (Exception exception) {
+                    Log.e(TAG, exception.getMessage(), exception.getCause());
+                    return exception;
                 }
-                return false;
+                return null;
             }
 
             @Override
-            protected void onPostExecute(Boolean success) {
-                createTenderTypeFinished(success, errorMessage);
+            protected void onPostExecute(Exception exception) {
+                createTenderTypeFinished(exception);
             }
         }.execute();
     }
 
-    private void createTenderTypeFinished(Boolean success, String errorMessage) {
+    private void createTenderTypeFinished(Exception exception) {
         String text;
-        if (success) {
+        if (exception == null) {
             text = getString(R.string.custom_tender_initialized);
             initializeButton.setVisibility(View.GONE);
         } else {
-            text = getString(R.string.custom_tender_failure, errorMessage);
+            text = getString(R.string.custom_tender_failure, exception.getMessage());
             initializeButton.setVisibility(View.VISIBLE);
         }
         customTenderText.setText(text);
