@@ -80,14 +80,12 @@ public class TestTenderInitActivity extends Activity {
         }.execute();
     }
 
-    private void createTenderTypeFinished(Boolean success)
-    {
+    private void createTenderTypeFinished(Boolean success) {
         int textId;
         if (success) {
             textId = R.string.custom_tender_initialized;
             initializeButton.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             textId = R.string.custom_tender_failure;
             initializeButton.setVisibility(View.VISIBLE);
         }

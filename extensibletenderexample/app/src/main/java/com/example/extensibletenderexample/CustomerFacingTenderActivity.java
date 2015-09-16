@@ -2,7 +2,6 @@ package com.example.extensibletenderexample;
 
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.view.View;
 
 import com.clover.sdk.v1.Intents;
 import com.clover.sdk.v3.base.Tender;
