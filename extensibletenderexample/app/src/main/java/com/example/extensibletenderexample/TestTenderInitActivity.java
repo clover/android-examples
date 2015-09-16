@@ -41,25 +41,6 @@ public class TestTenderInitActivity extends Activity {
         getTenderTypes();
     }
 
-    public void getTenderTypesSuccess(List<Tender> tenders) {
-        boolean tenderExists = false;
-        for (Tender tender : tenders) {
-            if (getString(R.string.tender_name).equals(tender.getLabel())) {
-                tenderExists = true;
-                break;
-            }
-        }
-
-        int textId;
-        if (tenderExists)
-            textId = R.string.custom_tender_initialized;
-        else {
-            textId = R.string.custom_tender_not_found;
-            initializeButton.setVisibility(View.VISIBLE);
-        }
-        customTenderText.setText(textId);
-    }
-
     private void getTenderTypes() {
         new AsyncTask<Void, Void, List<Tender>>() {
             @Override
@@ -74,27 +55,39 @@ public class TestTenderInitActivity extends Activity {
 
             @Override
             protected void onPostExecute(List<Tender> tenders) {
-                if (tenders != null)
-                    getTenderTypesSuccess(tenders);
+                getTenderTypesFinished(tenders);
             }
         }.execute();
     }
 
-    private void createTenderTypeFinished(Boolean success) {
-        int textId;
-        if (success) {
-            textId = R.string.custom_tender_initialized;
-            initializeButton.setVisibility(View.GONE);
+    public void getTenderTypesFinished(List<Tender> tenders) {
+        String text;
+        if (tenders != null) {
+            boolean tenderExists = false;
+            for (Tender tender : tenders) {
+                if (getString(R.string.tender_name).equals(tender.getLabel())) {
+                    tenderExists = true;
+                    break;
+                }
+            }
+
+            if (tenderExists)
+                text = getString(R.string.custom_tender_initialized);
+            else {
+                text = getString(R.string.custom_tender_not_found);
+                initializeButton.setVisibility(View.VISIBLE);
+            }
         } else {
-            textId = R.string.custom_tender_failure;
+            text = getString(R.string.custom_tender_failure, getString(R.string.unable_get_tenders));
             initializeButton.setVisibility(View.VISIBLE);
         }
-        customTenderText.setText(textId);
-        Toast.makeText(TestTenderInitActivity.this, textId, Toast.LENGTH_SHORT).show();
+        customTenderText.setText(text);
     }
 
     private void createTenderType() {
         new AsyncTask<Void, Void, Boolean>() {
+            private String errorMessage;
+
             @Override
             protected Boolean doInBackground(Void... params) {
                 try {
@@ -102,15 +95,29 @@ public class TestTenderInitActivity extends Activity {
                     return true;
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e.getCause());
+                    errorMessage = e.getMessage();
                 }
                 return false;
             }
 
             @Override
             protected void onPostExecute(Boolean success) {
-                createTenderTypeFinished(success);
+                createTenderTypeFinished(success, errorMessage);
             }
         }.execute();
+    }
+
+    private void createTenderTypeFinished(Boolean success, String errorMessage) {
+        String text;
+        if (success) {
+            text = getString(R.string.custom_tender_initialized);
+            initializeButton.setVisibility(View.GONE);
+        } else {
+            text = getString(R.string.custom_tender_failure, errorMessage);
+            initializeButton.setVisibility(View.VISIBLE);
+        }
+        customTenderText.setText(text);
+        Toast.makeText(TestTenderInitActivity.this, text, Toast.LENGTH_SHORT).show();
     }
 
     @Override
