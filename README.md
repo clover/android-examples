@@ -27,6 +27,10 @@ Example for showing customer facing UI on Clover Station.
 ---
 Example for checking employee role.
 
+[extensibletenderexample](https://github.com/clover/android-example/tree/master/extensibletenderexample)
+---
+Example for creating a custom tender that can be utilize its own payment flow (i.e. loyalty credits, scan barcode, etc.) from Register, Sale, and Secure Payment apps.
+
 [getcurrentemployee](https://github.com/clover/android-example/tree/master/getcurrentemployee)
 ---
 Example for getting current logged in employee information.
