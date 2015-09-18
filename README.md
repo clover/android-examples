@@ -3,8 +3,7 @@ android-example
 
 Android examples showing different Android APIs in [clover-android-sdk](https://github.com/clover/clover-android-sdk).
 
-
-The examples are made to work with Android Studio 0.8.1 and Gradle 1.12.
+The examples are made to work with Android Studio 1.3.2 and Gradle 2.3.
 
 
 [barcodereceiver](https://github.com/clover/android-example/tree/master/barcodereceiver)
