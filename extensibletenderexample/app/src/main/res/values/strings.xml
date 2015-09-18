@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Extensible Tender Example</string>
+    <string name="notes">This app can add \'Extensible Tender Example\' buttons as
+        a custom tender type for your merchant account. You can implement them for:\n\n
+    Secure Payment app via Intent Action: clover.intent.action.CUSTOMER_TENDER \n\n
+    Sale and Register apps via Intent Action: clover.intent.action.MERCHANT_TENDER</string>
+    <string name="action_settings">Settings</string>
+    <string name="tender_name">Extensible Tender Example</string>
+    <string name="title_activity_test_tender">Test Tender Activity</string>
+    <string name="reject">Reject</string>
+    <string name="accept">Accept</string>
+    <string name="amount">Amount:</string>
+    <string name="orderId">Order ID:</string>
+    <string name="merchantId">Merchant ID:</string>
+    <string name="tender_prompt">Here you would gather what\'s required by your payment methods
+        (i.e scan a QR code, etc.) and then communicate with your server to authenticate your payment.
+        For this example, these buttons work as if the payment was accepted or rejected.</string>
+    <string name="request_details">Request details:</string>
+    <string name="custom_tender_failure">"Custom tender initialization failure: %s"</string>
+    <string name="custom_tender_not_found">Custom tender not found. Tap button to initialize it for your merchant account.</string>
+    <string name="custom_tender_initialized">Custom tender is setup for your merchant account.</string>
+    <string name="initialize_custom_tender">Initialize Custom Tender</string>
+    <string name="get_tenders_note">Getting list of tenders available…</string>
+    <string name="unable_get_tenders">Unable to get tenders for merchant account</string>
+</resources>
