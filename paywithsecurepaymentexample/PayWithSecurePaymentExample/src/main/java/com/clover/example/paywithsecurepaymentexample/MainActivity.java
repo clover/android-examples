@@ -156,8 +156,6 @@ public class MainActivity extends Activity {
                 merchantItems = inventoryConnector.getItems();
                 // If there are no item's in the merchant's inventory, then call a toast and return null
                 if (merchantItems.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.empty_inventory), Toast.LENGTH_SHORT).show();
-                    finish();
                     return null;
                 }
                 // Taking the first item from the inventory
@@ -188,6 +186,11 @@ public class MainActivity extends Activity {
 
         @Override
         protected final void onPostExecute(Order order) {
+            if (order == null) {
+                Toast.makeText(getApplicationContext(), getString(R.string.empty_inventory), Toast.LENGTH_LONG).show();
+                finish();
+            }
+
             // Enables the pay buttons if the order is valid
             if (!isFinishing()) {
                 MainActivity.this.order = order;
