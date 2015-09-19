@@ -3,8 +3,7 @@ android-example
 
 Android examples showing different Android APIs in [clover-android-sdk](https://github.com/clover/clover-android-sdk).
 
-
-The examples are made to work with Android Studio 0.8.1 and Gradle 1.12.
+The examples are made to work with Android Studio 1.3.2 and Gradle 2.3.
 
 
 [barcodereceiver](https://github.com/clover/android-example/tree/master/barcodereceiver)
@@ -26,6 +25,10 @@ Example for showing customer facing UI on Clover Station.
 [employeemanagement](https://github.com/clover/android-example/tree/master/employeemanagement)
 ---
 Example for checking employee role.
+
+[extensibletenderexample](https://github.com/clover/android-example/tree/master/extensibletenderexample)
+---
+Example for creating a custom tender that can be utilize its own payment flow (i.e. loyalty credits, scan barcode, etc.) from Register, Sale, and Secure Payment apps.
 
 [getcurrentemployee](https://github.com/clover/android-example/tree/master/getcurrentemployee)
 ---
