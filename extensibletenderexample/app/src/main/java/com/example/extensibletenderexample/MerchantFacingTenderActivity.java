@@ -36,7 +36,7 @@ public class MerchantFacingTenderActivity extends TenderActivity {
         final Tender tender = getIntent().getParcelableExtra(Intents.EXTRA_TENDER);
 
         // Merchant Facing specific fields
-        final Order order = getIntent().getParcelableExtra("clover.intent.extra.ORDER");
+        final Order order = getIntent().getParcelableExtra(Intents.EXTRA_ORDER);
         final String note = getIntent().getStringExtra(Intents.EXTRA_NOTE);
 
         setupViews(amount, currency, orderId, merchantId);
