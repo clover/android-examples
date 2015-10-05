@@ -25,3 +25,8 @@ proguard/
 # Intellij generated configuration
 .idea
 *.iml
+
+# Gradle Wrappers
+gradlew
+gradlew.bat
+*/gradle
