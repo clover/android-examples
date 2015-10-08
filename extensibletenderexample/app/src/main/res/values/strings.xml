@@ -22,4 +22,13 @@
     <string name="initialize_custom_tender">Initialize Custom Tender</string>
     <string name="get_tenders_note">Getting list of tenders available…</string>
     <string name="unable_get_tenders">Unable to get tenders for merchant account</string>
+    <string name="tax_amount">Tax Amount:</string>
+    <string name="taxable_amounts_object">Taxable Amounts Object:</string>
+    <string name="service_charge">Service Charge Object:</string>
+    <string name="employee_id">Employee ID:</string>
+    <string name="tender_object">Tender Object:</string>
+    <string name="order_object">Order Object:</string>
+    <string name="note">Note:</string>
+    <string name="currency_object">Currency Object:</string>
+    <string name="tip_amount">Tip Amount:</string>
 </resources>

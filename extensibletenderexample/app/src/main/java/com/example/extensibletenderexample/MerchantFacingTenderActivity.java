@@ -39,6 +39,6 @@ public class MerchantFacingTenderActivity extends TenderActivity {
         final Order order = getIntent().getParcelableExtra(Intents.EXTRA_ORDER);
         final String note = getIntent().getStringExtra(Intents.EXTRA_NOTE);
 
-        setupViews(amount, currency, orderId, merchantId);
+        setupViews(amount, currency, taxAmount, taxableAmounts, serviceCharge, orderId, employeeId, merchantId, tender, 0, order,note);
     }
 }
