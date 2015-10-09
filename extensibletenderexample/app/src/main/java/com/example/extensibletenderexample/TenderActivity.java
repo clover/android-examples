@@ -54,7 +54,7 @@ public class TenderActivity extends Activity {
         setTextOrNull(taxText, String.valueOf(taxAmount));
 
         final TextView tenderText = (TextView) findViewById(R.id.text_tenderType);
-        setTextOrNull(tenderText, tender.toString());
+        setTextOrNull(tenderText, tender);
 
         final TextView tipText = (TextView) findViewById(R.id.text_tip);
         setTextOrNull(tipText, String.valueOf(tipAmount));
