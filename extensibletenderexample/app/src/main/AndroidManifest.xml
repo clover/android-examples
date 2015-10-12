@@ -25,7 +25,8 @@
         <activity
             android:name=".CustomerFacingTenderActivity"
             android:exported="true"
-            android:label="@string/title_activity_test_tender">
+            android:label="@string/title_activity_test_tender"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
 
             <meta-data
                 android:name="clover.intent.meta.CUSTOMER_TENDER_IMAGE"
