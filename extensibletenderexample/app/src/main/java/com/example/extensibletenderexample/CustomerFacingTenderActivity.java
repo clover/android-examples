@@ -41,7 +41,7 @@ public class CustomerFacingTenderActivity extends TenderActivity {
         // Customer Facing specific fields
         final long tipAmount = getIntent().getLongExtra(Intents.EXTRA_TIP_AMOUNT, 0);
 
-        setupViews(amount, currency, taxAmount, taxableAmounts, serviceCharge, orderId, merchantId, merchantId, tender, tipAmount, null, null);
+        setupViews(amount, currency, taxAmount, taxableAmounts, serviceCharge, orderId, employeeId, merchantId, tender, tipAmount, null, null);
     }
 
     public void setSystemUiVisibility() {
