@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
-    public static final String BARCODE_BROADCAST = "com.clover.stripes.BarcodeBroadcast";
+    public static final String BARCODE_BROADCAST = "com.clover.BarcodeBroadcast";
     private final BarcodeReceiver barcodeReceiver = new BarcodeReceiver();
     private TextView mTextView;
 
