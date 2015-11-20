@@ -1,20 +1,20 @@
 package com.clover.example.employeemanagement;
 
+import android.accounts.Account;
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IInterface;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.View;
-import android.accounts.Account;
-import android.content.res.Configuration;
 
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v1.ResultStatus;
 import com.clover.sdk.v1.ServiceConnector;
+import com.clover.sdk.v3.employees.AccountRole;
 import com.clover.sdk.v3.employees.Employee;
 import com.clover.sdk.v3.employees.EmployeeConnector;
-import com.clover.sdk.v3.employees.AccountRole;
 
 public class MainActivity extends Activity implements ServiceConnector.OnServiceConnectedListener, EmployeeConnector.OnActiveEmployeeChangedListener {
 
@@ -30,26 +30,26 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
         setContentView(R.layout.activity_main);
         permissionView = (TextView) findViewById(R.id.currentUser);
         // Gets starting orientation
-        if(getOrientation() == Configuration.ORIENTATION_LANDSCAPE){
+        if (getOrientation() == Configuration.ORIENTATION_LANDSCAPE) {
             employeeFacing = true;
         } else {
             employeeFacing = false;
         }
     }
 
-    private int getOrientation(){
+    private int getOrientation() {
         return getResources().getConfiguration().orientation;
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
 
         // Retrieve Clover Account
         if (account == null) {
             account = CloverAccount.getAccount(this);
 
-            if (account == null){
+            if (account == null) {
                 Toast.makeText(this, getString(R.string.no_account), Toast.LENGTH_SHORT).show();
                 finish();
                 return;
@@ -64,14 +64,14 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         disconnect();
         super.onPause();
     }
 
-    private void connect(){
+    private void connect() {
         disconnect();
-        if (account != null){
+        if (account != null) {
             mEmployeeConnector = new EmployeeConnector(this, account, this);
             mEmployeeConnector.connect();
             mEmployeeConnector.addOnActiveEmployeeChangedListener(this);
@@ -86,7 +86,7 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
         }
     }
 
-    private void getEmployee(){
+    private void getEmployee() {
         mEmployeeConnector.getEmployee(new EmployeeConnector.EmployeeCallback<Employee>() {
             @Override
             public void onServiceSuccess(Employee result, ResultStatus status) {
@@ -114,7 +114,7 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
     public void onServiceDisconnected(ServiceConnector<? extends IInterface> serviceConnector) {
     }
 
-    public void adminClick(View view){
+    public void adminClick(View view) {
         if (mRole == AccountRole.ADMIN && employeeFacing) {
             Toast.makeText(this, "You have admin permissions.", Toast.LENGTH_SHORT).show();
         } else {
@@ -122,7 +122,7 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
         }
     }
 
-    public void employeeClick(View view){
+    public void employeeClick(View view) {
         if (mRole == AccountRole.EMPLOYEE && employeeFacing) {
             Toast.makeText(this, "You have employee permissions.", Toast.LENGTH_SHORT).show();
         } else {
@@ -130,7 +130,7 @@ public class MainActivity extends Activity implements ServiceConnector.OnService
         }
     }
 
-    public void managerClick(View view){
+    public void managerClick(View view) {
         if (mRole == AccountRole.MANAGER && employeeFacing) {
             Toast.makeText(this, "You have manager permissions", Toast.LENGTH_SHORT).show();
         } else {
