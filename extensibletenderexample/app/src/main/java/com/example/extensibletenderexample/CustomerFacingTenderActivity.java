@@ -2,6 +2,7 @@ package com.example.extensibletenderexample;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.view.View;
 
 import com.clover.sdk.v1.Intents;
 import com.clover.sdk.v3.base.Tender;
@@ -19,6 +20,9 @@ public class CustomerFacingTenderActivity extends TenderActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Necessary for Customer Facing user experiences
+        setSystemUiVisibility();
+
         /**
          * @see Intents.ACTION_CUSTOMER_TENDER
          */
@@ -34,6 +38,20 @@ public class CustomerFacingTenderActivity extends TenderActivity {
 
         final Tender tender = getIntent().getParcelableExtra(Intents.EXTRA_TENDER);
 
-        setupViews(amount, currency, orderId, merchantId);
+        // Customer Facing specific fields
+        final long tipAmount = getIntent().getLongExtra(Intents.EXTRA_TIP_AMOUNT, 0);
+
+        setupViews(amount, currency, taxAmount, taxableAmounts, serviceCharge, orderId, employeeId, merchantId, tender, tipAmount, null, null);
+    }
+
+    public void setSystemUiVisibility() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 }
