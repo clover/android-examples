@@ -4,7 +4,6 @@
     package="com.example.extensibletenderexample">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -26,11 +25,13 @@
         <activity
             android:name=".CustomerFacingTenderActivity"
             android:exported="true"
-            android:label="@string/title_activity_test_tender">
+            android:label="@string/title_activity_test_tender"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
 
             <meta-data
                 android:name="clover.intent.meta.CUSTOMER_TENDER_IMAGE"
-                android:resource="@mipmap/thirdparty_example" />
+                android:resource="@mipmap/thirdparty_white_example" />
+
 
             <intent-filter>
                 <action android:name="clover.intent.action.CUSTOMER_TENDER" />
@@ -46,7 +47,7 @@
 
             <meta-data
                 android:name="clover.intent.meta.MERCHANT_TENDER_IMAGE"
-                android:resource="@mipmap/thirdparty_example" />
+                android:resource="@mipmap/thirdparty_gray_example" />
 
             <intent-filter>
                 <action android:name="clover.intent.action.MERCHANT_TENDER" />
