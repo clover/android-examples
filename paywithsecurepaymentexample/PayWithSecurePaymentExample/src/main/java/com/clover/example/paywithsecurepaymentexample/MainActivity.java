@@ -49,7 +49,6 @@ public class MainActivity extends Activity {
   private int cardEntryMethodsAllowed = Intents.CARD_ENTRY_METHOD_MAG_STRIPE | Intents.CARD_ENTRY_METHOD_ICC_CONTACT | Intents.CARD_ENTRY_METHOD_NFC_CONTACTLESS | Intents.CARD_ENTRY_METHOD_MANUAL;
   private CurrencyTextHandler amountHandler;
   private CurrencyTextHandler taxAmountHandler;
-  private CurrencyTextHandler serviceAmountHandler;
   private CurrencyTextHandler tipAmountHandler;
 
 
@@ -144,7 +143,6 @@ public class MainActivity extends Activity {
     tipAmountHandler = new CurrencyTextHandler((EditText)findViewById(R.id.tip_amount_edit_text));
     amountHandler = new CurrencyTextHandler((EditText)findViewById(R.id.amount_edit_text));
     taxAmountHandler = new CurrencyTextHandler((EditText)findViewById(R.id.tax_amount_edit_text));
-    serviceAmountHandler = new CurrencyTextHandler((EditText)findViewById(R.id.service_charge_amount_edit_text));
 
   }
 
@@ -161,9 +159,6 @@ public class MainActivity extends Activity {
 
     taxAmountHandler.editText.removeTextChangedListener(taxAmountHandler);
     taxAmountHandler = null;
-
-    serviceAmountHandler.editText.removeTextChangedListener(serviceAmountHandler);
-    serviceAmountHandler = null;
   }
 
   // Establishes a connection with the connectors
@@ -324,10 +319,6 @@ public class MainActivity extends Activity {
           intent.putExtra(Intents.EXTRA_TAX_AMOUNT, taxAmount);
         }
 
-        Long svcChargeAmount = serviceAmountHandler.getValue();
-        if (svcChargeAmount != null) {
-          intent.putExtra(Intents.EXTRA_SERVICE_CHARGE_AMOUNT, svcChargeAmount);
-        }
       }
       dumpIntent(intent);
       startActivityForResult(intent, SECURE_PAY_REQUEST_CODE);

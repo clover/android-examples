@@ -37,8 +37,6 @@
 
   <string name="disable_cashback">Disable Cashback</string>
 
-  <string name="service_charge_amount">Service Charge Amount</string>
-
   <string name="tax_amount">Tax Amount</string>
 
   <string name="card_not_present">Card Not Present</string>

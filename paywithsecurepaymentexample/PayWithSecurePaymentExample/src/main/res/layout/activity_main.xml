@@ -142,33 +142,11 @@
                   android:text="@string/optional"/>
       </LinearLayout>
 
+
       <LinearLayout android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
                     android:layout_below="@+id/tax_amount_layout"
-                    android:id="@+id/service_charge_amount_layout">
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/service_charge_amount"
-                  android:labelFor="@+id/service_charge_amount_edit_text"/>
-        <EditText android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/service_charge_amount_edit_text"
-                  android:maxLength="15"
-                  android:minEms="15"
-                  android:inputType="numberDecimal"/>
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/optional"/>
-      </LinearLayout>
-
-
-      <LinearLayout android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_below="@+id/service_charge_amount_layout"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:id="@+id/voice_auth_code_layout">
