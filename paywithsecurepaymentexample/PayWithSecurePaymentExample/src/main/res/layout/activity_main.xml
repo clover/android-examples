@@ -1,51 +1,294 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context="com.clover.example.paywithsecurepaymentexample.MainActivity">
-    <TextView
-            android:layout_width="wrap_content"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="16dp"
+              tools:context="com.clover.example.paywithsecurepaymentexample.MainActivity"
+              android:orientation="vertical">
+  <LinearLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/amount_layout">
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/payment_amount"
+              android:labelFor="@+id/amount_edit_text"/>
+    <EditText android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/amount_edit_text"
+              android:maxLength="15"
+              android:minEms="15"
+              android:inputType="numberDecimal"/>
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/required"
+              android:textStyle="bold"/>
+  </LinearLayout>
+
+  <LinearLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/order_id_layout">
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/order_uuid"
+              android:labelFor="@+id/order_id_edit_text"/>
+    <EditText android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/order_id_edit_text"
+              android:maxLength="13"
+              android:minEms="13"
+              android:inputType="text"
+              android:textAllCaps="true"/>
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/optional"/>
+    <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/card_entry_methods_allowed"
-            android:id="@+id/textView" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
-    <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/mag_stripe"
-            android:id="@+id/mag_stripe_check_box"
-            android:checked="true" android:layout_below="@+id/textView" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
-    <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/chip_card_contact"
-            android:id="@+id/chip_card_check_box"
-            android:layout_alignParentStart="true" android:layout_below="@+id/mag_stripe_check_box"
-            android:layout_alignParentLeft="true" android:checked="true"/>
-    <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nfc_contactless"
-            android:id="@+id/nfc_check_box"
-            android:layout_alignParentStart="true" android:layout_below="@+id/chip_card_check_box"
-            android:layout_alignParentLeft="true" android:checked="true"/>
-    <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/manual_entry"
-            android:id="@+id/manual_entry_check_box"
-            android:layout_alignParentStart="true" android:layout_below="@+id/nfc_check_box"
-            android:layout_alignParentLeft="true" android:checked="true"/>
-    <Button
-            android:id="@+id/pay_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pay"
-            android:layout_centerVertical="true" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:id="@+id/create_order_button"
+            android:text="Create Me One"/>
+  </LinearLayout>
+
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/card_entry_methods_allowed"
+      android:id="@+id/textView" />
+  <CheckBox
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/mag_stripe"
+      android:id="@+id/mag_stripe_check_box"
+      android:checked="true"/>
+  <CheckBox
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/chip_card_contact"
+      android:id="@+id/chip_card_check_box"
+      android:checked="true"/>
+  <CheckBox
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/nfc_contactless"
+      android:id="@+id/nfc_check_box"
+      android:checked="true"/>
+  <CheckBox
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/manual_entry"
+      android:id="@+id/manual_entry_check_box"
+      android:checked="true"/>
+  <Button
+      android:id="@+id/pay_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/pay"/>
+  <CheckBox
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/show_advanced"
+      android:id="@+id/show_advanced_check_box"
+      android:checked="false"/>
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/advanced_options"
+                    android:visibility="gone">
+      <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/tip_amount_layout">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/tip_amount"
+                  android:labelFor="@+id/tip_amount_edit_text"/>
+        <EditText android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/tip_amount_edit_text"
+                  android:maxLength="15"
+                  android:minEms="15"
+                  android:inputType="numberDecimal"/>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/optional"/>
+      </LinearLayout>
+
+      <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tip_amount_layout"
+                    android:id="@+id/tax_amount_layout">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/tax_amount"
+                  android:labelFor="@+id/tax_amount_edit_text"/>
+        <EditText android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/tax_amount_edit_text"
+                  android:maxLength="15"
+                  android:minEms="15"
+                  android:inputType="numberDecimal"/>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/optional"/>
+      </LinearLayout>
+
+      <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tax_amount_layout"
+                    android:id="@+id/service_charge_amount_layout">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/service_charge_amount"
+                  android:labelFor="@+id/service_charge_amount_edit_text"/>
+        <EditText android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/service_charge_amount_edit_text"
+                  android:maxLength="15"
+                  android:minEms="15"
+                  android:inputType="numberDecimal"/>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/optional"/>
+      </LinearLayout>
+
+
+      <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/service_charge_amount_layout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/voice_auth_code_layout">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/voice_auth_code"
+                  android:labelFor="@+id/voice_auth_code_edit_text"/>
+        <EditText android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/voice_auth_code_edit_text"
+                  android:maxLength="8"
+                  android:minEms="8"
+                  android:inputType="text"
+                  android:textAllCaps="true"/>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/optional"/>
+      </LinearLayout>
+
+      <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/voice_auth_code_layout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/postal_code_layout">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/postal_code"
+                  android:labelFor="@+id/postal_code_edit_text"/>
+        <EditText android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/postal_code_edit_text"
+                  android:maxLength="9"
+                  android:minEms="9"
+                  android:inputType="text"
+                  android:textAllCaps="true"/>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/optional"/>
+      </LinearLayout>
+
+      <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/postal_code_layout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/transaction_no_layout">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/transaction_no"
+                  android:labelFor="@+id/transaction_no_edit_text"/>
+        <EditText android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/transaction_no_edit_text"
+                  android:maxLength="32"
+                  android:minEms="20"
+                  android:inputType="text"
+                  android:textAllCaps="true"/>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/optional"/>
+      </LinearLayout>
+
+
+      <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/transaction_no_layout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/external_txn_id_layout">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/external_payment_id"
+                  android:labelFor="@+id/external_txn_id_edit_text"/>
+        <EditText android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/external_txn_id_edit_text"
+                  android:maxLength="32"
+                  android:minEms="20"
+                  android:inputType="text"
+                  android:textAllCaps="true"/>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/optional"/>
+      </LinearLayout>
+
+      <CheckBox
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/disable_cashback"
+          android:id="@+id/card_not_present_check_box"
+          android:checked="false" android:layout_below="@+id/external_txn_id_layout" android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"/>
+      <CheckBox
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/card_not_present"
+          android:id="@+id/disable_cash_back_check_box"
+          android:checked="false" android:layout_below="@+id/card_not_present_check_box" android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"/>
+      <CheckBox
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/remote_print"
+          android:id="@+id/remote_print_check_box"
+          android:checked="false" android:layout_below="@+id/disable_cash_back_check_box" android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"/>
+      <CheckBox
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/restart_on_fail"
+          android:id="@+id/restart_tx_when_failed_check_box"
+          android:checked="true" android:layout_below="@+id/remote_print_check_box" android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"/>
+    </RelativeLayout>
 
 
 
-</RelativeLayout>
+</LinearLayout>
+</ScrollView>
