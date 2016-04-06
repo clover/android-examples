@@ -22,4 +22,38 @@
   <string name="payment_successful">Payment Succeeded for Order: %1$s</string>
 
   <string name="payment_failed">Payment Not Successful</string>
+
+  <string name="payment_amount">Payment Amount</string>
+
+  <string name="order_uuid">Order ID</string>
+
+  <string name="tip_amount">Tip Amount</string>
+
+  <string name="external_payment_id">External Payment Id</string>
+
+  <string name="voice_auth_code">Voice Auth Code</string>
+
+  <string name="postal_code">Postal Code</string>
+
+  <string name="disable_cashback">Disable Cashback</string>
+
+  <string name="tax_amount">Tax Amount</string>
+
+  <string name="card_not_present">Card Not Present</string>
+
+  <string name="remote_print">Remote Print</string>
+
+  <string name="transaction_no">Transaction No</string>
+
+  <string name="restart_on_fail">Restart Transaction on Fail or Cancel</string>
+
+  <string name="required">(Required)</string>
+
+  <string name="optional">(Optional)</string>
+
+  <string name="show_advanced">Use Advanced</string>
+
+  <string name="invalid_amount">One or more amount fields have an invalid format</string>
+
+  <string name="amount_required">Valid amount is required</string>
 </resources>
