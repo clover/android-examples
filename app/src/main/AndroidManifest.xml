@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.test.all_examples">
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:label">
+        <activity
+            android:name=".auths.AccessTokenActivity"
+            android:label="@string/title_activity_access_token" />
+        <activity
+            android:name=".employees.AuthenticateEmployeeTestActivity"
+            android:label="@string/title_activity_authenticate_employee" />
+
+        <provider
+            android:name=".receipts.ReceiptRegistrationTestProvider"
+            android:authorities=".receipt"
+            android:exported="true" />
+
+        <activity
+            android:name=".barcodes.BarcodeReceiverActivity"
+            android:label="@string/title_activity_barcode_receiver" />
+        <activity
+            android:name=".barcodes.BarcodeScannerActivity"
+            android:label="@string/title_activity_barcode_scanner" />
+        <activity
+            android:name=".basicwallet.BasicWalletActivity"
+            android:label="@string/title_activity_pay_with_wallet" />
+        <activity
+            android:name=".basicwallet.PayWithWalletActivity"
+            android:label="@string/title_activity_pay_with_wallet">
+            <intent-filter>
+                <action android:name="clover.intent.action.PAY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".payments.CashEventTestActivity"
+            android:label="@string/title_activity_cash_event"
+            android:taskAffinity="com.clover.sdk.examples.cashevent" />
+        <activity
+            android:name=".merchant.CheckAppSubscriptionActivity"
+            android:label="@string/title_activity_check_app_subscription" />
+        <activity
+            android:name=".customtender.CreateCustomTenderTestActivity"
+            android:label="@string/title_activity_create_custom_tender" />
+        <activity
+            android:name=".merchant.CustomerFacingStationExample"
+            android:label="@string/title_activity_customer_facing_station" />
+        <activity
+            android:name=".customers.CustomerTestActivity"
+            android:label="@string/title_activity_customer"
+            android:taskAffinity="com.clover.sdk.examples.customer" />
+        <activity
+            android:name=".customtender.CustomerFacingTenderActivity"
+            android:exported="true"
+            android:label="@string/title_activity_test_tender"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
+            <meta-data
+                android:name="clover.intent.meta.CUSTOMER_TENDER_IMAGE"
+                android:resource="@drawable/thirdparty_white_example" />
+            <intent-filter>
+                <action android:name="clover.intent.action.CUSTOMER_TENDER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".customtender.MerchantFacingTenderActivity"
+            android:exported="true"
+            android:label="@string/title_activity_test_tender">
+            <meta-data
+                android:name="clover.intent.meta.MERCHANT_TENDER_IMAGE"
+                android:resource="@drawable/thirdparty_gray_example" />
+            <intent-filter>
+                <action android:name="clover.intent.action.MERCHANT_TENDER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".customtender.TestTenderInitActivity"
+            android:label="@string/title_activity_custom_tender" />
+        <activity
+            android:name=".customtender.CustomTenderHandlerTestActivity"
+            android:label="@string/title_activity_custom_tender_handler_test">
+            <intent-filter>
+                <action android:name="clover.intent.action.PAY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".employees.EmployeeManagementActivity"
+            android:label="@string/title_activity_employee_permissions" />
+        <activity
+            android:name=".employees.GetOwnerActivity"
+            android:label="@string/title_activity_get_owner" />
+        <activity
+            android:name=".employees.EmployeeTestActivity"
+            android:label="@string/title_activity_employee"
+            android:taskAffinity="com.clover.sdk.examples.employee"
+            android:windowSoftInputMode="stateUnchanged" />
+        <activity
+            android:name=".inventory.InventoryExampleActivity"
+            android:label="@string/title_activity_inventory_example" />
+        <activity
+            android:name=".inventory.InventoryListActivity"
+            android:label="@string/title_activity_inventory_list"
+            android:taskAffinity="com.clover.sdk.examples.inventory.list" />
+        <activity
+            android:name=".inventory.InventoryTestActivity"
+            android:label="@string/title_activity_inventory_test"
+            android:taskAffinity="com.clover.sdk.examples.inventory" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:taskAffinity="com.clover.sdk.examples.main">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".merchant.MerchantTestActivity"
+            android:label="@string/title_activity_merchant" />
+        <activity
+            android:name=".modifyamount.ModifyAmountActivity"
+            android:label="@string/title_activity_modify_amount" />
+        <activity
+            android:name=".modifyamount.AmountDiscountActivity"
+            android:label="@string/title_activity_modify_amount">
+            <intent-filter>
+                <action android:name="clover.intent.action.MODIFY_AMOUNT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".modifyorder.ModifyOrderActivity"
+            android:label="@string/title_activity_modify_order" />
+        <activity
+            android:name=".modifyorder.OrderDiscountActivity"
+            android:label="@string/title_activity_modify_order">
+            <intent-filter>
+                <action android:name="clover.intent.action.MODIFY_ORDER" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".oauth.OauthActivity"
+            android:label="@string/title_activity_oauth" />
+        <activity
+            android:name=".oauth.WebViewActivity"
+            android:label="@string/title_activity_oauth" />
+        <activity
+            android:name=".payments.PayWithRegisterActivity"
+            android:label="@string/title_activity_pay_with_register" />
+        <activity
+            android:name=".payments.PayWithSecurePaymentsActivity"
+            android:label="@string/title_activity_pay_secure_payments" />
+        <activity
+            android:name=".receipts.PrinterTestActivity"
+            android:label="@string/title_activity_printer" />
+        <activity
+            android:name=".receipts.PrintJobsTestActivity"
+            android:label="@string/title_activity_print_job_test" />
+        <activity
+            android:name=".receipts.PrintTestActivity"
+            android:label="@string/title_activity_print_test" />
+        <activity
+            android:name=".pushnotifications.AppNotificationTestActivity"
+            android:label="@string/title_activity_app_notification_test" />
+        <activity
+            android:name=".pushnotifications.NotificationReceiverActivity"
+            android:label="@string/title_activity_app_notification_test" />
+        <activity
+            android:name=".receipts.ImageReceiptActivity"
+            android:label="@string/title_activity_receipt_image" />
+        <activity
+            android:name=".receipts.TextReceiptActivity"
+            android:label="@string/title_activity_receipt_text" />
+        <activity
+            android:name=".orders.ReadCurrentOrderActivity"
+            android:label="@string/title_activity_current_order" />
+        <activity
+            android:name=".receipts.ReceiptRegistrationTestActivity"
+            android:label="@string/title_activity_receipt_registration" />
+        <activity
+            android:name=".merchant.RotateToMerchantActivity"
+            android:label="@string/title_activity_rotate_to_merchant" />
+        <activity
+            android:name=".inventory.SelectItemsActivity"
+            android:label="@string/title_activity_select_items" />
+        <activity
+            android:name=".payments.TerminalPlanPaymentActivity"
+            android:label="@string/title_activity_terminal_payments" />
+        <activity
+            android:name=".auths.APIServiceActivity"
+            android:label="@string/title_activity_web_service" />
+    </application>
+
+</manifest>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-  <string name="app_name">Get Token</string>
-
-  <string name="no_account">No Clover account found</string>
-  <string name="token">Token: </string>
-  <string name="auth_error">Authentication Error, to get a token you need to install the app from the App Market</string>
-</resources>
