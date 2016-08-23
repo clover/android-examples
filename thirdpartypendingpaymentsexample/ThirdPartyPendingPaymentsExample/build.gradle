@@ -4,8 +4,8 @@ android {
   compileSdkVersion 'android-17'
   buildToolsVersion '22.0.1'
   repositories {
-    maven { url "http://artifactory.corp.clover.com:8081/artifactory/repo" }
     mavenLocal()
+    maven { url "http://artifactory.corp.clover.com:8081/artifactory/repo" }
     mavenCentral()
   }
 
