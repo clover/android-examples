@@ -1,0 +1,23 @@
+apply plugin: 'com.android.application'
+
+android {
+  compileSdkVersion 'android-17'
+  buildToolsVersion '22.0.1'
+  repositories {
+    mavenLocal()
+    maven { url "http://artifactory.corp.clover.com:8081/artifactory/repo" }
+    mavenCentral()
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFile getDefaultProguardFile('proguard-android.txt')
+    }
+  }
+}
+
+dependencies {
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  compile 'com.clover.sdk:clover-android-sdk:147-SNAPSHOT'
+}
