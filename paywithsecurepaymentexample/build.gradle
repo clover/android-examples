@@ -2,6 +2,10 @@
 
 buildscript {
     repositories {
+        mavenLocal()
+        if (project.properties.containsKey("localArtifactoryUrl")) {
+            maven { url localArtifactoryUrl }
+        }
         mavenCentral()
     }
     dependencies {
@@ -11,6 +15,10 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenLocal()
+        if (project.properties.containsKey("localArtifactoryUrl")) {
+            maven { url localArtifactoryUrl }
+        }
         mavenCentral()
     }
 }

@@ -10,10 +10,15 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.clover.sdk.util.CloverAccount;
@@ -26,30 +31,59 @@ import com.clover.sdk.v3.order.Order;
 import com.clover.sdk.v3.order.OrderConnector;
 import com.clover.sdk.v3.inventory.InventoryConnector;
 import com.clover.sdk.v3.inventory.Item;
+import com.clover.sdk.v3.payments.DataEntryLocation;
 import com.clover.sdk.v3.payments.Payment;
+import com.clover.sdk.v3.payments.TipMode;
+import com.clover.sdk.v3.payments.TransactionSettings;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+
 
 
 public class MainActivity extends Activity {
 
   private static final String TAG = MainActivity.class.getName();
 
+  boolean updatingSwitches = false;
+
   private Account account;
   private OrderConnector orderConnector;
   private InventoryConnector inventoryConnector;
   private Order order;
   private Button payButton;
+  private Boolean approveOfflinePaymentWithoutPrompt;
+  private Boolean allowOfflinePayment;
+  private Boolean enableCloverHandlesReceipts;
+  private Long signatureThreshold;
+  private DataEntryLocation signatureEntryLocation;
+  private TipMode tipMode;
+  private Boolean disableReceiptOptions;
+  private Boolean disableDuplicateChecking;
+  private Boolean automaticSignatureConfirmation;
+  private Boolean automaticPaymentConfirmation;
+
   private static final int SECURE_PAY_REQUEST_CODE = 1;
   //This bit value is used to store selected card entry methods, which can be combined with bitwise 'or' and passed to EXTRA_CARD_ENTRY_METHODS
   private int cardEntryMethodsAllowed = Intents.CARD_ENTRY_METHOD_MAG_STRIPE | Intents.CARD_ENTRY_METHOD_ICC_CONTACT | Intents.CARD_ENTRY_METHOD_NFC_CONTACTLESS | Intents.CARD_ENTRY_METHOD_MANUAL;
   private CurrencyTextHandler amountHandler;
   private CurrencyTextHandler taxAmountHandler;
   private CurrencyTextHandler tipAmountHandler;
+  private RadioGroup allowOfflineRG;
+  private RadioGroup approveOfflineNoPromptRG;
+  private Switch printingSwitch;
+  private Spinner tipModeSpinner;
+  private RadioGroup signatureEntryLocationRG;
+  private Switch disableReceiptOptionsSwitch;
+  private CurrencyTextHandler sigatureThresholdHandler;
+  private Switch disableDuplicateCheckSwitch;
+  private Switch automaticSignatureConfirmationSwitch;
+  private Switch automaticPaymentConfirmationSwitch;
 
 
   @Override
@@ -141,9 +175,110 @@ public class MainActivity extends Activity {
     });
 
     tipAmountHandler = new CurrencyTextHandler((EditText)findViewById(R.id.tip_amount_edit_text));
+    sigatureThresholdHandler = new CurrencyTextHandler((EditText)findViewById(R.id.signatureThreshold));
     amountHandler = new CurrencyTextHandler((EditText)findViewById(R.id.amount_edit_text));
     taxAmountHandler = new CurrencyTextHandler((EditText)findViewById(R.id.tax_amount_edit_text));
+    allowOfflineRG = (RadioGroup) findViewById(R.id.AcceptOfflinePaymentRG);
+    approveOfflineNoPromptRG = (RadioGroup) findViewById(R.id.ApproveOfflineWithoutPromptRG);
+    tipModeSpinner = ((Spinner) findViewById(R.id.TipModeSpinner));
+    disableReceiptOptionsSwitch = ((Switch) findViewById(R.id.DisableReceiptOptionsSwitch));
+    disableDuplicateCheckSwitch = ((Switch) findViewById(R.id.DisableDuplicateCheckSwitch));
+    signatureEntryLocationRG = ((RadioGroup) findViewById(R.id.SigEntryLocationRG));
+    printingSwitch = ((Switch) findViewById(R.id.PrintingSwitch));
 
+    ArrayList<String> values = new ArrayList();
+
+    int i = 0;
+    for (TipMode tipMode: TipMode.values()) {
+      values.add(i, tipMode.toString());
+      i++;
+    }
+
+    ArrayAdapter<String> adapter = new ArrayAdapter(getApplicationContext(),
+        R.layout.spinner_item, values);
+    adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+    tipModeSpinner.setAdapter(adapter);
+    tipModeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+      @Override
+      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        tipMode = getSelectedTipMode(position);
+      }
+
+      @Override
+      public void onNothingSelected(AdapterView<?> parent) {
+        tipMode = null;
+      }
+    });
+
+    RadioGroup.OnCheckedChangeListener radioGroupChangeListener = new RadioGroup.OnCheckedChangeListener() {
+      @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
+        if(!updatingSwitches) {
+          if (group == allowOfflineRG) {
+            int checkedRadioButtonId = group.getCheckedRadioButtonId();
+            switch (checkedRadioButtonId) {
+              case R.id.acceptOfflineDefault :  { allowOfflinePayment = null; break; }
+              case R.id.acceptOfflineFalse : { allowOfflinePayment = false; break; }
+              case R.id.acceptOfflineTrue : { allowOfflinePayment = true; break; }
+            }
+          } else if (group == approveOfflineNoPromptRG) {
+            int checkedRadioButtonId = group.getCheckedRadioButtonId();
+            switch (checkedRadioButtonId) {
+              case R.id.approveOfflineWithoutPromptDefault:  { approveOfflinePaymentWithoutPrompt = null; break; }
+              case R.id.approveOfflineWithoutPromptFalse: { approveOfflinePaymentWithoutPrompt = false; break; }
+              case R.id.approveOfflineWithoutPromptTrue: { approveOfflinePaymentWithoutPrompt = true; break; }
+            }
+          } else if (group == signatureEntryLocationRG) {
+            int checkedRadioButtonId = group.getCheckedRadioButtonId();
+            switch (checkedRadioButtonId) {
+              case R.id.sigEntryLocationNone:  { signatureEntryLocation = DataEntryLocation.NONE; break; }
+              case R.id.sigEntryLocationOnScreen: { signatureEntryLocation = DataEntryLocation.ON_SCREEN; break; }
+              case R.id.sigEntryLocationOnPaper: { signatureEntryLocation = DataEntryLocation.ON_PAPER; break; }
+            }
+          }
+        }
+      }
+    };
+
+    allowOfflineRG.setOnCheckedChangeListener(radioGroupChangeListener);
+    approveOfflineNoPromptRG.setOnCheckedChangeListener(radioGroupChangeListener);
+    signatureEntryLocationRG.setOnCheckedChangeListener(radioGroupChangeListener);
+    disableReceiptOptionsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(!updatingSwitches) {
+          disableReceiptOptions = isChecked;
+        }
+      }
+    });
+
+    disableDuplicateCheckSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(!updatingSwitches) {
+          disableDuplicateChecking = isChecked;
+        }
+      }
+    });
+
+    printingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(!updatingSwitches) {
+          enableCloverHandlesReceipts = isChecked;
+        }
+      }
+    });
+  }
+
+  private TipMode getSelectedTipMode(int position) {
+    String tipModeString = tipModeSpinner.getItemAtPosition(position).toString();
+    return getTipModeFromString(tipModeString);
+  }
+
+  private TipMode getTipModeFromString(String tipModeString) {
+    for (TipMode tipMode: TipMode.values()) {
+      if(tipMode.toString().equals(tipModeString)) {
+        return tipMode;
+      }
+    }
+    return null;
   }
 
   @Override
@@ -153,6 +288,9 @@ public class MainActivity extends Activity {
 
     tipAmountHandler.editText.removeTextChangedListener(tipAmountHandler);
     tipAmountHandler = null;
+
+    sigatureThresholdHandler.editText.removeTextChangedListener(sigatureThresholdHandler);
+    sigatureThresholdHandler = null;
 
     amountHandler.editText.removeTextChangedListener(amountHandler);
     amountHandler = null;
@@ -263,30 +401,66 @@ public class MainActivity extends Activity {
         //If no order id were passed to EXTRA_ORDER_ID a new empty order would be generated for the payment
       }
 
-      //Allow only selected card entry methods
-      intent.putExtra(Intents.EXTRA_CARD_ENTRY_METHODS, cardEntryMethodsAllowed);
-
       CheckBox advancedCheckBox = (CheckBox) findViewById(R.id.show_advanced_check_box);
       if (advancedCheckBox.isChecked()) {
+        TransactionSettings transactionSettings = new TransactionSettings();
         boolean restartTxn = getBooleanFromCheckbox(R.id.restart_tx_when_failed_check_box);
-        //for booelans, only need to set it if it does not match the default
+        //for booleans, only need to set it if it does not match the default
         if (!restartTxn) {
-          intent.putExtra(Intents.EXTRA_DISABLE_RESTART_TRANSACTION_WHEN_FAILED, true);
+          transactionSettings.setDisableRestartTransactionOnFailure(true);
         }
 
-        boolean remotePrint = getBooleanFromCheckbox(R.id.remote_print_check_box);
-        if (remotePrint) {
-          intent.putExtra(Intents.EXTRA_REMOTE_PRINT, true);
-        }
-
-        boolean cardNotPresent = getBooleanFromCheckbox(R.id.card_not_present_check_box);
-        if (cardNotPresent) {
-          intent.putExtra(Intents.EXTRA_CARD_NOT_PRESENT, true);
+        if (enableCloverHandlesReceipts != null) {
+            transactionSettings.setCloverShouldHandleReceipts(enableCloverHandlesReceipts);
         }
 
         boolean disableCashBack = getBooleanFromCheckbox(R.id.disable_cash_back_check_box);
         if (disableCashBack) {
-          intent.putExtra(Intents.EXTRA_DISABLE_CASHBACK, true);
+          transactionSettings.setDisableCashBack(true);
+        }
+
+        if (allowOfflinePayment != null) {
+          transactionSettings.setAllowOfflinePayment(allowOfflinePayment);
+        }
+
+        if (approveOfflinePaymentWithoutPrompt != null) {
+          transactionSettings.setApproveOfflinePaymentWithoutPrompt(approveOfflinePaymentWithoutPrompt);
+        }
+
+        if (tipMode != null) {
+          transactionSettings.setTipMode(tipMode);
+        }
+
+        if (signatureEntryLocation != null) {
+          transactionSettings.setSignatureEntryLocation(signatureEntryLocation);
+        }
+
+        signatureThreshold = sigatureThresholdHandler.getValue();
+        if (signatureThreshold != null) {
+          transactionSettings.setSignatureThreshold(signatureThreshold);
+        }
+
+        if (disableDuplicateChecking != null && disableDuplicateChecking) {
+          transactionSettings.setDisableDuplicateCheck(true);
+        }
+
+        if (disableReceiptOptions != null && disableReceiptOptions) {
+          transactionSettings.setDisableReceiptSelection(true);
+        }
+
+        if (enableCloverHandlesReceipts != null && !enableCloverHandlesReceipts) {
+          transactionSettings.setCloverShouldHandleReceipts(enableCloverHandlesReceipts);
+        }
+
+        //Allow only selected card entry methods
+        transactionSettings.setCardEntryMethods(cardEntryMethodsAllowed);
+
+        //  Add transaction settings to the Intent
+        intent.putExtra(Intents.EXTRA_TRANSACTION_SETTINGS, transactionSettings);
+
+        boolean cardNotPresent = getBooleanFromCheckbox(R.id.card_not_present_check_box);
+        if (cardNotPresent) {
+          intent.putExtra(Intents.EXTRA_CARD_NOT_PRESENT, true);
         }
 
         String transactionNumber = getStringFromEditText(R.id.transaction_no_edit_text);
@@ -318,7 +492,6 @@ public class MainActivity extends Activity {
         if (taxAmount != null) {
           intent.putExtra(Intents.EXTRA_TAX_AMOUNT, taxAmount);
         }
-
       }
       dumpIntent(intent);
       startActivityForResult(intent, SECURE_PAY_REQUEST_CODE);

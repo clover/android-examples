@@ -41,7 +41,7 @@
 
   <string name="card_not_present">Card Not Present</string>
 
-  <string name="remote_print">Remote Print</string>
+  <string name="clover_print">Clover Device Printing</string>
 
   <string name="transaction_no">Transaction No</string>
 

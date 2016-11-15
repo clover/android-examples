@@ -253,20 +253,190 @@
       <CheckBox
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/remote_print"
-          android:id="@+id/remote_print_check_box"
-          android:checked="false" android:layout_below="@+id/disable_cash_back_check_box" android:layout_alignParentLeft="true"
-          android:layout_alignParentStart="true"/>
-      <CheckBox
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
           android:text="@string/restart_on_fail"
           android:id="@+id/restart_tx_when_failed_check_box"
-          android:checked="true" android:layout_below="@+id/remote_print_check_box" android:layout_alignParentLeft="true"
+          android:checked="true" android:layout_below="@+id/disable_cash_back_check_box" android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"/>
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:layout_below="@+id/restart_tx_when_failed_check_box"
+          android:id="@+id/allowOfflineLayout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Allow Offline Payments"
+            android:id="@+id/textView5" android:layout_weight="1" android:paddingTop="6dp"
+            android:paddingBottom="3dp"/>
+        <RadioGroup android:layout_width="wrap_content" android:layout_height="fill_parent" android:orientation="horizontal" android:id="@+id/AcceptOfflinePaymentRG">
+          <RadioButton
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Default"
+              android:id="@+id/acceptOfflineDefault" android:checked="true"/>
+          <RadioButton
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Yes"
+              android:id="@+id/acceptOfflineTrue"/>
+          <RadioButton
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="No"
+              android:id="@+id/acceptOfflineFalse"/>
+        </RadioGroup>
+      </LinearLayout>
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:layout_below="@+id/allowOfflineLayout"
+          android:id="@+id/acceptOfflineLayout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Accept Offline w/o Prompt"
+            android:id="@+id/textView15" android:layout_weight="1" android:paddingTop="3dp"
+            android:paddingBottom="3dp"/>
+        <RadioGroup android:layout_width="wrap_content" android:layout_height="fill_parent" android:orientation="horizontal" android:id="@+id/ApproveOfflineWithoutPromptRG">
+
+          <RadioButton
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Default"
+              android:id="@+id/approveOfflineWithoutPromptDefault" android:checked="true"/>
+          <RadioButton
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Yes"
+              android:id="@+id/approveOfflineWithoutPromptTrue"/>
+          <RadioButton
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="No"
+              android:id="@+id/approveOfflineWithoutPromptFalse"/>
+        </RadioGroup>
+      </LinearLayout>
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:layout_below="@+id/acceptOfflineLayout"
+          android:id="@+id/tipModeLayout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Tip Mode"
+            android:id="@+id/textView25" android:layout_weight="1" android:paddingTop="6dp"
+            android:paddingBottom="3dp"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:popupBackground="@color/transparentverydarkgrayishcyan"
+            android:id="@+id/TipModeSpinner">
+        </Spinner>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/optional"/>
+      </LinearLayout>
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:layout_below="@+id/tipModeLayout"
+          android:id="@+id/signatureEntryLayout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Signature Entry Location"
+            android:id="@+id/textView35" android:layout_weight="1" android:paddingTop="6dp"
+            android:paddingBottom="3dp"/>
+        <RadioGroup android:layout_width="wrap_content" android:layout_height="fill_parent" android:orientation="horizontal" android:id="@+id/SigEntryLocationRG">
+          <RadioButton
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="None"
+              android:id="@+id/sigEntryLocationNone"/>
+          <RadioButton
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="On Screen"
+              android:id="@+id/sigEntryLocationOnScreen"/>
+          <RadioButton
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="On Paper"
+              android:id="@+id/sigEntryLocationOnPaper"/>
+        </RadioGroup>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/optional"/>
+      </LinearLayout>
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:layout_below="@+id/signatureEntryLayout"
+          android:id="@+id/signatureThresholdLayout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Signature Threshold"
+            android:id="@+id/textView26" android:layout_weight="1" android:paddingTop="6dp"
+            android:paddingBottom="3dp"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/signatureThreshold"
+            android:maxLength="15"
+            android:minEms="15"
+            android:inputType="numberDecimal"/>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/optional"/>
+      </LinearLayout>
+      <Switch
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Disable Duplicate Payment Checking"
+          android:layout_below="@+id/signatureThresholdLayout"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:id="@+id/DisableDuplicateCheckSwitch"/>
+      <Switch
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Disable Device Receipt Options Screen"
+          android:layout_below="@+id/DisableDuplicateCheckSwitch"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:id="@+id/DisableReceiptOptionsSwitch"/>
+      <Switch
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Clover Device Printing"
+          android:layout_below="@+id/DisableReceiptOptionsSwitch"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:checked="true"
+          android:id="@+id/PrintingSwitch"/>
     </RelativeLayout>
-
-
-
 </LinearLayout>
 </ScrollView>
