@@ -437,6 +437,24 @@
           android:layout_alignParentStart="true"
           android:checked="true"
           android:id="@+id/PrintingSwitch"/>
+      <Switch
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Auto Accept Payment Confirmations"
+          android:layout_below="@+id/PrintingSwitch"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:checked="true"
+          android:id="@+id/AutoAcceptPaymentConfirmationsSwitch"/>
+      <Switch
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Auto Accept Signature"
+          android:layout_below="@+id/AutoAcceptPaymentConfirmationsSwitch"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:checked="true"
+          android:id="@+id/AutoAcceptSignatureSwitch"/>
     </RelativeLayout>
 </LinearLayout>
 </ScrollView>

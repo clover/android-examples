@@ -65,9 +65,8 @@ public class MainActivity extends Activity {
   private TipMode tipMode;
   private Boolean disableReceiptOptions;
   private Boolean disableDuplicateChecking;
-  private Boolean automaticSignatureConfirmation;
-  private Boolean automaticPaymentConfirmation;
-
+  private Boolean autoAcceptPaymentConfirmations;
+  private Boolean autoAcceptSignature;
   private static final int SECURE_PAY_REQUEST_CODE = 1;
   //This bit value is used to store selected card entry methods, which can be combined with bitwise 'or' and passed to EXTRA_CARD_ENTRY_METHODS
   private int cardEntryMethodsAllowed = Intents.CARD_ENTRY_METHOD_MAG_STRIPE | Intents.CARD_ENTRY_METHOD_ICC_CONTACT | Intents.CARD_ENTRY_METHOD_NFC_CONTACTLESS | Intents.CARD_ENTRY_METHOD_MANUAL;
@@ -82,8 +81,8 @@ public class MainActivity extends Activity {
   private Switch disableReceiptOptionsSwitch;
   private CurrencyTextHandler sigatureThresholdHandler;
   private Switch disableDuplicateCheckSwitch;
-  private Switch automaticSignatureConfirmationSwitch;
-  private Switch automaticPaymentConfirmationSwitch;
+  private Switch autoAcceptPaymentConfirmationsSwitch;
+  private Switch autoAcceptSignatureSwitch;
 
 
   @Override
@@ -185,6 +184,8 @@ public class MainActivity extends Activity {
     disableDuplicateCheckSwitch = ((Switch) findViewById(R.id.DisableDuplicateCheckSwitch));
     signatureEntryLocationRG = ((RadioGroup) findViewById(R.id.SigEntryLocationRG));
     printingSwitch = ((Switch) findViewById(R.id.PrintingSwitch));
+    autoAcceptPaymentConfirmationsSwitch = ((Switch) findViewById(R.id.AutoAcceptPaymentConfirmationsSwitch));
+    autoAcceptSignatureSwitch = ((Switch) findViewById(R.id.AutoAcceptSignatureSwitch));
 
     ArrayList<String> values = new ArrayList();
 
@@ -254,6 +255,22 @@ public class MainActivity extends Activity {
       @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if(!updatingSwitches) {
           disableDuplicateChecking = isChecked;
+        }
+      }
+    });
+
+    autoAcceptPaymentConfirmationsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(!updatingSwitches) {
+          autoAcceptPaymentConfirmations = isChecked;
+        }
+      }
+    });
+
+    autoAcceptSignatureSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(!updatingSwitches) {
+          autoAcceptSignature = isChecked;
         }
       }
     });
@@ -421,6 +438,14 @@ public class MainActivity extends Activity {
 
         if (allowOfflinePayment != null) {
           transactionSettings.setAllowOfflinePayment(allowOfflinePayment);
+        }
+
+        if (autoAcceptPaymentConfirmations != null) {
+          transactionSettings.setAutoAcceptPaymentConfirmations(autoAcceptPaymentConfirmations);
+        }
+
+        if (autoAcceptSignature != null) {
+          transactionSettings.setAutoAcceptSignature(autoAcceptSignature);
         }
 
         if (approveOfflinePaymentWithoutPrompt != null) {
