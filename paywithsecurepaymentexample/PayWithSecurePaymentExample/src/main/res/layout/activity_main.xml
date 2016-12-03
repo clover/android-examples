@@ -82,11 +82,24 @@
       android:text="@string/manual_entry"
       android:id="@+id/manual_entry_check_box"
       android:checked="true"/>
-  <Button
-      android:id="@+id/pay_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/pay"/>
+
+  <LinearLayout
+      android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+    <Button android:id="@+id/pay_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pay"/>
+
+    <Button
+        android:id="@+id/pay_connector_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pay_connector"/>
+  </LinearLayout>
+
   <CheckBox
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
