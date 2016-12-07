@@ -7,6 +7,8 @@
 
   <string name="pay">Pay</string>
   <string name="pay_connector">Pay with Connector</string>
+  <string name="refund_connector">Full refund with Connector</string>
+
 
   <string name="card_entry_methods_allowed">Card Entry Methods Allowed</string>
 
@@ -59,6 +61,8 @@
   <string name="amount_required">Valid amount is required</string>
 
   <string name="payment_ext_id">Payment with external id %1$s</string>
+
+  <string name="data_returned">Data returned is $s</string>
 
   <string name="payment_null">Payment is null</string>
 

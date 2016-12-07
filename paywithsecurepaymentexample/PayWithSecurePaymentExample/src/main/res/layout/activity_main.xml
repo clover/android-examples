@@ -58,32 +58,49 @@
       android:layout_height="wrap_content"
       android:text="@string/card_entry_methods_allowed"
       android:id="@+id/textView" />
-  <CheckBox
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/mag_stripe"
-      android:id="@+id/mag_stripe_check_box"
-      android:checked="true"/>
-  <CheckBox
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/chip_card_contact"
-      android:id="@+id/chip_card_check_box"
-      android:checked="true"/>
-  <CheckBox
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/nfc_contactless"
-      android:id="@+id/nfc_check_box"
-      android:checked="true"/>
-  <CheckBox
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/manual_entry"
-      android:id="@+id/manual_entry_check_box"
-      android:checked="true"/>
 
-  <LinearLayout
+  <GridLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mag_stripe"
+        android:id="@+id/mag_stripe_check_box"
+        android:checked="true"
+        android:layout_row="0"
+        android:layout_column="0"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/chip_card_contact"
+        android:id="@+id/chip_card_check_box"
+        android:checked="true"
+        android:layout_row="0"
+        android:layout_column="1"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nfc_contactless"
+        android:id="@+id/nfc_check_box"
+        android:checked="true"
+        android:layout_row="0"
+        android:layout_column="2"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/manual_entry"
+        android:id="@+id/manual_entry_check_box"
+        android:checked="true"
+        android:layout_row="0"
+        android:layout_column="3"/>
+  </GridLayout>
+
+  <GridLayout
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
@@ -98,7 +115,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/pay_connector"/>
-  </LinearLayout>
+
+    <Button
+        android:id="@+id/refund_connector_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/refund_connector"/>
+  </GridLayout>
 
   <CheckBox
       android:layout_width="wrap_content"
