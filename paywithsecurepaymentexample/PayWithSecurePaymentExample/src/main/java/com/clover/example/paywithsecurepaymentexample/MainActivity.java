@@ -1,10 +1,53 @@
 package com.clover.example.paywithsecurepaymentexample;
 
+import com.clover.connector.sdk.v3.PaymentConnector;
+import com.clover.connector.sdk.v3.PaymentV3Connector;
+import com.clover.sdk.GenericParcelable;
+import com.clover.sdk.util.CloverAccount;
+import com.clover.sdk.v1.BindingException;
+import com.clover.sdk.v1.ClientException;
+import com.clover.sdk.v1.Intents;
+import com.clover.sdk.v1.ServiceConnector;
+import com.clover.sdk.v1.ServiceException;
+import com.clover.sdk.v3.inventory.InventoryConnector;
+import com.clover.sdk.v3.inventory.Item;
+import com.clover.sdk.v3.inventory.PriceType;
+import com.clover.sdk.v3.order.Order;
+import com.clover.sdk.v3.order.OrderConnector;
+import com.clover.sdk.v3.order.VoidReason;
+import com.clover.sdk.v3.payments.DataEntryLocation;
+import com.clover.sdk.v3.payments.Payment;
+import com.clover.sdk.v3.payments.TipMode;
+import com.clover.sdk.v3.payments.TransactionSettings;
+import com.clover.sdk.v3.remotepay.AuthRequest;
+import com.clover.sdk.v3.remotepay.AuthResponse;
+import com.clover.sdk.v3.remotepay.CapturePreAuthRequest;
+import com.clover.sdk.v3.remotepay.CapturePreAuthResponse;
+import com.clover.sdk.v3.remotepay.ConfirmPaymentRequest;
+import com.clover.sdk.v3.remotepay.ManualRefundResponse;
+import com.clover.sdk.v3.remotepay.PaymentResponse;
+import com.clover.sdk.v3.remotepay.PreAuthRequest;
+import com.clover.sdk.v3.remotepay.PreAuthResponse;
+import com.clover.sdk.v3.remotepay.ReadCardDataResponse;
+import com.clover.sdk.v3.remotepay.RefundPaymentRequest;
+import com.clover.sdk.v3.remotepay.RefundPaymentResponse;
+import com.clover.sdk.v3.remotepay.RetrievePendingPaymentsResponse;
+import com.clover.sdk.v3.remotepay.SaleRequest;
+import com.clover.sdk.v3.remotepay.SaleResponse;
+import com.clover.sdk.v3.remotepay.TipAdded;
+import com.clover.sdk.v3.remotepay.TipAdjustAuthResponse;
+import com.clover.sdk.v3.remotepay.TransactionRequest;
+import com.clover.sdk.v3.remotepay.VaultCardResponse;
+import com.clover.sdk.v3.remotepay.VerifySignatureRequest;
+import com.clover.sdk.v3.remotepay.VoidPaymentRequest;
+import com.clover.sdk.v3.remotepay.VoidPaymentResponse;
+
 import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.RemoteException;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,40 +64,6 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.clover.connector.sdk.v3.PaymentConnector;
-import com.clover.connector.sdk.v3.PaymentV3Connector;
-import com.clover.sdk.util.CloverAccount;
-import com.clover.sdk.v1.BindingException;
-import com.clover.sdk.v1.ClientException;
-import com.clover.sdk.v1.Intents;
-import com.clover.sdk.v1.ServiceConnector;
-import com.clover.sdk.v1.ServiceException;
-import com.clover.sdk.v3.inventory.PriceType;
-import com.clover.sdk.v3.order.Order;
-import com.clover.sdk.v3.order.OrderConnector;
-import com.clover.sdk.v3.inventory.InventoryConnector;
-import com.clover.sdk.v3.inventory.Item;
-import com.clover.sdk.v3.payments.DataEntryLocation;
-import com.clover.sdk.v3.payments.Payment;
-import com.clover.sdk.v3.payments.TipMode;
-import com.clover.sdk.v3.payments.TransactionSettings;
-import com.clover.sdk.v3.remotepay.AuthResponse;
-import com.clover.sdk.v3.remotepay.CapturePreAuthResponse;
-import com.clover.sdk.v3.remotepay.ConfirmPaymentRequest;
-import com.clover.sdk.v3.remotepay.ManualRefundResponse;
-import com.clover.sdk.v3.remotepay.PreAuthResponse;
-import com.clover.sdk.v3.remotepay.ReadCardDataResponse;
-import com.clover.sdk.v3.remotepay.RefundPaymentRequest;
-import com.clover.sdk.v3.remotepay.RefundPaymentResponse;
-import com.clover.sdk.v3.remotepay.RetrievePendingPaymentsResponse;
-import com.clover.sdk.v3.remotepay.SaleRequest;
-import com.clover.sdk.v3.remotepay.SaleResponse;
-import com.clover.sdk.v3.remotepay.TipAdded;
-import com.clover.sdk.v3.remotepay.TipAdjustAuthResponse;
-import com.clover.sdk.v3.remotepay.VaultCardResponse;
-import com.clover.sdk.v3.remotepay.VerifySignatureRequest;
-import com.clover.sdk.v3.remotepay.VoidPaymentResponse;
-
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -62,8 +71,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-
-
+// import com.clover.sdk.v3.payments.PaymentResponse;
 
 public class MainActivity extends Activity {
 
@@ -75,48 +83,41 @@ public class MainActivity extends Activity {
     return lastPayment;
   }
 
-  public void setLastPayment(Payment lastPayment) {
-    this.lastPayment = lastPayment;
-    refundConnectorButton.setEnabled(lastPayment != null);
-  }
+  private PaymentConnector paymentServiceConnector;
 
   private Payment lastPayment = null;
+  private Button connectorButton_sale;
+
+  private Account account;
+
+  private Button payButton;
+  private Button connectorButton_preauth;
+  private Button connectorButton_capturepreauth;
+  private Button connectorButton_auth;
+  private Button connectorButton_full_refund;
+  private Button connectorButton_void;
+
+  private OrderConnector orderConnector;
+  private InventoryConnector inventoryConnector;
+  private Order order;
 
   final PaymentV3Connector.PaymentServiceListener paymentConnectorListener = new PaymentV3Connector.PaymentServiceListener() {
-    @Override
-    public void onPreAuthResponse(PreAuthResponse preAuthResponse) {
 
+    private void displayoutput(GenericParcelable response) {
+      final Intent intent = new Intent(MainActivity.this, SerializationTestActivity.class);
+      intent.putExtra("response", response);
+      Handler handler = new Handler();
+      handler.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+          startActivity(intent);
+        }
+      }, 1);
     }
 
-    @Override
-    public void onAuthResponse(AuthResponse authResponse) {
-
-    }
-
-    @Override
-    public void onTipAdjustAuthResponse(TipAdjustAuthResponse tipAdjustAuthResponse) {
-
-    }
-
-    @Override
-    public void onCapturePreAuthResponse(CapturePreAuthResponse capturePreAuthResponse) {
-
-    }
-
-    @Override
-    public void onVerifySignatureRequest(VerifySignatureRequest verifySignatureRequest) {
-    }
-
-    @Override
-    public void onConfirmPaymentRequest(ConfirmPaymentRequest confirmPaymentRequest) {
-    }
-
-    @Override
-    public void onSaleResponse(SaleResponse saleResponse) {
-      Log.d(this.getClass().getSimpleName(), "onSaleResponse " + saleResponse);
-
-      if (saleResponse != null && saleResponse.isNotNullPayment()) {
-        Payment payment = saleResponse.getPayment();
+    public void onPaymentResponse(PaymentResponse response) {
+      if (response != null && response.isNotNullPayment()) {
+        Payment payment = response.getPayment();
         Toast.makeText(MainActivity.this.getApplicationContext(), MainActivity.this.getString(R.string.payment_ext_id,
             payment.getExternalPaymentId()), Toast.LENGTH_LONG).show();
         setLastPayment(payment);
@@ -124,47 +125,96 @@ public class MainActivity extends Activity {
         Toast.makeText(MainActivity.this.getApplicationContext(), MainActivity.this.getString(R.string.payment_null), Toast.LENGTH_LONG).show();
         setLastPayment(null);
       }
+      displayoutput(response);
     }
 
     @Override
-    public void onManualRefundResponse(ManualRefundResponse manualRefundResponse) {
-
+    public void onPreAuthResponse(PreAuthResponse response) {
+      Log.d(this.getClass().getSimpleName(), "onPreAuthResponse " + response);
+      onPaymentResponse(response);
     }
 
     @Override
-    public void onRefundPaymentResponse(RefundPaymentResponse refundPaymentResponse) {
-      Log.d(this.getClass().getSimpleName(), "onRefundPaymentResponse " + refundPaymentResponse);
-    }
-
-    public void onTipAdded(TipAdded tipAdded) {
-      Log.d("PaymentConnectorExample", "onTipAdded " + tipAdded.getTipAmount());
+    public void onAuthResponse(AuthResponse response) {
+      Log.d(this.getClass().getSimpleName(), "onAuthResponse " + response);
+      onPaymentResponse(response);
     }
 
     @Override
-    public void onVoidPaymentResponse(VoidPaymentResponse voidPaymentResponse) {
-
+    public void onTipAdjustAuthResponse(TipAdjustAuthResponse response) {
+      Log.d(this.getClass().getSimpleName(), "onTipAdjustAuthResponse " + response);
+      displayoutput(response);
     }
 
     @Override
-    public void onVaultCardResponse(VaultCardResponse vaultCardResponse) {
-
+    public void onCapturePreAuthResponse(CapturePreAuthResponse response) {
+      Log.d(this.getClass().getSimpleName(), "onCapturePreAuthResponse " + response);
+      displayoutput(response);
     }
 
-    public void onRetrievePendingPaymentsResponse(RetrievePendingPaymentsResponse retrievePendingPaymentsResponse) {
+    @Override
+    public void onVerifySignatureRequest(VerifySignatureRequest request) {
+      Log.d(this.getClass().getSimpleName(), "onVerifySignatureRequest " + request);
+      displayoutput(request);
     }
 
-    public void onReadCardDataResponse(ReadCardDataResponse readCardDataResponse) {
+    @Override
+    public void onConfirmPaymentRequest(ConfirmPaymentRequest request) {
+      Log.d(this.getClass().getSimpleName(), "onConfirmPaymentRequest " + request);
+      displayoutput(request);
+    }
+
+    @Override
+    public void onSaleResponse(SaleResponse response) {
+      Log.d(this.getClass().getSimpleName(), "onSaleResponse " + response);
+      onPaymentResponse(response);
+    }
+
+    @Override
+    public void onManualRefundResponse(ManualRefundResponse response) {
+      Log.d(this.getClass().getSimpleName(), "onManualRefundResponse " + response);
+      displayoutput(response);
+    }
+
+    @Override
+    public void onRefundPaymentResponse(RefundPaymentResponse response) {
+      Log.d(this.getClass().getSimpleName(), "onRefundPaymentResponse " + response);
+      displayoutput(response);
+    }
+
+    public void onTipAdded(TipAdded response) {
+      Log.d(this.getClass().getSimpleName(), "onTipAdded " + response);
+      displayoutput(response);
+    }
+
+    @Override
+    public void onVoidPaymentResponse(VoidPaymentResponse response) {
+      Log.d(this.getClass().getSimpleName(), "onVoidPaymentResponse " + response);
+      displayoutput(response);
+    }
+
+    @Override
+    public void onVaultCardResponse(VaultCardResponse response) {
+      Log.d(this.getClass().getSimpleName(), "onVaultCardResponse " + response);
+      displayoutput(response);
+    }
+
+    public void onRetrievePendingPaymentsResponse(RetrievePendingPaymentsResponse response) {
+      Log.d(this.getClass().getSimpleName(), "onRetrievePendingPaymentsResponse " + response);
+      displayoutput(response);
+    }
+
+    public void onReadCardDataResponse(ReadCardDataResponse response) {
+      Log.d(this.getClass().getSimpleName(), "onReadCardDataResponse " + response);
+      displayoutput(response);
     }
   };
 
-  private Account account;
-  private PaymentConnector paymentConnector;
-  private OrderConnector orderConnector;
-  private InventoryConnector inventoryConnector;
-  private Order order;
-  private Button payButton;
-  private Button payConnectorButton;
-  private Button refundConnectorButton;
+  public void setLastPayment(Payment lastPayment) {
+    this.lastPayment = lastPayment;
+    connectorButton_full_refund.setEnabled(lastPayment != null);
+    connectorButton_void.setEnabled(lastPayment != null);
+  }
   private AsyncTask waitingTask;
 
   private Boolean approveOfflinePaymentWithoutPrompt;
@@ -199,10 +249,44 @@ public class MainActivity extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    // see https://developer.android.com/guide/components/bound-services.html#Additional_Notes
+    // If you want your activity to receive responses even while it is stopped in the background,
+    // then you can bind during onCreate() and unbind during onDestroy().
+//    connectToPaymentService();
+  }
+
+  private void connectToPaymentService() {
+    if (this.paymentServiceConnector == null) {
+      this.paymentServiceConnector = new PaymentConnector(MainActivity.this, account,
+          new ServiceConnector.OnServiceConnectedListener() {
+            @Override
+            public void onServiceConnected(ServiceConnector connector) {
+              Log.d(this.getClass().getSimpleName(), "onServiceConnected " + connector);
+              MainActivity.this.paymentServiceConnector.addPaymentServiceListener(MainActivity.this.paymentConnectorListener);
+
+              AsyncTask tempWaitingTask = waitingTask;
+              waitingTask = null;
+
+              if (tempWaitingTask != null) {
+                tempWaitingTask.execute();
+              }
+            }
+
+            @Override
+            public void onServiceDisconnected(ServiceConnector connector) {
+              Log.d(this.getClass().getSimpleName(), "onServiceDisconnected " + connector);
+            }
+          }
+      );
+      this.paymentServiceConnector.connect();
+    } else if (!this.paymentServiceConnector.isConnected()) {
+      this.paymentServiceConnector.connect();
+    }
   }
 
   @Override
   protected void onResume() {
+    Log.i(this.getClass().getSimpleName(), "MRH onResume");
     super.onResume();
 
     // Retrieve the Clover account
@@ -219,11 +303,19 @@ public class MainActivity extends Activity {
 
     // Create and Connect
     connect();
+    connectToPaymentService();
 
     payButton = (Button) findViewById(R.id.pay_button);
-    payConnectorButton = (Button) findViewById(R.id.pay_connector_button);
-    refundConnectorButton = (Button) findViewById(R.id.refund_connector_button);
-    refundConnectorButton.setEnabled(lastPayment != null);
+    connectorButton_sale = (Button) findViewById(R.id.connector_button_sale);
+    connectorButton_auth = (Button) findViewById(R.id.connector_button_auth);
+    connectorButton_preauth = (Button) findViewById(R.id.connector_button_preauth);
+
+    connectorButton_full_refund = (Button) findViewById(R.id.connector_button_full_refund);
+    connectorButton_full_refund.setEnabled(lastPayment != null);
+    connectorButton_void = (Button) findViewById(R.id.connector_button_void);
+    connectorButton_void.setEnabled(lastPayment != null);
+    connectorButton_capturepreauth = (Button) findViewById(R.id.connector_button_capturepreauth);
+    connectorButton_capturepreauth.setEnabled(lastPayment != null);
 
     CheckBox magStripeCheckBox = (CheckBox) findViewById(R.id.mag_stripe_check_box);
     CheckBox chipCardCheckBox = (CheckBox) findViewById(R.id.chip_card_check_box);
@@ -282,21 +374,42 @@ public class MainActivity extends Activity {
     payButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startSecurePayment(false);
+        startSecurePayment();
       }
     });
 
-    payConnectorButton.setOnClickListener(new View.OnClickListener() {
+    connectorButton_sale.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startSecurePayment(true);
+        startPaymentConnector_sale();
       }
     });
 
-    refundConnectorButton.setOnClickListener(new View.OnClickListener() {
+    connectorButton_auth.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        doFullPaymentRefund(getLastPayment());
+        startPaymentConnector_auth();
+      }
+    });
+
+    connectorButton_preauth.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        startPaymentConnector_preauth();
+      }
+    });
+
+    connectorButton_full_refund.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        startPaymentConnector_refundPayment(getLastPayment());
+      }
+    });
+
+    connectorButton_void.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        startPaymentConnector_voidPayment(getLastPayment());
       }
     });
 
@@ -314,7 +427,7 @@ public class MainActivity extends Activity {
     autoAcceptPaymentConfirmationsSwitch = ((Switch) findViewById(R.id.AutoAcceptPaymentConfirmationsSwitch));
     autoAcceptSignatureSwitch = ((Switch) findViewById(R.id.AutoAcceptSignatureSwitch));
 
-    ArrayList<String> values = new ArrayList();
+    ArrayList<String> values = new ArrayList<String>();
 
     int i = 0;
     for (TipMode tipMode: TipMode.values()) {
@@ -322,7 +435,7 @@ public class MainActivity extends Activity {
       i++;
     }
 
-    ArrayAdapter<String> adapter = new ArrayAdapter(getApplicationContext(),
+    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
         R.layout.spinner_item, values);
     adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
     tipModeSpinner.setAdapter(adapter);
@@ -427,6 +540,7 @@ public class MainActivity extends Activity {
 
   @Override
   protected void onPause() {
+    Log.i(this.getClass().getSimpleName(), "MRH onPause");
     disconnect();
     super.onPause();
 
@@ -451,29 +565,6 @@ public class MainActivity extends Activity {
       orderConnector.connect();
       inventoryConnector = new InventoryConnector(this, account, null);
       inventoryConnector.connect();
-
-      if(this.paymentConnector == null) {
-        this.paymentConnector = new PaymentConnector(MainActivity.this, account,
-            new ServiceConnector.OnServiceConnectedListener() {
-              @Override
-              public void onServiceConnected(ServiceConnector connector) {
-                Log.d(this.getClass().getSimpleName(), "onServiceConnected " + connector);
-                MainActivity.this.paymentConnector.addPaymentServiceListener(MainActivity.this.paymentConnectorListener);
-                if(waitingTask != null) {
-                  waitingTask.execute();
-                }
-              }
-
-              @Override
-              public void onServiceDisconnected(ServiceConnector connector) {
-                Log.d(this.getClass().getSimpleName(), "onServiceDisconnected " + connector);
-              }
-            }
-        );
-        this.paymentConnector.connect();
-      } else if (!this.paymentConnector.isConnected()) {
-        this.paymentConnector.connect();
-      }
     }
   }
 
@@ -491,10 +582,13 @@ public class MainActivity extends Activity {
 
   @Override
   protected void onDestroy() {
-    if (this.paymentConnector != null) {
-      this.paymentConnector.removePaymentServiceListener(this.paymentConnectorListener);
-      this.paymentConnector.disconnect();
-      this.paymentConnector = null;
+    if (this.paymentServiceConnector != null) {
+      // see https://developer.android.com/guide/components/bound-services.html#Additional_Notes
+      // If you want your activity to receive responses even while it is stopped in the background,
+      // then you can bind during onCreate() and unbind during onDestroy().
+      this.paymentServiceConnector.removePaymentServiceListener(this.paymentConnectorListener);
+      this.paymentServiceConnector.disconnect();
+      this.paymentServiceConnector = null;
     }
     super.onDestroy();
   }
@@ -558,24 +652,38 @@ public class MainActivity extends Activity {
     }
   }
 
-  private void doFullPaymentRefund(Payment payment) {
-    if(payment != null) {
+  private void startPaymentConnector_refundPayment(Payment payment) {
+    if (payment != null) {
       try {
-        RefundPaymentRequest request = new RefundPaymentRequest();
+        final RefundPaymentRequest request = new RefundPaymentRequest();
         request.setAmount(payment.getAmount());
         request.setPaymentId(payment.getId());
         request.setFullRefund(true);
         request.setOrderId(payment.getOrder().getId());
 
         request.validate();
-        if(this.paymentConnector != null) {
-          if (this.paymentConnector.isConnected()) {
-            this.paymentConnector.getService().refundPayment(request);
+        if (this.paymentServiceConnector != null) {
+          if (this.paymentServiceConnector.isConnected()) {
+            this.paymentServiceConnector.getService().refundPayment(request);
           } else {
             Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
-            this.paymentConnector.connect();
+            this.paymentServiceConnector.connect();
+            waitingTask = new AsyncTask() {
+              @Override
+              protected Object doInBackground(Object[] params) {
+                try {
+                  MainActivity.this.paymentServiceConnector.getService().refundPayment(request);
+                } catch (RemoteException e) {
+                  Log.e(this.getClass().getSimpleName(), " sale", e);
+                }
+                return null;
+              }
+            };
           }
         }
+      } catch (IllegalArgumentException e) {
+        Log.e(this.getClass().getSimpleName(), " auth", e);
+        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
       } catch (RemoteException e) {
         Log.e(this.getClass().getSimpleName(), " sale", e);
       }
@@ -584,10 +692,186 @@ public class MainActivity extends Activity {
     }
   }
 
+  private void startPaymentConnector_voidPayment(Payment payment) {
+    if (payment != null) {
+      try {
+        final VoidPaymentRequest request = new VoidPaymentRequest();
+        request.setPaymentId(payment.getId());
+        request.setOrderId(payment.getOrder().getId());
+        request.setVoidReason(VoidReason.USER_CANCEL.toString());
+
+        request.validate();
+        if (this.paymentServiceConnector != null) {
+          if (this.paymentServiceConnector.isConnected()) {
+            this.paymentServiceConnector.getService().voidPayment(request);
+          } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
+            this.paymentServiceConnector.connect();
+            waitingTask = new AsyncTask() {
+              @Override
+              protected Object doInBackground(Object[] params) {
+                try {
+                  MainActivity.this.paymentServiceConnector.getService().voidPayment(request);
+                } catch (RemoteException e) {
+                  Log.e(this.getClass().getSimpleName(), " void", e);
+                }
+                return null;
+              }
+            };
+          }
+        }
+      } catch (IllegalArgumentException e) {
+        Log.e(this.getClass().getSimpleName(), " void", e);
+        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+      } catch (RemoteException e) {
+        Log.e(this.getClass().getSimpleName(), " void", e);
+      }
+    } else {
+      Toast.makeText(getApplicationContext(), getString(R.string.payment_null), Toast.LENGTH_LONG).show();
+    }
+  }
+
+  private void startPaymentConnector_sale() {
+    final SaleRequest request = new SaleRequest();
+    setUpSaleRequest(request);
+
+    try {
+      request.validate();
+      if (this.paymentServiceConnector != null) {
+        if (this.paymentServiceConnector.isConnected()) {
+          this.paymentServiceConnector.getService().sale(request);
+        } else {
+          Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
+          this.paymentServiceConnector.connect();
+          waitingTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] params) {
+              try {
+                MainActivity.this.paymentServiceConnector.getService().sale(request);
+              } catch (RemoteException e) {
+                Log.e(this.getClass().getSimpleName(), " sale", e);
+              }
+              return null;
+            }
+          };
+        }
+      }
+    } catch (IllegalArgumentException e) {
+      Log.e(this.getClass().getSimpleName(), " auth", e);
+      Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+    } catch (RemoteException e) {
+      Log.e(this.getClass().getSimpleName(), " sale", e);
+    }
+  }
+
+  private void startPaymentConnector_auth() {
+    final AuthRequest request = new AuthRequest();
+    setUpAuthRequest(request);
+
+    try {
+      request.validate();
+      if (this.paymentServiceConnector != null) {
+        if (this.paymentServiceConnector.isConnected()) {
+          this.paymentServiceConnector.getService().auth(request);
+        } else {
+          Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
+          this.paymentServiceConnector.connect();
+          waitingTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] params) {
+              try {
+                MainActivity.this.paymentServiceConnector.getService().auth(request);
+              } catch (RemoteException e) {
+                Log.e(this.getClass().getSimpleName(), " sale", e);
+              }
+              return null;
+            }
+          };
+        }
+      }
+    } catch (IllegalArgumentException e) {
+      Log.e(this.getClass().getSimpleName(), " auth", e);
+      Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+    } catch (RemoteException e) {
+      Log.e(this.getClass().getSimpleName(), " auth", e);
+    }
+  }
+
+  private void startPaymentConnector_preauth() {
+    final PreAuthRequest request = new PreAuthRequest();
+    try {
+      setUpTransactionRequest(request);
+    } catch (ParseException pe) {
+      Toast.makeText(getApplicationContext(), getString(R.string.invalid_amount), Toast.LENGTH_LONG).show();
+    }
+
+    try {
+      request.validate();
+      if (this.paymentServiceConnector != null) {
+        if (this.paymentServiceConnector.isConnected()) {
+          this.paymentServiceConnector.getService().preAuth(request);
+        } else {
+          Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
+          this.paymentServiceConnector.connect();
+          waitingTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] params) {
+              try {
+                MainActivity.this.paymentServiceConnector.getService().preAuth(request);
+              } catch (RemoteException e) {
+                Log.e(this.getClass().getSimpleName(), " sale", e);
+              }
+              return null;
+            }
+          };
+        }
+      }
+    } catch (IllegalArgumentException e) {
+      Log.e(this.getClass().getSimpleName(), " auth", e);
+      Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+    } catch (RemoteException e) {
+      Log.e(this.getClass().getSimpleName(), " sale", e);
+    }
+  }
+
+  private void startPaymentConnector_capturepreauth(Payment payment) {
+    final CapturePreAuthRequest request = new CapturePreAuthRequest();
+    try {
+      request.setPaymentId(payment.getId());
+      request.setAmount(payment.getAmount());
+      request.setTipAmount(payment.getTipAmount());
+
+      request.validate();
+      if (this.paymentServiceConnector != null) {
+        if (this.paymentServiceConnector.isConnected()) {
+          this.paymentServiceConnector.getService().capturePreAuth(request);
+        } else {
+          Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
+          this.paymentServiceConnector.connect();
+          waitingTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] params) {
+              try {
+                MainActivity.this.paymentServiceConnector.getService().capturePreAuth(request);
+              } catch (RemoteException e) {
+                Log.e(this.getClass().getSimpleName(), " sale", e);
+              }
+              return null;
+            }
+          };
+        }
+      }
+    } catch (IllegalArgumentException e) {
+      Log.e(this.getClass().getSimpleName(), " auth", e);
+      Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+    } catch (RemoteException e) {
+      Log.e(this.getClass().getSimpleName(), " sale", e);
+    }
+  }
+
   // Start intent to launch Clover's secure payment activity
   //NOTE: ACTION_SECURE_PAY requires that your app has "clover.permission.ACTION_PAY" in it's AndroidManifest.xml file
-  private void startSecurePayment(boolean useConnector) {
-    final SaleRequest saleRequest = new SaleRequest();
+  private void startSecurePayment() {
 
     Intent intent = new Intent(Intents.ACTION_SECURE_PAY);
     try {
@@ -595,7 +879,6 @@ public class MainActivity extends Activity {
       Long amount = amountHandler.getValue();
       if (amount != null) {
         intent.putExtra(Intents.EXTRA_AMOUNT, amount);
-        saleRequest.setAmount(amount);
       } else {
         Toast.makeText(getApplicationContext(), getString(R.string.amount_required), Toast.LENGTH_LONG).show();
         return;
@@ -604,8 +887,6 @@ public class MainActivity extends Activity {
       String orderId = getStringFromEditText(R.id.order_id_edit_text);
       if (orderId != null) {
         intent.putExtra(Intents.EXTRA_ORDER_ID, orderId);
-        //If no order id were passed to EXTRA_ORDER_ID a new empty order would be generated for the payment
-        saleRequest.setOrderId(orderId);
       }
 
       CheckBox advancedCheckBox = (CheckBox) findViewById(R.id.show_advanced_check_box);
@@ -615,73 +896,56 @@ public class MainActivity extends Activity {
         //for booleans, only need to set it if it does not match the default
         if (!restartTxn) {
           transactionSettings.setDisableRestartTransactionOnFailure(true);
-          saleRequest.setDisableRestartTransactionOnFail(true);
         }
 
         if (enableCloverHandlesReceipts != null && !enableCloverHandlesReceipts) {
           transactionSettings.setCloverShouldHandleReceipts(enableCloverHandlesReceipts);
-          saleRequest.setCloverShouldHandleReceipts(enableCloverHandlesReceipts);
         }
 
         boolean disableCashBack = getBooleanFromCheckbox(R.id.disable_cash_back_check_box);
         if (disableCashBack) {
           transactionSettings.setDisableCashBack(true);
-          saleRequest.setDisableCashback(true);
         }
 
         if (allowOfflinePayment != null) {
           transactionSettings.setAllowOfflinePayment(allowOfflinePayment);
-          saleRequest.setAllowOfflinePayment(allowOfflinePayment);
         }
 
         if (autoAcceptPaymentConfirmations != null) {
           transactionSettings.setAutoAcceptPaymentConfirmations(autoAcceptPaymentConfirmations);
-          saleRequest.setAutoAcceptPaymentConfirmations(autoAcceptPaymentConfirmations);
         }
 
         if (autoAcceptSignature != null) {
           transactionSettings.setAutoAcceptSignature(autoAcceptSignature);
-          saleRequest.setAutoAcceptSignature(autoAcceptSignature);
         }
 
         if (approveOfflinePaymentWithoutPrompt != null) {
           transactionSettings.setApproveOfflinePaymentWithoutPrompt(approveOfflinePaymentWithoutPrompt);
-          saleRequest.setApproveOfflinePaymentWithoutPrompt(approveOfflinePaymentWithoutPrompt);
         }
 
         if (tipMode != null) {
           transactionSettings.setTipMode(tipMode);
-          try {
-            saleRequest.setTipMode(com.clover.sdk.v3.remotepay.TipMode.valueOf(tipMode.name()));
-          } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Invalid value for TipMode", e);
-          }
         }
 
         if (signatureEntryLocation != null) {
           transactionSettings.setSignatureEntryLocation(signatureEntryLocation);
-          saleRequest.setSignatureEntryLocation(signatureEntryLocation);
         }
 
         signatureThreshold = sigatureThresholdHandler.getValue();
         if (signatureThreshold != null) {
           transactionSettings.setSignatureThreshold(signatureThreshold);
-          saleRequest.setSignatureThreshold(signatureThreshold);
         }
 
         if (disableDuplicateChecking != null && disableDuplicateChecking) {
           transactionSettings.setDisableDuplicateCheck(true);
-          saleRequest.setDisableDuplicateChecking(true);
         }
 
         if (disableReceiptOptions != null && disableReceiptOptions) {
           transactionSettings.setDisableReceiptSelection(true);
-          saleRequest.setDisableReceiptSelection(true);
         }
 
         //Allow only selected card entry methods
         transactionSettings.setCardEntryMethods(cardEntryMethodsAllowed);
-        saleRequest.setCardEntryMethods(cardEntryMethodsAllowed);
 
         //  Add transaction settings to the Intent
         intent.putExtra(Intents.EXTRA_TRANSACTION_SETTINGS, transactionSettings);
@@ -689,7 +953,6 @@ public class MainActivity extends Activity {
         boolean cardNotPresent = getBooleanFromCheckbox(R.id.card_not_present_check_box);
         if (cardNotPresent) {
           intent.putExtra(Intents.EXTRA_CARD_NOT_PRESENT, true);
-          saleRequest.setCardNotPresent(true);
         }
 
         String transactionNumber = getStringFromEditText(R.id.transaction_no_edit_text);
@@ -714,59 +977,170 @@ public class MainActivity extends Activity {
         String externalPaymentId = getStringFromEditText(R.id.external_txn_id_edit_text);
         if (externalPaymentId != null) {
           intent.putExtra(Intents.EXTRA_EXTERNAL_PAYMENT_ID, externalPaymentId);
-          saleRequest.setExternalId(externalPaymentId);
         }
 
         Long tipAmount = tipAmountHandler.getValue();
         if (tipAmount != null) {
           intent.putExtra(Intents.EXTRA_TIP_AMOUNT, tipAmount);
-          saleRequest.setTipAmount(tipAmount);
         }
 
         Long taxAmount = taxAmountHandler.getValue();
         if (taxAmount != null) {
           intent.putExtra(Intents.EXTRA_TAX_AMOUNT, taxAmount);
-          saleRequest.setTaxAmount(taxAmount);
         }
       }
-
-      if(saleRequest.getExternalId() == null) {
-        String externalPaymentId = "DEFAULTED" + (Math.random() * 1000);
-        intent.putExtra(Intents.EXTRA_EXTERNAL_PAYMENT_ID, externalPaymentId);
-        saleRequest.setExternalId(externalPaymentId);
-      }
-
-      if(useConnector) {
-        try {
-          saleRequest.validate();
-          if(this.paymentConnector != null) {
-            if (this.paymentConnector.isConnected()) {
-              this.paymentConnector.getService().sale(saleRequest);
-            } else {
-              Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
-              this.paymentConnector.connect();
-              waitingTask = new AsyncTask() {
-                @Override
-                protected Object doInBackground(Object[] params) {
-                  try {
-                    MainActivity.this.paymentConnector.getService().sale(saleRequest);
-                  } catch (RemoteException e) {
-                    Log.e(this.getClass().getSimpleName(), " sale", e);
-                  }
-                  return null;
-                }
-              };
-            }
-          }
-        } catch (RemoteException e) {
-          Log.e(this.getClass().getSimpleName(), " sale", e);
-        }
-      } else {
-        dumpIntent(intent);
-        startActivityForResult(intent, SECURE_PAY_REQUEST_CODE);
-      }
+      dumpIntent(intent);
+      startActivityForResult(intent, SECURE_PAY_REQUEST_CODE);
     } catch (ParseException pe) {
       Toast.makeText(getApplicationContext(), getString(R.string.invalid_amount), Toast.LENGTH_LONG).show();
+    }
+  }
+
+  private void setUpSaleRequest(SaleRequest request) {
+    try {
+      boolean disableCashBack = getBooleanFromCheckbox(R.id.disable_cash_back_check_box);
+      if (disableCashBack) {
+        request.setDisableCashback(true);
+      }
+
+      if (allowOfflinePayment != null) {
+        request.setAllowOfflinePayment(allowOfflinePayment);
+      }
+      if (approveOfflinePaymentWithoutPrompt != null) {
+        request.setApproveOfflinePaymentWithoutPrompt(approveOfflinePaymentWithoutPrompt);
+      }
+
+      if (tipMode != null) {
+        try {
+          request.setTipMode(com.clover.sdk.v3.remotepay.TipMode.valueOf(tipMode.name()));
+        } catch (IllegalArgumentException e) {
+          throw new RuntimeException("Invalid value for TipMode", e);
+        }
+      }
+      Long tipAmount = tipAmountHandler.getValue();
+      if (tipAmount != null) {
+        request.setTipAmount(tipAmount);
+      }
+
+      Long taxAmount = taxAmountHandler.getValue();
+      if (taxAmount != null) {
+        request.setTaxAmount(taxAmount);
+      }
+      setUpTransactionRequest(request);
+    } catch (ParseException pe) {
+      Toast.makeText(getApplicationContext(), getString(R.string.invalid_amount), Toast.LENGTH_LONG).show();
+    }
+  }
+
+  private void setUpAuthRequest(AuthRequest request) {
+    try {
+      boolean disableCashBack = getBooleanFromCheckbox(R.id.disable_cash_back_check_box);
+      if (disableCashBack) {
+        request.setDisableCashback(true);
+      }
+
+      if (allowOfflinePayment != null) {
+        request.setAllowOfflinePayment(allowOfflinePayment);
+      }
+      if (approveOfflinePaymentWithoutPrompt != null) {
+        request.setApproveOfflinePaymentWithoutPrompt(approveOfflinePaymentWithoutPrompt);
+      }
+
+      Long taxAmount = taxAmountHandler.getValue();
+      if (taxAmount != null) {
+        request.setTaxAmount(taxAmount);
+      }
+      setUpTransactionRequest(request);
+    } catch (ParseException pe) {
+      Toast.makeText(getApplicationContext(), getString(R.string.invalid_amount), Toast.LENGTH_LONG).show();
+    }
+  }
+
+  private void setUpTransactionRequest(TransactionRequest request) throws ParseException {
+    //EXTRA_AMOUNT is required for secure payment
+    Long amount = amountHandler.getValue();
+    if (amount != null) {
+      request.setAmount(amount);
+    } else {
+      Toast.makeText(getApplicationContext(), getString(R.string.amount_required), Toast.LENGTH_LONG).show();
+      return;
+    }
+
+    String orderId = getStringFromEditText(R.id.order_id_edit_text);
+    if (orderId != null) {
+      request.setOrderId(orderId);
+    }
+
+    CheckBox advancedCheckBox = (CheckBox) findViewById(R.id.show_advanced_check_box);
+    if (advancedCheckBox.isChecked()) {
+      boolean restartTxn = getBooleanFromCheckbox(R.id.restart_tx_when_failed_check_box);
+      //for booleans, only need to set it if it does not match the default
+      if (!restartTxn) {
+        request.setDisableRestartTransactionOnFail(true);
+      }
+
+      if (enableCloverHandlesReceipts != null && !enableCloverHandlesReceipts) {
+        request.setCloverShouldHandleReceipts(enableCloverHandlesReceipts);
+      }
+
+      if (autoAcceptPaymentConfirmations != null) {
+        request.setAutoAcceptPaymentConfirmations(autoAcceptPaymentConfirmations);
+      }
+
+      if (autoAcceptSignature != null) {
+        request.setAutoAcceptSignature(autoAcceptSignature);
+      }
+
+      if (signatureEntryLocation != null) {
+        request.setSignatureEntryLocation(signatureEntryLocation);
+      }
+
+      signatureThreshold = sigatureThresholdHandler.getValue();
+      if (signatureThreshold != null) {
+        request.setSignatureThreshold(signatureThreshold);
+      }
+
+      if (disableDuplicateChecking != null && disableDuplicateChecking) {
+        request.setDisableDuplicateChecking(true);
+      }
+
+      if (disableReceiptOptions != null && disableReceiptOptions) {
+        request.setDisableReceiptSelection(true);
+      }
+
+      //Allow only selected card entry methods
+      request.setCardEntryMethods(cardEntryMethodsAllowed);
+
+      boolean cardNotPresent = getBooleanFromCheckbox(R.id.card_not_present_check_box);
+      if (cardNotPresent) {
+        request.setCardNotPresent(true);
+      }
+
+      String transactionNumber = getStringFromEditText(R.id.transaction_no_edit_text);
+      if (transactionNumber != null) {
+        // TODO: ???
+      }
+
+      String voiceAuth = getStringFromEditText(R.id.voice_auth_code_edit_text);
+      if (voiceAuth != null) {
+        // TODO: ???
+
+      }
+
+      String postalCode = getStringFromEditText(R.id.postal_code_edit_text);
+      if (postalCode != null) {
+        // TODO: ???
+      }
+
+      String externalPaymentId = getStringFromEditText(R.id.external_txn_id_edit_text);
+      if (externalPaymentId != null) {
+        request.setExternalId(externalPaymentId);
+      }
+    }
+
+    if (request.getExternalId() == null) {
+      String externalPaymentId = "DEFAULTED" + (Math.random() * 1000);
+      request.setExternalId(externalPaymentId);
     }
   }
 

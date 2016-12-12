@@ -72,6 +72,13 @@
         android:layout_row="0"
         android:layout_column="0"/>
 
+    <Button android:id="@+id/pay_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pay"
+            android:layout_row="1"
+            android:layout_column="0"/>
+
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -103,24 +110,66 @@
   <GridLayout
       android:orientation="horizontal"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:background="#c9c9c9">
 
-    <Button android:id="@+id/pay_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pay"/>
-
-    <Button
-        android:id="@+id/pay_connector_button"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/pay_connector"/>
+        android:text="@string/connector_title"
+        android:id="@+id/connector_title"
+        android:autoText="false"
+        android:foreground="#ffffff"
+        android:fontFamily="@android:string/dialog_alert_title"/>
 
     <Button
-        android:id="@+id/refund_connector_button"
+        android:id="@+id/connector_button_sale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/refund_connector"/>
+        android:text="@string/connector_sale"
+        android:layout_row="1"
+        android:layout_column="0"/>
+
+    <Button
+        android:id="@+id/connector_button_auth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connector_auth"
+        android:layout_row="1"
+        android:layout_column="1"/>
+
+    <Button
+        android:id="@+id/connector_button_preauth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connector_preauth"
+        android:layout_row="1"
+        android:layout_column="2"/>
+
+    <Button
+        android:id="@+id/connector_button_capturepreauth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connector_capturepreauth"
+        android:layout_row="1"
+        android:layout_column="3"/>
+
+    <Button
+        android:id="@+id/connector_button_full_refund"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connector_full_refund"
+        android:layout_row="2"
+        android:layout_column="0"/>
+
+    <Button
+        android:id="@+id/connector_button_void"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connector_void"
+        android:layout_row="2"
+        android:layout_column="1"/>
+
   </GridLayout>
 
   <CheckBox
