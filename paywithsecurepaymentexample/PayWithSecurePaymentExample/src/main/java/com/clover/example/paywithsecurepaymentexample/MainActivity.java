@@ -1011,11 +1011,7 @@ public class MainActivity extends Activity {
       }
 
       if (tipMode != null) {
-        try {
-          request.setTipMode(com.clover.sdk.v3.remotepay.TipMode.valueOf(tipMode.name()));
-        } catch (IllegalArgumentException e) {
-          throw new RuntimeException("Invalid value for TipMode", e);
-        }
+        request.setTipMode(tipMode);
       }
       Long tipAmount = tipAmountHandler.getValue();
       if (tipAmount != null) {
