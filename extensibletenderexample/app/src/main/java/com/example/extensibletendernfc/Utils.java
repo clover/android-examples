@@ -1,4 +1,4 @@
-package com.example.extensibletenderexample;
+package com.example.extensibletendernfc;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;

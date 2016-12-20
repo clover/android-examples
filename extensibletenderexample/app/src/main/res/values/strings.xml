@@ -30,5 +30,9 @@
     <string name="order_object">Order Object:</string>
     <string name="note">Note:</string>
     <string name="currency_object">Currency Object:</string>
+    <string name="error">Error</string>
+    <string name="no_nfc">No NFC found on this device</string>
+    <string name="nfc_disabled">NFC is not enabled. Please go to the wireless settings to enable it.</string>
+    <string name="intro_message">This is a simple NFC reader app originally created by Adam Nybäck.\n\nIt has been modified to display the NFC tag info on CLOVER MINI and MOBILE.\n\nOn the MOBILE tap near the center of the display.\n\nOn the MINI tap on the bottom of the display near the center.\n\nCurrently limited card technologies(MIFARE CLASSIC, NFC_A, NDEF) and card types(Type A) are supported.\nHope is to extend support to other types and technologies soon.\n\n\n//Ketan</string>
     <string name="tip_amount">Tip Amount:</string>
 </resources>

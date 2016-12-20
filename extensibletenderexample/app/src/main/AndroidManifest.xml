@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.extensibletenderexample">
+    package="com.example.extensibletendernfc">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.nfc" />
 
     <application
         android:allowBackup="true"
@@ -13,17 +15,21 @@
         tools:replace="android:label">
 
         <activity
-            android:name="com.example.extensibletenderexample.TestTenderInitActivity"
+            android:name="com.example.extensibletendernfc.TestTenderInitActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.TAG_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
 
         <activity
-            android:name=".CustomerFacingTenderActivity"
+            android:name="com.example.extensibletendernfc.CustomerFacingTenderActivity"
             android:exported="true"
             android:label="@string/title_activity_test_tender"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
@@ -41,7 +47,7 @@
 
 
         <activity
-            android:name=".MerchantFacingTenderActivity"
+            android:name="com.example.extensibletendernfc.MerchantFacingTenderActivity"
             android:exported="true"
             android:label="@string/title_activity_test_tender">
 

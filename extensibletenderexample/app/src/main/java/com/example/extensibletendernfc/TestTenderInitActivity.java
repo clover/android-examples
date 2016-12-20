@@ -1,4 +1,4 @@
-package com.example.extensibletenderexample;
+package com.example.extensibletendernfc;
 
 import android.app.Activity;
 import android.os.AsyncTask;
