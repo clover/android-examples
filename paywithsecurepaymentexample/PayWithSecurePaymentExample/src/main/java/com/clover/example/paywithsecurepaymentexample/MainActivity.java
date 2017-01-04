@@ -450,6 +450,7 @@ public class MainActivity extends Activity {
         tipMode = null;
       }
     });
+    tipModeSpinner.setSelection(4);
 
     RadioGroup.OnCheckedChangeListener radioGroupChangeListener = new RadioGroup.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -662,6 +663,7 @@ public class MainActivity extends Activity {
         request.setOrderId(payment.getOrder().getId());
 
         request.validate();
+        Log.i(this.getClass().getSimpleName(), request.toString());
         if (this.paymentServiceConnector != null) {
           if (this.paymentServiceConnector.isConnected()) {
             this.paymentServiceConnector.getService().refundPayment(request);
@@ -701,6 +703,7 @@ public class MainActivity extends Activity {
         request.setVoidReason(VoidReason.USER_CANCEL.toString());
 
         request.validate();
+        Log.i(this.getClass().getSimpleName(), request.toString());
         if (this.paymentServiceConnector != null) {
           if (this.paymentServiceConnector.isConnected()) {
             this.paymentServiceConnector.getService().voidPayment(request);
@@ -737,6 +740,7 @@ public class MainActivity extends Activity {
 
     try {
       request.validate();
+      Log.i(this.getClass().getSimpleName(), request.toString());
       if (this.paymentServiceConnector != null) {
         if (this.paymentServiceConnector.isConnected()) {
           this.paymentServiceConnector.getService().sale(request);
@@ -770,6 +774,7 @@ public class MainActivity extends Activity {
 
     try {
       request.validate();
+      Log.i(this.getClass().getSimpleName(), request.toString());
       if (this.paymentServiceConnector != null) {
         if (this.paymentServiceConnector.isConnected()) {
           this.paymentServiceConnector.getService().auth(request);
@@ -807,6 +812,7 @@ public class MainActivity extends Activity {
 
     try {
       request.validate();
+      Log.i(this.getClass().getSimpleName(), request.toString());
       if (this.paymentServiceConnector != null) {
         if (this.paymentServiceConnector.isConnected()) {
           this.paymentServiceConnector.getService().preAuth(request);
@@ -842,6 +848,7 @@ public class MainActivity extends Activity {
       request.setTipAmount(payment.getTipAmount());
 
       request.validate();
+      Log.i(this.getClass().getSimpleName(), request.toString());
       if (this.paymentServiceConnector != null) {
         if (this.paymentServiceConnector.isConnected()) {
           this.paymentServiceConnector.getService().capturePreAuth(request);
@@ -898,6 +905,7 @@ public class MainActivity extends Activity {
           transactionSettings.setDisableRestartTransactionOnFailure(true);
         }
 
+        enableCloverHandlesReceipts = printingSwitch.isChecked();
         if (enableCloverHandlesReceipts != null && !enableCloverHandlesReceipts) {
           transactionSettings.setCloverShouldHandleReceipts(enableCloverHandlesReceipts);
         }
@@ -907,19 +915,21 @@ public class MainActivity extends Activity {
           transactionSettings.setDisableCashBack(true);
         }
 
-        if (allowOfflinePayment != null) {
+        if (allowOfflinePayment != null && allowOfflinePayment) {
           transactionSettings.setAllowOfflinePayment(allowOfflinePayment);
         }
 
-        if (autoAcceptPaymentConfirmations != null) {
+        autoAcceptPaymentConfirmations = autoAcceptPaymentConfirmationsSwitch.isChecked();
+        if (autoAcceptPaymentConfirmations != null && autoAcceptPaymentConfirmations) {
           transactionSettings.setAutoAcceptPaymentConfirmations(autoAcceptPaymentConfirmations);
         }
 
-        if (autoAcceptSignature != null) {
+        autoAcceptSignature = autoAcceptSignatureSwitch.isChecked();
+        if (autoAcceptSignature != null && autoAcceptSignature) {
           transactionSettings.setAutoAcceptSignature(autoAcceptSignature);
         }
 
-        if (approveOfflinePaymentWithoutPrompt != null) {
+        if (approveOfflinePaymentWithoutPrompt != null && approveOfflinePaymentWithoutPrompt) {
           transactionSettings.setApproveOfflinePaymentWithoutPrompt(approveOfflinePaymentWithoutPrompt);
         }
 
@@ -936,12 +946,14 @@ public class MainActivity extends Activity {
           transactionSettings.setSignatureThreshold(signatureThreshold);
         }
 
+        disableDuplicateChecking = disableDuplicateCheckSwitch.isChecked();
         if (disableDuplicateChecking != null && disableDuplicateChecking) {
-          transactionSettings.setDisableDuplicateCheck(true);
+          transactionSettings.setDisableDuplicateCheck(disableDuplicateChecking);
         }
 
+        disableReceiptOptions = disableReceiptOptionsSwitch.isChecked();
         if (disableReceiptOptions != null && disableReceiptOptions) {
-          transactionSettings.setDisableReceiptSelection(true);
+          transactionSettings.setDisableReceiptSelection(disableReceiptOptions);
         }
 
         //Allow only selected card entry methods
@@ -1075,14 +1087,17 @@ public class MainActivity extends Activity {
         request.setDisableRestartTransactionOnFail(true);
       }
 
-      if (enableCloverHandlesReceipts != null && !enableCloverHandlesReceipts) {
+      enableCloverHandlesReceipts = printingSwitch.isChecked();
+      if (enableCloverHandlesReceipts != null) {
         request.setCloverShouldHandleReceipts(enableCloverHandlesReceipts);
       }
 
+      autoAcceptPaymentConfirmations = autoAcceptPaymentConfirmationsSwitch.isChecked();
       if (autoAcceptPaymentConfirmations != null) {
         request.setAutoAcceptPaymentConfirmations(autoAcceptPaymentConfirmations);
       }
 
+      autoAcceptSignature = autoAcceptSignatureSwitch.isChecked();
       if (autoAcceptSignature != null) {
         request.setAutoAcceptSignature(autoAcceptSignature);
       }
@@ -1095,13 +1110,14 @@ public class MainActivity extends Activity {
       if (signatureThreshold != null) {
         request.setSignatureThreshold(signatureThreshold);
       }
-
-      if (disableDuplicateChecking != null && disableDuplicateChecking) {
-        request.setDisableDuplicateChecking(true);
+      disableDuplicateChecking = disableDuplicateCheckSwitch.isChecked();
+      if (disableDuplicateChecking != null) {
+        request.setDisableDuplicateChecking(disableDuplicateChecking);
       }
 
-      if (disableReceiptOptions != null && disableReceiptOptions) {
-        request.setDisableReceiptSelection(true);
+      disableReceiptOptions = disableReceiptOptionsSwitch.isChecked();
+      if (disableReceiptOptions != null) {
+        request.setDisableReceiptSelection(disableReceiptOptions);
       }
 
       //Allow only selected card entry methods
@@ -1167,7 +1183,6 @@ public class MainActivity extends Activity {
     }
     return null;
   }
-
 
   /**
    * Simplistic method for handling money fields
