@@ -676,7 +676,7 @@ public class MainActivity extends Activity {
                 try {
                   MainActivity.this.paymentServiceConnector.getService().refundPayment(request);
                 } catch (RemoteException e) {
-                  Log.e(this.getClass().getSimpleName(), " sale", e);
+                  Log.e(this.getClass().getSimpleName(), " refund", e);
                 }
                 return null;
               }
@@ -684,10 +684,10 @@ public class MainActivity extends Activity {
           }
         }
       } catch (IllegalArgumentException e) {
-        Log.e(this.getClass().getSimpleName(), " auth", e);
+        Log.e(this.getClass().getSimpleName(), " refund", e);
         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
       } catch (RemoteException e) {
-        Log.e(this.getClass().getSimpleName(), " sale", e);
+        Log.e(this.getClass().getSimpleName(), " refund", e);
       }
     } else {
       Toast.makeText(getApplicationContext(), getString(R.string.payment_null), Toast.LENGTH_LONG).show();
@@ -761,7 +761,7 @@ public class MainActivity extends Activity {
         }
       }
     } catch (IllegalArgumentException e) {
-      Log.e(this.getClass().getSimpleName(), " auth", e);
+      Log.e(this.getClass().getSimpleName(), " sale", e);
       Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
     } catch (RemoteException e) {
       Log.e(this.getClass().getSimpleName(), " sale", e);
@@ -787,7 +787,7 @@ public class MainActivity extends Activity {
               try {
                 MainActivity.this.paymentServiceConnector.getService().auth(request);
               } catch (RemoteException e) {
-                Log.e(this.getClass().getSimpleName(), " sale", e);
+                Log.e(this.getClass().getSimpleName(), " auth", e);
               }
               return null;
             }
@@ -825,7 +825,7 @@ public class MainActivity extends Activity {
               try {
                 MainActivity.this.paymentServiceConnector.getService().preAuth(request);
               } catch (RemoteException e) {
-                Log.e(this.getClass().getSimpleName(), " sale", e);
+                Log.e(this.getClass().getSimpleName(), " preAuth", e);
               }
               return null;
             }
@@ -833,10 +833,10 @@ public class MainActivity extends Activity {
         }
       }
     } catch (IllegalArgumentException e) {
-      Log.e(this.getClass().getSimpleName(), " auth", e);
+      Log.e(this.getClass().getSimpleName(), " preAuth", e);
       Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
     } catch (RemoteException e) {
-      Log.e(this.getClass().getSimpleName(), " sale", e);
+      Log.e(this.getClass().getSimpleName(), " preAuth", e);
     }
   }
 
@@ -861,7 +861,7 @@ public class MainActivity extends Activity {
               try {
                 MainActivity.this.paymentServiceConnector.getService().capturePreAuth(request);
               } catch (RemoteException e) {
-                Log.e(this.getClass().getSimpleName(), " sale", e);
+                Log.e(this.getClass().getSimpleName(), " capturePreAuth", e);
               }
               return null;
             }
@@ -869,10 +869,10 @@ public class MainActivity extends Activity {
         }
       }
     } catch (IllegalArgumentException e) {
-      Log.e(this.getClass().getSimpleName(), " auth", e);
+      Log.e(this.getClass().getSimpleName(), " capturePreAuth", e);
       Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
     } catch (RemoteException e) {
-      Log.e(this.getClass().getSimpleName(), " sale", e);
+      Log.e(this.getClass().getSimpleName(), " capturePreAuth", e);
     }
   }
 
@@ -1227,10 +1227,14 @@ public class MainActivity extends Activity {
 
         double parsed = Double.parseDouble(cleanString);
         String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
-
+        if (formatted.equals("$0.00")) {
+          formatted = null;
+        }
         current = formatted;
         editText.setText(formatted);
-        editText.setSelection(formatted.length());
+        if (formatted != null) {
+          editText.setSelection(formatted.length());
+        }
         editText.addTextChangedListener(this);
       }
 
