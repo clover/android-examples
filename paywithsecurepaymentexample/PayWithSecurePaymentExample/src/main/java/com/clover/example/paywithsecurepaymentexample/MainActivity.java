@@ -219,7 +219,7 @@ public class MainActivity extends Activity {
 
   private Boolean approveOfflinePaymentWithoutPrompt;
   private Boolean allowOfflinePayment;
-  private Boolean enableCloverHandlesReceipts;
+  private Boolean disableCloverHandlesReceipts;
   private Long signatureThreshold;
   private DataEntryLocation signatureEntryLocation;
   private TipMode tipMode;
@@ -519,7 +519,7 @@ public class MainActivity extends Activity {
     printingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if(!updatingSwitches) {
-          enableCloverHandlesReceipts = isChecked;
+          disableCloverHandlesReceipts = isChecked;
         }
       }
     });
@@ -905,9 +905,9 @@ public class MainActivity extends Activity {
           transactionSettings.setDisableRestartTransactionOnFailure(true);
         }
 
-        enableCloverHandlesReceipts = printingSwitch.isChecked();
-        if (enableCloverHandlesReceipts != null && !enableCloverHandlesReceipts) {
-          transactionSettings.setCloverShouldHandleReceipts(enableCloverHandlesReceipts);
+        disableCloverHandlesReceipts = printingSwitch.isChecked();
+        if (disableCloverHandlesReceipts != null && disableCloverHandlesReceipts) {
+          transactionSettings.setCloverShouldHandleReceipts(false);
         }
 
         boolean disableCashBack = getBooleanFromCheckbox(R.id.disable_cash_back_check_box);
@@ -1087,9 +1087,9 @@ public class MainActivity extends Activity {
         request.setDisableRestartTransactionOnFail(true);
       }
 
-      enableCloverHandlesReceipts = printingSwitch.isChecked();
-      if (enableCloverHandlesReceipts != null) {
-        request.setCloverShouldHandleReceipts(enableCloverHandlesReceipts);
+      disableCloverHandlesReceipts = printingSwitch.isChecked();
+      if (disableCloverHandlesReceipts != null) {
+        request.setDisablePrinting(disableCloverHandlesReceipts);
       }
 
       autoAcceptPaymentConfirmations = autoAcceptPaymentConfirmationsSwitch.isChecked();
