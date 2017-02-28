@@ -19,5 +19,5 @@ android {
 }
 
 dependencies {
-  compile 'com.clover.sdk:clover-android-connector-sdk:162-SNAPSHOT'
+  compile 'com.clover.sdk:clover-android-connector-sdk:164.2'
 }
