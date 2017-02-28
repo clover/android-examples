@@ -5,8 +5,16 @@
 
   <string name="no_account">There is no Clover account.</string>
 
-  <string name="pay">Pay</string>
+  <string name="pay">Pay with Intent</string>
+  <string name="connector_sale">Pay</string>
+  <string name="connector_auth">Auth</string>
+  <string name="connector_full_refund">Full refund</string>
+  <string name="connector_void">Void</string>
+  <string name="connector_preauth">Pre Auth</string>
+  <string name="connector_capturepreauth">Capture Pre Auth</string>
 
+
+  <string name="connector_title">Connector Operations</string>
   <string name="card_entry_methods_allowed">Card Entry Methods Allowed</string>
 
   <string name="mag_stripe">Mag Stripe</string>
@@ -41,7 +49,7 @@
 
   <string name="card_not_present">Card Not Present</string>
 
-  <string name="remote_print">Remote Print</string>
+  <string name="clover_print">Clover Device Printing</string>
 
   <string name="transaction_no">Transaction No</string>
 
@@ -56,4 +64,13 @@
   <string name="invalid_amount">One or more amount fields have an invalid format</string>
 
   <string name="amount_required">Valid amount is required</string>
+
+  <string name="payment_ext_id">Payment with external id %1$s</string>
+
+  <string name="data_returned">Data returned is $s</string>
+
+  <string name="payment_null">Payment is null</string>
+
+  <string name="connector_not_connected">Payment Connector is not connected</string>
+
 </resources>
