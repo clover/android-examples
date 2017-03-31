@@ -1,0 +1,60 @@
+<!--
+  ~ Copyright (C) 2016 Clover Network, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+  <color name="black">#000000</color>
+  <color name="white">#FFFFFF</color>
+
+  <color name="verydarkgrayishblue">#263338</color>
+  <color name="verydarkgrayishcyan">#354246</color>
+  <color name="transparentverydarkgrayishcyan">#AA354246</color>
+  <color name="darkgrayishviolet">#A7A0AC</color>
+  <color name="lightgrayishblue">#CFDBE0</color>
+  <color name="darkgrayishblue">#808285</color>
+  <color name="lightgray">#C0C0C0</color>
+  <color name="clover_green">#547554</color>
+  <color name="warning_red">#A53434</color>
+
+  <color name="transparentblack">#80000000</color>
+  <color name="transparentwhite">#80FFFFFF</color>
+
+  <color name="reorderbackground">#263338</color>
+  <color name="reordertext">#FFFFFF</color>
+
+  // receipt options
+  <color name="white_transparent_80">#CCFFFFFF</color>
+  <color name="white_transparent_40">#66FFFFFF</color>
+  <color name="white_transparent_50">#80FFFFFF</color>
+  <color name="white_transparent_30">#4CFFFFFF</color>
+
+  <color name="black_transparent_80">#CC000000</color>
+  <color name="black_transparent_75">#BF000000</color>
+  <color name="black_transparent_50">#80000000</color>
+  <color name="black_transparent_30">#4C000000</color>
+
+  <color name="theme_primary">#243238</color>
+  <color name="theme_accent_1">#85f5e2</color>
+  <color name="theme_accent_2">#1985f5e2</color>
+  <color name="overlay_white">#354246</color>
+
+  <color name="button_pane">@android:color/transparent</color>
+  <color name="content_pane">@android:color/white</color>
+  <color name="progress">#333</color>
+
+  <color name="clover_badge_color">#3849C0</color>
+  <color name="gray">#DEDEDE</color>
+  <color name="secondary_table_text_color">#808285</color>
+</resources>
