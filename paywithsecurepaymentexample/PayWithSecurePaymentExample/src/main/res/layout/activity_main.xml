@@ -342,13 +342,20 @@
           android:id="@+id/restart_tx_when_failed_check_box"
           android:checked="true" android:layout_below="@+id/disable_cash_back_check_box" android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"/>
+      <CheckBox
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/force_offline"
+          android:id="@+id/force_offline_payment_check_box"
+          android:checked="true" android:layout_below="@+id/restart_tx_when_failed_check_box" android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"/>
       <LinearLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:orientation="horizontal"
           android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"
-          android:layout_below="@+id/restart_tx_when_failed_check_box"
+          android:layout_below="@+id/force_offline_payment_check_box"
           android:id="@+id/allowOfflineLayout">
         <TextView
             android:layout_width="wrap_content"
