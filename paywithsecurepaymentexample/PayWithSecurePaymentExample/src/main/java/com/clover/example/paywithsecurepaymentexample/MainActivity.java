@@ -915,6 +915,11 @@ public class MainActivity extends Activity {
           transactionSettings.setDisableCashBack(true);
         }
 
+        boolean forceOfflinePayment = getBooleanFromCheckbox(R.id.force_offline_payment_check_box);
+        if (forceOfflinePayment) {
+          transactionSettings.setForceOfflinePayment(true);
+        }
+
         if (allowOfflinePayment != null && allowOfflinePayment) {
           transactionSettings.setAllowOfflinePayment(allowOfflinePayment);
         }
@@ -1015,6 +1020,11 @@ public class MainActivity extends Activity {
         request.setDisableCashback(true);
       }
 
+      boolean forceOfflinePayment = getBooleanFromCheckbox(R.id.force_offline_payment_check_box);
+      if (forceOfflinePayment) {
+        request.setForceOfflinePayment(true);
+      }
+
       if (allowOfflinePayment != null) {
         request.setAllowOfflinePayment(allowOfflinePayment);
       }
@@ -1045,6 +1055,11 @@ public class MainActivity extends Activity {
       boolean disableCashBack = getBooleanFromCheckbox(R.id.disable_cash_back_check_box);
       if (disableCashBack) {
         request.setDisableCashback(true);
+      }
+
+      boolean forceOfflinePayment = getBooleanFromCheckbox(R.id.force_offline_payment_check_box);
+      if (forceOfflinePayment) {
+        request.setForceOfflinePayment(true);
       }
 
       if (allowOfflinePayment != null) {

@@ -55,6 +55,8 @@
 
   <string name="restart_on_fail">Restart Transaction on Fail or Cancel</string>
 
+  <string name="force_offline">Force Payment to Offline</string>
+
   <string name="required">(Required)</string>
 
   <string name="optional">(Optional)</string>
