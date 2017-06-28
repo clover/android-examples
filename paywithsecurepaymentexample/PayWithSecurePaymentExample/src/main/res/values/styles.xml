@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!--<item name="android:background">@color/primary</item>-->
         <!--<item name="android:actionMenuTextColor">@color/black</item>-->
     </style>
