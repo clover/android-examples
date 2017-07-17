@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+repositories {
+  mavenLocal()
+  maven { url "http://artifactory.corp.clover.com:8081/artifactory/repo" }
+  mavenCentral()
+}
+
 android {
   compileSdkVersion 'android-17'
   buildToolsVersion '25.0.0'

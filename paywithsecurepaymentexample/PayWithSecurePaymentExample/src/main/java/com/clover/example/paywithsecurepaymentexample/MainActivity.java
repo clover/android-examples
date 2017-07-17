@@ -11,6 +11,7 @@ import com.clover.sdk.v1.ClientException;
 import com.clover.sdk.v1.Intents;
 import com.clover.sdk.v1.ServiceConnector;
 import com.clover.sdk.v1.ServiceException;
+import com.clover.sdk.v3.connector.IPaymentConnectorListener;
 import com.clover.sdk.v3.inventory.InventoryConnector;
 import com.clover.sdk.v3.inventory.Item;
 import com.clover.sdk.v3.inventory.PriceType;
@@ -110,7 +111,7 @@ public class MainActivity extends Activity {
   private InventoryConnector inventoryConnector;
   private Order order;
 
-  final PaymentV3Connector.PaymentServiceListener paymentConnectorListener = new PaymentV3Connector.PaymentServiceListener() {
+  final IPaymentConnectorListener paymentConnectorListener = new IPaymentConnectorListener() {
 
     private void displayoutput(GenericParcelable response) {
       final Intent intent = new Intent(MainActivity.this, SerializationTestActivity.class);
@@ -219,6 +220,22 @@ public class MainActivity extends Activity {
       Log.d(this.getClass().getSimpleName(), "onReadCardDataResponse " + response);
       displayoutput(response);
     }
+
+    /**
+     * Called when the Clover device is disconnected
+     */
+    @Override
+    public void onDeviceDisconnected() {
+
+    }
+
+    /**
+     * Called when the Clover device is connected, but not ready to communicate
+     */
+    @Override
+    public void onDeviceConnected() {
+
+    }
   };
 
   public void setLastPayment(Payment lastPayment) {
@@ -281,30 +298,7 @@ public class MainActivity extends Activity {
 
   private void connectToPaymentService() {
     if (this.paymentServiceConnector == null) {
-      this.paymentServiceConnector = new PaymentConnector(MainActivity.this, account,
-          new ServiceConnector.OnServiceConnectedListener() {
-            @Override
-            public void onServiceConnected(ServiceConnector connector) {
-              Log.d(this.getClass().getSimpleName(), "onServiceConnected " + connector);
-              MainActivity.this.paymentServiceConnector.addPaymentServiceListener(MainActivity.this.paymentConnectorListener);
-
-              AsyncTask tempWaitingTask = waitingTask;
-              waitingTask = null;
-
-              if (tempWaitingTask != null) {
-                tempWaitingTask.execute();
-              }
-            }
-
-            @Override
-            public void onServiceDisconnected(ServiceConnector connector) {
-              Log.d(this.getClass().getSimpleName(), "onServiceDisconnected " + connector);
-            }
-          }
-      );
-      this.paymentServiceConnector.connect();
-    } else if (!this.paymentServiceConnector.isConnected()) {
-      this.paymentServiceConnector.connect();
+      this.paymentServiceConnector = new PaymentConnector(MainActivity.this, account, paymentConnectorListener);
     }
   }
 
@@ -663,8 +657,8 @@ public class MainActivity extends Activity {
       // see https://developer.android.com/guide/components/bound-services.html#Additional_Notes
       // If you want your activity to receive responses even while it is stopped in the background,
       // then you can bind during onCreate() and unbind during onDestroy().
-      this.paymentServiceConnector.removePaymentServiceListener(this.paymentConnectorListener);
-      this.paymentServiceConnector.disconnect();
+      this.paymentServiceConnector.removeCloverConnectorListener(this.paymentConnectorListener);
+      this.paymentServiceConnector.dispose();
       this.paymentServiceConnector = null;
     }
     super.onDestroy();
@@ -736,6 +730,7 @@ public class MainActivity extends Activity {
   }
 
   private void startPaymentConnector_refundPayment(Payment payment) {
+/*
     if (payment != null) {
       try {
         final RefundPaymentRequest request = new RefundPaymentRequest();
@@ -774,6 +769,7 @@ public class MainActivity extends Activity {
     } else {
       Toast.makeText(getApplicationContext(), getString(R.string.payment_null), Toast.LENGTH_LONG).show();
     }
+*/
   }
 
   private void startPaymentConnector_adjustTip(Payment payment) {
@@ -828,6 +824,7 @@ public class MainActivity extends Activity {
   }
 
   private void startPaymentConnector_voidPayment(Payment payment) {
+/*
     if (payment != null) {
       try {
         final VoidPaymentRequest request = new VoidPaymentRequest();
@@ -865,6 +862,7 @@ public class MainActivity extends Activity {
     } else {
       Toast.makeText(getApplicationContext(), getString(R.string.payment_null), Toast.LENGTH_LONG).show();
     }
+*/
   }
 
   private void startPaymentConnector_retrievePendingPayments() {
@@ -1000,38 +998,13 @@ public class MainActivity extends Activity {
   private void startPaymentConnector_sale() {
     final SaleRequest request = new SaleRequest();
     setUpSaleRequest(request);
-
-    try {
-      request.validate();
-      Log.i(this.getClass().getSimpleName(), request.toString());
-      if (this.paymentServiceConnector != null) {
-        if (this.paymentServiceConnector.isConnected()) {
-          this.paymentServiceConnector.getService().sale(request);
-        } else {
-          Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
-          this.paymentServiceConnector.connect();
-          waitingTask = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-              try {
-                MainActivity.this.paymentServiceConnector.getService().sale(request);
-              } catch (RemoteException e) {
-                Log.e(this.getClass().getSimpleName(), " sale", e);
-              }
-              return null;
-            }
-          };
-        }
-      }
-    } catch (IllegalArgumentException e) {
-      Log.e(this.getClass().getSimpleName(), " sale", e);
-      Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-    } catch (RemoteException e) {
-      Log.e(this.getClass().getSimpleName(), " sale", e);
-    }
+    request.validate();
+    Log.i(this.getClass().getSimpleName(), request.toString());
+    paymentServiceConnector.sale(request);
   }
 
   private void startPaymentConnector_auth() {
+/*
     final AuthRequest request = new AuthRequest();
     setUpAuthRequest(request);
 
@@ -1063,9 +1036,11 @@ public class MainActivity extends Activity {
     } catch (RemoteException e) {
       Log.e(this.getClass().getSimpleName(), " auth", e);
     }
+*/
   }
 
   private void startPaymentConnector_preauth() {
+/*
     final PreAuthRequest request = new PreAuthRequest();
     try {
       setUpTransactionRequest(request);
@@ -1101,9 +1076,11 @@ public class MainActivity extends Activity {
     } catch (RemoteException e) {
       Log.e(this.getClass().getSimpleName(), " preAuth", e);
     }
+*/
   }
 
   private void startPaymentConnector_capturepreauth(Payment payment) {
+/*
     final CapturePreAuthRequest request = new CapturePreAuthRequest();
     try {
       request.setPaymentId(payment.getId());
@@ -1160,6 +1137,7 @@ public class MainActivity extends Activity {
     } catch (RemoteException e) {
       Log.e(this.getClass().getSimpleName(), " capturePreAuth", e);
     }
+*/
   }
 
   // Start intent to launch Clover's secure payment activity
