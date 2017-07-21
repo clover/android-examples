@@ -1,5 +1,7 @@
 package com.clover.example.paywithsecurepaymentexample;
 
+import android.os.Handler;
+import android.widget.Button;
 import com.clover.sdk.JSONifiable;
 
 import android.app.Fragment;
@@ -17,6 +19,8 @@ import org.json.JSONException;
  */
 public class SerializationTestActivityFragment extends Fragment {
 
+  private Button goBackButton;
+
   public SerializationTestActivityFragment() {
   }
 
@@ -29,6 +33,22 @@ public class SerializationTestActivityFragment extends Fragment {
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
     Intent intent = getActivity().getIntent();
+    goBackButton = (Button) view.findViewById(R.id.button_go_back);
+    goBackButton.setEnabled(true);
+    goBackButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        final Intent intent = new Intent(getActivity(), com.clover.example.paywithsecurepaymentexample.MainActivity.class);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+          @Override
+          public void run() {
+            startActivity(intent);
+          }
+        }, 1);
+      }
+    });
+
     JSONifiable response = intent.getParcelableExtra("response");
 
     try {
