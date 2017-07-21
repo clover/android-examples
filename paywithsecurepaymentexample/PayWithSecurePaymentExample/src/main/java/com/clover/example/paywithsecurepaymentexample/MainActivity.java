@@ -104,15 +104,20 @@ public class MainActivity extends Activity {
   final PaymentV3Connector.PaymentServiceListener paymentConnectorListener = new PaymentV3Connector.PaymentServiceListener() {
 
     private void displayoutput(GenericParcelable response) {
-      final Intent intent = new Intent(MainActivity.this, SerializationTestActivity.class);
-      intent.putExtra("response", response);
-      Handler handler = new Handler();
-      handler.postDelayed(new Runnable() {
-        @Override
-        public void run() {
-          startActivity(intent);
-        }
-      }, 1);
+
+      //something is preventing bundle saving, so for now we skip this to avoid breaking MainActivity. Use log for now
+      if(false)
+      {
+        final Intent intent = new Intent(MainActivity.this, SerializationTestActivity.class);
+        intent.putExtra("response", response);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+          @Override
+          public void run() {
+            startActivity(intent);
+          }
+        }, 1000);
+      }
     }
 
     public void onPaymentResponse(PaymentResponse response) {
@@ -214,6 +219,7 @@ public class MainActivity extends Activity {
     this.lastPayment = lastPayment;
     connectorButton_full_refund.setEnabled(lastPayment != null);
     connectorButton_void.setEnabled(lastPayment != null);
+    connectorButton_capturepreauth.setEnabled(lastPayment != null);
   }
   private AsyncTask waitingTask;
 
@@ -249,10 +255,17 @@ public class MainActivity extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    // see https://developer.android.com/guide/components/bound-services.html#Additional_Notes
-    // If you want your activity to receive responses even while it is stopped in the background,
-    // then you can bind during onCreate() and unbind during onDestroy().
-//    connectToPaymentService();
+
+    Log.d("MainActivity", "MainActivity.onCreate()");
+    if(savedInstanceState != null)
+    {
+      Object lp = savedInstanceState.getParcelable("lastPayment");
+      if(lp != null)
+      {
+        Log.d("MainActivity", "Restoring last payment");
+        this.lastPayment = (Payment) lp;
+      }
+    }
   }
 
   private void connectToPaymentService() {
@@ -394,9 +407,12 @@ public class MainActivity extends Activity {
 
     connectorButton_preauth.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View v) {
-        startPaymentConnector_preauth();
-      }
+      public void onClick(View v) { startPaymentConnector_preauth(); }
+    });
+
+    connectorButton_capturepreauth.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) { startPaymentConnector_capturepreauth(getLastPayment()); }
     });
 
     connectorButton_full_refund.setOnClickListener(new View.OnClickListener() {
@@ -609,7 +625,13 @@ public class MainActivity extends Activity {
         merchantItems = inventoryConnector.getItems();
         // If there are no item's in the merchant's inventory, then call a toast and return null
         if (merchantItems.isEmpty()) {
-          Toast.makeText(getApplicationContext(), getString(R.string.empty_inventory), Toast.LENGTH_SHORT).show();
+          runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+              Toast.makeText(getApplicationContext(), getString(R.string.empty_inventory), Toast.LENGTH_SHORT).show();
+            }
+          });
+
           finish();
           return null;
         }
@@ -1276,4 +1298,30 @@ public class MainActivity extends Activity {
   }
 
 
+  @Override
+  public void onSaveInstanceState(Bundle savedInstanceState) {
+    super.onSaveInstanceState(savedInstanceState);
+
+    Log.d("MainActivity", "Saving state");
+    if(lastPayment != null)
+    {
+      Log.d("MainActivity", "Saving lastPayment["+lastPayment+"]");
+      savedInstanceState.putParcelable("lastPayment", lastPayment);
+    }
+
+  }
+
+  @Override
+  public void onRestoreInstanceState(Bundle savedInstanceState) {
+      super.onRestoreInstanceState(savedInstanceState);
+
+      Log.d("MainActivity", "Restoring state");
+      Object lp = savedInstanceState.getParcelable("lastPayment");
+      if(lp != null)
+      {
+        Log.d("MainActivity", "Restoring last payment");
+        this.lastPayment = (Payment) lp;
+      }
+
+  }
 }

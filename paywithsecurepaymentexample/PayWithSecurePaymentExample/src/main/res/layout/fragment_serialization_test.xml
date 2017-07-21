@@ -5,21 +5,31 @@
                 tools:context="com.clover.example.paywithpaymentconnectorexample.SerializationTestActivityFragment">
 
   <ScrollView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:id="@+id/scrollView"
-      android:layout_alignParentBottom="true"
-      android:layout_alignParentTop="true"
-      android:layout_alignParentRight="true"
-      android:layout_alignParentEnd="true"
-      android:layout_alignParentLeft="true"
-      android:layout_alignParentStart="true">
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/scrollView"
+          android:layout_alignParentBottom="true"
+          android:layout_alignParentTop="true"
+          android:layout_alignParentRight="true"
+          android:layout_alignParentEnd="true"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true">
 
     <TextView
-        android:id="@+id/raw_output"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Text not set"/>
+            android:id="@+id/raw_output"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Text not set"/>
+
+
   </ScrollView>
 
+  <Button
+          android:text="Go Back"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentTop="true"
+          android:layout_alignParentLeft="true"
+          android:clickable="true"
+          android:id="@+id/button_go_back"/>
 </RelativeLayout>
