@@ -5,11 +5,23 @@
 
   <string name="no_account">There is no Clover account.</string>
 
-  <string name="pay">Pay with Intent</string>
-  <string name="connector_sale">Pay</string>
+  <string name="payintent_sale">Sale</string>
+  <string name="payintent_auth">Auth</string>
+  <string name="payintent_full_refund">Full refund</string>
+  <string name="payintent_void">Void</string>
+  <string name="payintent_preauth">Pre Auth</string>
+  <string name="payintent_capturepreauth">Capture Pre Auth</string>
+  <string name="payintent_title">Intent Operations</string>
+
+  <string name="connector_sale">Sale</string>
   <string name="connector_auth">Auth</string>
-  <string name="connector_full_refund">Full refund</string>
+  <string name="connector_full_refund">Full Refund</string>
+  <string name="connector_tip_adjust">Tip Adjust</string>
   <string name="connector_void">Void</string>
+  <string name="connector_rpp">Retrieve Pending Payments</string>
+  <string name="connector_manual_refund">Manual Refund</string>
+  <string name="connector_vault_card">Vault Card</string>
+  <string name="connector_read_card_data">Read Card Data</string>
   <string name="connector_preauth">Pre Auth</string>
   <string name="connector_capturepreauth">Capture Pre Auth</string>
 

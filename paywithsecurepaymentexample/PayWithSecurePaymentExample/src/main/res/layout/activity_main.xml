@@ -23,8 +23,7 @@
           android:maxLength="15"
           android:minEms="15"
           android:inputType="numberDecimal"
-          android:hint="@string/required"
-          />
+          android:hint="@string/required"/>
     </LinearLayout>
 
     <LinearLayout android:layout_width="wrap_content"
@@ -59,25 +58,83 @@
     </LinearLayout>
 
 
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/card_entry_methods_allowed"
+      android:textSize="20sp"
+      android:id="@+id/textView" />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="10sp"
+    android:orientation="horizontal">
+
+
+  <GridLayout
+      android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="#c0c0c0">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/card_entry_methods_allowed"
-        android:textSize="20sp"
-        android:id="@+id/textView" />
+        android:text="@string/payintent_title"
+        android:id="@+id/payintent_title"
+        android:autoText="false"
+        android:foreground="#ffffff"
+        android:fontFamily="@android:string/dialog_alert_title"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10sp">
+    <Button
+        android:id="@+id/sale_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/payintent_sale"
+        android:layout_row="1"
+        android:layout_column="0"/>
 
-      <CheckBox
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginRight="10sp"
-          android:text="@string/mag_stripe"
-          android:id="@+id/mag_stripe_check_box"
-          android:checked="true"/>
+    <Button
+        android:id="@+id/auth_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/payintent_auth"
+        android:layout_row="1"
+        android:layout_column="1"/>
+
+    <Button
+        android:id="@+id/preauth_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/payintent_preauth"
+        android:layout_row="1"
+        android:layout_column="2"/>
+
+    <Button
+        android:id="@+id/capturepreauth_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/payintent_capturepreauth"
+        android:layout_row="1"
+        android:layout_column="3"/>
+
+    <Button
+        android:id="@+id/full_refund_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/payintent_full_refund"
+        android:layout_row="2"
+        android:layout_column="0"/>
+
+    <Button
+        android:id="@+id/void_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/payintent_void"
+        android:layout_row="2"
+        android:layout_column="1"/>
+  </GridLayout>
 
       <CheckBox
           android:layout_width="wrap_content"
@@ -85,8 +142,7 @@
           android:layout_marginRight="10sp"
           android:text="@string/chip_card_contact"
           android:id="@+id/chip_card_check_box"
-          android:checked="true"
-          />
+          android:checked="true"/>
 
       <CheckBox
           android:layout_width="wrap_content"
@@ -108,12 +164,12 @@
           android:id="@+id/pay_button"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/pay"
+          android:text="@string/payintent_sale"
           android:paddingLeft="20sp"
           android:paddingRight="20sp"
           android:textSize="15sp"/>
-    </LinearLayout>
-    <TextView
+</LinearLayout>
+<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/connector_title"
@@ -123,7 +179,7 @@
         android:foreground="#ffffff"
         android:fontFamily="@android:string/dialog_alert_title"/>
 
-    <LinearLayout
+<LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -195,8 +251,56 @@
           android:paddingRight="10sp"
           android:layout_marginLeft="10sp"
           android:textSize="15sp"/>
+    <Button
+        android:id="@+id/connector_button_tip_adjust"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connector_tip_adjust"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:layout_marginLeft="10sp"
+        android:textSize="15sp"/>
 
-    </LinearLayout>
+    <Button
+        android:id="@+id/connector_button_rpp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connector_rpp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:layout_marginLeft="10sp"
+        android:textSize="15sp"/>
+    <Button
+        android:id="@+id/connector_button_read_card_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connector_read_card_data"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:layout_marginLeft="10sp"
+        android:textSize="15sp"/>
+
+    <Button
+        android:id="@+id/connector_button_manual_refund"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connector_manual_refund"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:layout_marginLeft="10sp"
+        android:textSize="15sp"/>
+
+    <Button
+        android:id="@+id/connector_button_vault_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connector_vault_card"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:layout_marginLeft="10sp"
+        android:textSize="15sp"/>
+
+</LinearLayout>
 
     <CheckBox
         android:layout_width="wrap_content"
