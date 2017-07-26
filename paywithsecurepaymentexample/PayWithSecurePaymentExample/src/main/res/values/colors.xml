@@ -57,4 +57,6 @@
   <color name="clover_badge_color">#3849C0</color>
   <color name="gray">#DEDEDE</color>
   <color name="secondary_table_text_color">#808285</color>
+
+  <color name="primary">@android:color/white</color>
 </resources>

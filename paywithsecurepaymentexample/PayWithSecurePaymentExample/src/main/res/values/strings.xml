@@ -75,4 +75,12 @@
 
   <string name="connector_not_connected">Payment Connector is not connected</string>
 
+  <string name="allow_offline_payments">Allow Offline Payments:</string>
+
+  <string name="accept_offline_no_prompt">Accept Offline w/o Prompt:</string>
+
+  <string name="signature_entry_location">Signature Entry Location:</string>
+
+  <string name="signature_threshold">Signature Threshold</string>
+
 </resources>
