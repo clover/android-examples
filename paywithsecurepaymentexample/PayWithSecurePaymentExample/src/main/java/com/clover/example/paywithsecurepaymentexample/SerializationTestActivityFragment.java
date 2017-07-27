@@ -39,6 +39,7 @@ public class SerializationTestActivityFragment extends Fragment {
       @Override
       public void onClick(View v) {
         final Intent intent = new Intent(getActivity(), com.clover.example.paywithsecurepaymentexample.MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
           @Override
