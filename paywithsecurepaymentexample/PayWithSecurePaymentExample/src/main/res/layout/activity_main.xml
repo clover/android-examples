@@ -1,330 +1,353 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/main_activity_scroll_view">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:padding="16dp"
-              tools:context="com.clover.example.paywithsecurepaymentexample.MainActivity"
-              android:orientation="vertical">
-  <LinearLayout android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/amount_layout">
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/payment_amount"
-              android:labelFor="@+id/amount_edit_text"/>
-    <EditText android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:id="@+id/amount_edit_text"
-              android:maxLength="15"
-              android:minEms="15"
-              android:inputType="numberDecimal"/>
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/required"
-              android:textStyle="bold"/>
-  </LinearLayout>
-
-  <LinearLayout android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/order_id_layout">
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/order_uuid"
-              android:labelFor="@+id/order_id_edit_text"/>
-    <EditText android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:id="@+id/order_id_edit_text"
-              android:maxLength="13"
-              android:minEms="13"
-              android:inputType="text"
-              android:textAllCaps="true"/>
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/optional"/>
-    <Button android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/create_order_button"
-            android:text="Create Me One"/>
-  </LinearLayout>
-
-
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/card_entry_methods_allowed"
-      android:id="@+id/textView" />
-
-  <GridLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" android:id="@+id/main_activity_scroll_view">
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
-
-    <CheckBox
-        android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:padding="16dp"
+      tools:context="com.clover.example.paywithsecurepaymentexample.MainActivity"
+      android:orientation="vertical">
+    <LinearLayout android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/mag_stripe"
-        android:id="@+id/mag_stripe_check_box"
-        android:checked="true"
-        android:layout_row="0"
-        android:layout_column="0"/>
+        android:orientation="horizontal"
+        android:id="@+id/amount_layout">
+      <TextView android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textSize="20sp"
+          android:text="@string/payment_amount"
+          android:labelFor="@+id/amount_edit_text"/>
+      <EditText android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/amount_edit_text"
+          android:maxLength="15"
+          android:minEms="15"
+          android:inputType="numberDecimal"
+          android:hint="@string/required"
+          />
+    </LinearLayout>
 
-    <Button android:id="@+id/pay_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pay"
-            android:layout_row="1"
-            android:layout_column="0"/>
-
-    <CheckBox
-        android:layout_width="wrap_content"
+    <LinearLayout android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/chip_card_contact"
-        android:id="@+id/chip_card_check_box"
-        android:checked="true"
-        android:layout_row="0"
-        android:layout_column="1"/>
+        android:orientation="horizontal"
+        android:id="@+id/order_id_layout"
+        android:layout_marginTop="10sp"
+        android:layout_marginBottom="10sp">
+      <TextView android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textSize="20sp"
+          android:text="@string/order_uuid"
+          android:labelFor="@+id/order_id_edit_text"/>
+      <EditText android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/order_id_edit_text"
+          android:maxLength="13"
+          android:minEms="13"
+          android:inputType="text"
+          android:textAllCaps="true"
+          android:hint="@string/optional"
+          android:layout_marginRight="20sp"
+          />
+      <Button android:background="@drawable/button_border"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/create_order_button"
+          android:paddingLeft="20sp"
+          android:paddingRight="20sp"
+          android:textSize="15sp"
+          android:text="Create Me One"/>
+    </LinearLayout>
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/nfc_contactless"
-        android:id="@+id/nfc_check_box"
-        android:checked="true"
-        android:layout_row="0"
-        android:layout_column="2"/>
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/manual_entry"
-        android:id="@+id/manual_entry_check_box"
-        android:checked="true"
-        android:layout_row="0"
-        android:layout_column="3"/>
-  </GridLayout>
-
-  <GridLayout
-      android:orientation="horizontal"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:background="#c9c9c9">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/card_entry_methods_allowed"
+        android:textSize="20sp"
+        android:id="@+id/textView" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10sp">
+
+      <CheckBox
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="10sp"
+          android:text="@string/mag_stripe"
+          android:id="@+id/mag_stripe_check_box"
+          android:checked="true"/>
+
+      <CheckBox
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="10sp"
+          android:text="@string/chip_card_contact"
+          android:id="@+id/chip_card_check_box"
+          android:checked="true"
+          />
+
+      <CheckBox
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="10sp"
+          android:text="@string/nfc_contactless"
+          android:id="@+id/nfc_check_box"
+          android:checked="true"/>
+
+      <CheckBox
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="15sp"
+          android:text="@string/manual_entry"
+          android:id="@+id/manual_entry_check_box"
+          android:checked="true"/>
+
+      <Button android:background="@drawable/button_border"
+          android:id="@+id/pay_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/pay"
+          android:paddingLeft="20sp"
+          android:paddingRight="20sp"
+          android:textSize="15sp"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/connector_title"
+        android:textSize="20sp"
         android:id="@+id/connector_title"
         android:autoText="false"
         android:foreground="#ffffff"
         android:fontFamily="@android:string/dialog_alert_title"/>
 
-    <Button
-        android:id="@+id/connector_button_sale"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="10sp">
+
+      <Button
+          android:background="@drawable/button_border"
+          android:id="@+id/connector_button_sale"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/connector_sale"
+          android:paddingLeft="10sp"
+          android:paddingRight="10sp"
+          android:layout_marginLeft="10sp"
+          android:textSize="15sp"/>
+
+      <Button
+          android:background="@drawable/button_border"
+          android:id="@+id/connector_button_auth"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/connector_auth"
+          android:paddingLeft="10sp"
+          android:paddingRight="10sp"
+          android:layout_marginLeft="10sp"
+          android:textSize="15sp"/>
+
+      <Button
+          android:background="@drawable/button_border"
+          android:id="@+id/connector_button_preauth"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/connector_preauth"
+          android:paddingLeft="10sp"
+          android:paddingRight="10sp"
+          android:layout_marginLeft="10sp"
+          android:textSize="15sp"/>
+
+      <Button
+          android:background="@drawable/button_border"
+          android:id="@+id/connector_button_capturepreauth"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/connector_capturepreauth"
+          android:paddingLeft="10sp"
+          android:paddingRight="10sp"
+          android:layout_marginLeft="10sp"
+          android:textSize="15sp"/>
+
+      <Button
+          android:background="@drawable/button_border"
+          android:id="@+id/connector_button_full_refund"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/connector_full_refund"
+          android:paddingLeft="10sp"
+          android:paddingRight="10sp"
+          android:layout_marginLeft="10sp"
+          android:textSize="15sp"/>
+
+      <Button
+          android:background="@drawable/button_border"
+          android:id="@+id/connector_button_void"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/connector_void"
+          android:paddingLeft="10sp"
+          android:paddingRight="10sp"
+          android:layout_marginLeft="10sp"
+          android:textSize="15sp"/>
+
+    </LinearLayout>
+
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/connector_sale"
-        android:layout_row="1"
-        android:layout_column="0"/>
-
-    <Button
-        android:id="@+id/connector_button_auth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/connector_auth"
-        android:layout_row="1"
-        android:layout_column="1"/>
-
-    <Button
-        android:id="@+id/connector_button_preauth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/connector_preauth"
-        android:layout_row="1"
-        android:layout_column="2"/>
-
-    <Button
-        android:id="@+id/connector_button_capturepreauth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/connector_capturepreauth"
-        android:layout_row="1"
-        android:layout_column="3"/>
-
-    <Button
-        android:id="@+id/connector_button_full_refund"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/connector_full_refund"
-        android:layout_row="2"
-        android:layout_column="0"/>
-
-    <Button
-        android:id="@+id/connector_button_void"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/connector_void"
-        android:layout_row="2"
-        android:layout_column="1"/>
-
-  </GridLayout>
-
-  <CheckBox
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/show_advanced"
-      android:id="@+id/show_advanced_check_box"
-      android:checked="false"/>
+        android:text="@string/show_advanced"
+        android:textSize="20sp"
+        android:id="@+id/show_advanced_check_box"
+        android:checked="false"/>
 
     <RelativeLayout android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/advanced_options"
-                    android:visibility="gone">
+        android:layout_height="wrap_content"
+        android:id="@+id/advanced_options"
+        android:visibility="gone">
       <LinearLayout android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:id="@+id/tip_amount_layout">
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:layout_alignParentTop="true"
+          android:id="@+id/tip_amount_layout">
         <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/tip_amount"
-                  android:labelFor="@+id/tip_amount_edit_text"/>
+            android:layout_height="wrap_content"
+            android:text="@string/tip_amount"
+            android:textSize="20sp"
+            android:labelFor="@+id/tip_amount_edit_text"/>
         <EditText android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/tip_amount_edit_text"
-                  android:maxLength="15"
-                  android:minEms="15"
-                  android:inputType="numberDecimal"/>
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/optional"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/tip_amount_edit_text"
+            android:maxLength="15"
+            android:minEms="15"
+            android:inputType="numberDecimal"
+            android:hint="@string/optional"/>
       </LinearLayout>
 
       <LinearLayout android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/tip_amount_layout"
-                    android:id="@+id/tax_amount_layout">
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:layout_below="@+id/tip_amount_layout"
+          android:id="@+id/tax_amount_layout">
         <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/tax_amount"
-                  android:labelFor="@+id/tax_amount_edit_text"/>
+            android:layout_height="wrap_content"
+            android:text="@string/tax_amount"
+            android:textSize="20sp"
+            android:labelFor="@+id/tax_amount_edit_text"/>
         <EditText android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/tax_amount_edit_text"
-                  android:maxLength="15"
-                  android:minEms="15"
-                  android:inputType="numberDecimal"/>
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/optional"/>
-      </LinearLayout>
-
-
-      <LinearLayout android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_below="@+id/tax_amount_layout"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:id="@+id/voice_auth_code_layout">
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/voice_auth_code"
-                  android:labelFor="@+id/voice_auth_code_edit_text"/>
-        <EditText android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/voice_auth_code_edit_text"
-                  android:maxLength="8"
-                  android:minEms="8"
-                  android:inputType="text"
-                  android:textAllCaps="true"/>
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/optional"/>
-      </LinearLayout>
-
-      <LinearLayout android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_below="@+id/voice_auth_code_layout"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:id="@+id/postal_code_layout">
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/postal_code"
-                  android:labelFor="@+id/postal_code_edit_text"/>
-        <EditText android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/postal_code_edit_text"
-                  android:maxLength="9"
-                  android:minEms="9"
-                  android:inputType="text"
-                  android:textAllCaps="true"/>
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/optional"/>
-      </LinearLayout>
-
-      <LinearLayout android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_below="@+id/postal_code_layout"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:id="@+id/transaction_no_layout">
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/transaction_no"
-                  android:labelFor="@+id/transaction_no_edit_text"/>
-        <EditText android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/transaction_no_edit_text"
-                  android:maxLength="32"
-                  android:minEms="20"
-                  android:inputType="text"
-                  android:textAllCaps="true"/>
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/optional"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/tax_amount_edit_text"
+            android:maxLength="15"
+            android:minEms="15"
+            android:inputType="numberDecimal"
+            android:hint="@string/optional"/>
       </LinearLayout>
 
 
       <LinearLayout android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_below="@+id/transaction_no_layout"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:id="@+id/external_txn_id_layout">
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_below="@+id/tax_amount_layout"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:id="@+id/voice_auth_code_layout">
         <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/external_payment_id"
-                  android:labelFor="@+id/external_txn_id_edit_text"/>
+            android:layout_height="wrap_content"
+            android:text="@string/voice_auth_code"
+            android:textSize="20sp"
+            android:labelFor="@+id/voice_auth_code_edit_text"/>
         <EditText android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/external_txn_id_edit_text"
-                  android:maxLength="32"
-                  android:minEms="20"
-                  android:inputType="text"
-                  android:textAllCaps="true"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/voice_auth_code_edit_text"
+            android:maxLength="8"
+            android:minEms="8"
+            android:inputType="text"
+            android:textAllCaps="true"
+            android:hint="@string/optional"/>
+      </LinearLayout>
+
+      <LinearLayout android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_below="@+id/voice_auth_code_layout"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:id="@+id/postal_code_layout">
         <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/optional"/>
+            android:layout_height="wrap_content"
+            android:text="@string/postal_code"
+            android:textSize="20sp"
+            android:labelFor="@+id/postal_code_edit_text"/>
+        <EditText android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/postal_code_edit_text"
+            android:maxLength="9"
+            android:minEms="9"
+            android:inputType="text"
+            android:textAllCaps="true"
+            android:hint="@string/optional"/>
+      </LinearLayout>
+
+      <LinearLayout android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_below="@+id/postal_code_layout"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:id="@+id/transaction_no_layout">
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/transaction_no"
+            android:textSize="20sp"
+            android:labelFor="@+id/transaction_no_edit_text"/>
+        <EditText android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/transaction_no_edit_text"
+            android:maxLength="32"
+            android:minEms="20"
+            android:inputType="text"
+            android:textAllCaps="true"
+            android:hint="@string/optional"/>
+      </LinearLayout>
+
+
+      <LinearLayout android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_below="@+id/transaction_no_layout"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:layout_marginBottom="7sp"
+          android:id="@+id/external_txn_id_layout">
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/external_payment_id"
+            android:textSize="20sp"
+            android:labelFor="@+id/external_txn_id_edit_text"/>
+        <EditText android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/external_txn_id_edit_text"
+            android:maxLength="32"
+            android:minEms="20"
+            android:inputType="text"
+            android:textAllCaps="true"
+            android:hint="@string/optional"/>
       </LinearLayout>
 
       <CheckBox
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/disable_cashback"
+          android:textSize="20sp"
           android:id="@+id/card_not_present_check_box"
           android:checked="false" android:layout_below="@+id/external_txn_id_layout" android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"/>
@@ -332,6 +355,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/card_not_present"
+          android:textSize="20sp"
           android:id="@+id/disable_cash_back_check_box"
           android:checked="false" android:layout_below="@+id/card_not_present_check_box" android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"/>
@@ -339,6 +363,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/restart_on_fail"
+          android:textSize="20sp"
           android:id="@+id/restart_tx_when_failed_check_box"
           android:checked="true" android:layout_below="@+id/disable_cash_back_check_box" android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"/>
@@ -346,6 +371,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/force_offline"
+          android:textSize="20sp"
           android:id="@+id/force_offline_payment_check_box"
           android:checked="true" android:layout_below="@+id/restart_tx_when_failed_check_box" android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"/>
@@ -355,36 +381,48 @@
           android:orientation="horizontal"
           android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"
+          android:layout_marginTop="10sp"
           android:layout_below="@+id/force_offline_payment_check_box"
+          android:gravity="center_vertical"
           android:id="@+id/allowOfflineLayout">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Allow Offline Payments"
-            android:id="@+id/textView5" android:layout_weight="1" android:paddingTop="6dp"
+            android:text="@string/allow_offline_payments"
+            android:textSize="20sp"
+            android:id="@+id/textView5"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             android:paddingBottom="3dp"/>
-        <RadioGroup android:layout_width="wrap_content" android:layout_height="fill_parent" android:orientation="horizontal" android:id="@+id/AcceptOfflinePaymentRG">
+        <RadioGroup android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="5sp"
+            android:id="@+id/AcceptOfflinePaymentRG">
           <RadioButton
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="Default"
+              android:textSize="18sp"
               android:id="@+id/acceptOfflineDefault" android:checked="true"/>
           <RadioButton
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="Yes"
+              android:textSize="18sp"
               android:id="@+id/acceptOfflineTrue"/>
           <RadioButton
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="No"
+              android:textSize="18sp"
               android:id="@+id/acceptOfflineFalse"/>
         </RadioGroup>
       </LinearLayout>
       <LinearLayout
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+          android:layout_height="fill_parent"
           android:orientation="horizontal"
           android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"
@@ -394,25 +432,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Accept Offline w/o Prompt"
-            android:id="@+id/textView15" android:layout_weight="1" android:paddingTop="3dp"
+            android:text="@string/accept_offline_no_prompt"
+            android:textSize="20sp"
+            android:id="@+id/textView15"
+            android:layout_weight="1"
+            android:paddingTop="3dp"
             android:paddingBottom="3dp"/>
-        <RadioGroup android:layout_width="wrap_content" android:layout_height="fill_parent" android:orientation="horizontal" android:id="@+id/ApproveOfflineWithoutPromptRG">
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:layout_marginLeft="5sp"
+            android:id="@+id/ApproveOfflineWithoutPromptRG">
 
           <RadioButton
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="Default"
+              android:textSize="18sp"
               android:id="@+id/approveOfflineWithoutPromptDefault" android:checked="true"/>
           <RadioButton
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="Yes"
+              android:textSize="18sp"
               android:id="@+id/approveOfflineWithoutPromptTrue"/>
           <RadioButton
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="No"
+              android:textSize="18sp"
               android:id="@+id/approveOfflineWithoutPromptFalse"/>
         </RadioGroup>
       </LinearLayout>
@@ -422,6 +471,7 @@
           android:orientation="horizontal"
           android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"
+          android:layout_marginTop="10sp"
           android:layout_below="@+id/acceptOfflineLayout"
           android:id="@+id/tipModeLayout">
         <TextView
@@ -429,17 +479,21 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Tip Mode"
+            android:textSize="20sp"
             android:id="@+id/textView25" android:layout_weight="1" android:paddingTop="6dp"
             android:paddingBottom="3dp"/>
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:popupBackground="@color/transparentverydarkgrayishcyan"
+            android:popupBackground="@color/gray"
+            android:dividerHeight="0px"
             android:id="@+id/TipModeSpinner">
         </Spinner>
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/optional"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/optional"
+            android:layout_marginLeft="5sp"/>
       </LinearLayout>
       <LinearLayout
           android:layout_width="wrap_content"
@@ -447,35 +501,46 @@
           android:orientation="horizontal"
           android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"
+          android:layout_marginTop="10sp"
           android:layout_below="@+id/tipModeLayout"
           android:id="@+id/signatureEntryLayout">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Signature Entry Location"
-            android:id="@+id/textView35" android:layout_weight="1" android:paddingTop="6dp"
+            android:text="@string/signature_entry_location"
+            android:textSize="20sp"
+            android:id="@+id/textView35"
+            android:layout_weight="1"
             android:paddingBottom="3dp"/>
-        <RadioGroup android:layout_width="wrap_content" android:layout_height="fill_parent" android:orientation="horizontal" android:id="@+id/SigEntryLocationRG">
+        <RadioGroup android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:layout_marginLeft="5sp"
+            android:id="@+id/SigEntryLocationRG">
           <RadioButton
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="None"
+              android:textSize="18sp"
               android:id="@+id/sigEntryLocationNone"/>
           <RadioButton
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="On Screen"
+              android:textSize="18sp"
               android:id="@+id/sigEntryLocationOnScreen"/>
           <RadioButton
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="On Paper"
+              android:textSize="18sp"
               android:id="@+id/sigEntryLocationOnPaper"/>
         </RadioGroup>
         <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/optional"/>
+            android:layout_height="wrap_content"
+            android:text="@string/optional"
+            android:layout_marginLeft="5sp"/>
       </LinearLayout>
       <LinearLayout
           android:layout_width="wrap_content"
@@ -489,8 +554,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Signature Threshold"
-            android:id="@+id/textView26" android:layout_weight="1" android:paddingTop="6dp"
+            android:text="@string/signature_threshold"
+            android:textSize="20sp"
+            android:id="@+id/textView26"
+            android:layout_weight="1"
+            android:paddingTop="6dp"
             android:paddingBottom="3dp"/>
 
         <EditText
@@ -499,23 +567,24 @@
             android:id="@+id/signatureThreshold"
             android:maxLength="15"
             android:minEms="15"
+            android:hint="@string/optional"
             android:inputType="numberDecimal"/>
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/optional"/>
       </LinearLayout>
       <Switch
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="Disable Duplicate Payment Checking"
+          android:textSize="20sp"
           android:layout_below="@+id/signatureThresholdLayout"
           android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"
+          android:layout_marginTop="10sp"
           android:id="@+id/DisableDuplicateCheckSwitch"/>
       <Switch
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="Disable Device Receipt Options Screen"
+          android:textSize="20sp"
           android:layout_below="@+id/DisableDuplicateCheckSwitch"
           android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"
@@ -524,6 +593,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="Disable Clover Device Printing"
+          android:textSize="20sp"
           android:layout_below="@+id/DisableReceiptOptionsSwitch"
           android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"
@@ -533,6 +603,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="Auto Accept Payment Confirmations"
+          android:textSize="20sp"
           android:layout_below="@+id/PrintingSwitch"
           android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"
@@ -542,11 +613,12 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="Auto Accept Signature"
+          android:textSize="20sp"
           android:layout_below="@+id/AutoAcceptPaymentConfirmationsSwitch"
           android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"
           android:checked="true"
           android:id="@+id/AutoAcceptSignatureSwitch"/>
     </RelativeLayout>
-</LinearLayout>
+  </LinearLayout>
 </ScrollView>

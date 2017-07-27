@@ -1255,7 +1255,11 @@ public class MainActivity extends Activity {
 
         String cleanString = s.toString().replaceAll("[^\\d]", "");
 
-        double parsed = Double.parseDouble(cleanString);
+        double parsed = 0;
+        if(cleanString.length() > 0)
+        {
+          parsed = Double.parseDouble(cleanString);
+        }
         String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
         if (formatted.equals("$0.00")) {
           formatted = null;
