@@ -513,7 +513,7 @@
           android:text="@string/force_offline"
           android:textSize="20sp"
           android:id="@+id/force_offline_payment_check_box"
-          android:checked="true"
+          android:checked="false"
           android:layout_below="@+id/restart_tx_when_failed_check_box"
           android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"/>
