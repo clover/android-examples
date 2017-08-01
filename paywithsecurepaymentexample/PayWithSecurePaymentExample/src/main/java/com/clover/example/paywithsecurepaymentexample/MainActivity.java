@@ -1106,8 +1106,7 @@ public class MainActivity extends Activity {
     try {
       request.setPaymentId(payment.getId());
       request.setAmount(payment.getAmount());
-      Long tipAmount = 0L;
-      request.setTipAmount(tipAmount);
+      request.setTipAmount(payment.getTipAmount());
       request.validate();
       Log.i(this.getClass().getSimpleName(), request.toString());
       if (this.paymentServiceConnector != null) {
