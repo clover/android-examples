@@ -1098,9 +1098,32 @@ public class MainActivity extends Activity {
     final CapturePreAuthRequest request = new CapturePreAuthRequest();
     try {
       request.setPaymentId(payment.getId());
-      request.setAmount(payment.getAmount());
-      Long tipAmount = 0L;
-      request.setTipAmount(tipAmount);
+
+      try{
+        Long amount = amountHandler.getValue();
+        if (amount != null) {
+          request.setAmount(amount);
+        } else {
+          Toast.makeText(getApplicationContext(), "Sale amount must have a numeric value", Toast.LENGTH_LONG).show();
+        }
+      } catch (ParseException e) {
+        Log.e(this.getClass().getSimpleName(), " capture preauth", e);
+        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        return;
+      }
+
+      try{
+        Long tipAmount = tipAmountHandler.getValue();
+        if (tipAmount != null) {
+          request.setTipAmount(tipAmount);
+        } else {
+          Toast.makeText(getApplicationContext(), "Tip amount must have a numeric value", Toast.LENGTH_LONG).show();
+        }
+      } catch (ParseException e) {
+        Log.e(this.getClass().getSimpleName(), " capture preauth", e);
+        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        return;
+      }
       request.validate();
       Log.i(this.getClass().getSimpleName(), request.toString());
       if (this.paymentServiceConnector != null) {
