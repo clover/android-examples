@@ -129,6 +129,7 @@
       <Button
           android:background="@drawable/button_border"
           android:id="@+id/auth_button"
+          android:enabled="false"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/payintent_auth"
@@ -140,6 +141,7 @@
       <Button
           android:background="@drawable/button_border"
           android:id="@+id/preauth_button"
+          android:enabled="false"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/payintent_preauth"
@@ -151,6 +153,7 @@
       <Button
           android:background="@drawable/button_border"
           android:id="@+id/capturepreauth_button"
+          android:enabled="false"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/payintent_capturepreauth"
@@ -162,6 +165,7 @@
       <Button
           android:background="@drawable/button_border"
           android:id="@+id/full_refund_button"
+          android:enabled="false"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/payintent_full_refund"
@@ -173,6 +177,7 @@
       <Button
           android:background="@drawable/button_border"
           android:id="@+id/void_button"
+          android:enabled="false"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/payintent_void"
