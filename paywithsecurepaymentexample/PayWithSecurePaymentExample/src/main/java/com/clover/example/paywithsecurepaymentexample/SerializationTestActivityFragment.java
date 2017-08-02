@@ -38,14 +38,6 @@ public class SerializationTestActivityFragment extends Fragment {
     goBackButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        //final Intent intent = new Intent(getActivity(), com.clover.example.paywithsecurepaymentexample.MainActivity.class);
-        //Handler handler = new Handler();
-        //handler.postDelayed(new Runnable() {
-        //  @Override
-        //  public void run() {
-        //    startActivity(intent);
-        //  }
-        //}, 1);
         getActivity().finish();
       }
     });

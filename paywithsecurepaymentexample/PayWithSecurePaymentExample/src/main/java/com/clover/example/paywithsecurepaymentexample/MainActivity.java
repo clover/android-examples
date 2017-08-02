@@ -1,5 +1,6 @@
 package com.clover.example.paywithsecurepaymentexample;
 
+import android.os.*;
 import com.clover.connector.sdk.v3.PaymentConnector;
 import com.clover.connector.sdk.v3.PaymentV3Connector;
 import com.clover.sdk.GenericParcelable;
@@ -49,10 +50,6 @@ import com.clover.sdk.v3.remotepay.VoidPaymentResponse;
 import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.RemoteException;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -159,6 +156,7 @@ public class MainActivity extends Activity {
     public void onCapturePreAuthResponse(CapturePreAuthResponse response) {
       Log.d(this.getClass().getSimpleName(), "onCapturePreAuthResponse " + response);
       displayoutput(response);
+      lastPayment = null;
     }
 
     @Override
@@ -260,7 +258,7 @@ public class MainActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    Log.d("MainActivity", "MainActivity.onCreate()");
+    Log.d("MainActivity", "SecurePayExample.MainActivity.onCreate()");
     if(savedInstanceState != null)
     {
       Object lp = savedInstanceState.getParcelable("lastPayment");
@@ -1100,6 +1098,7 @@ public class MainActivity extends Activity {
     final CapturePreAuthRequest request = new CapturePreAuthRequest();
     try {
       request.setPaymentId(payment.getId());
+
       try{
         Long amount = amountHandler.getValue();
         if (amount != null) {
@@ -1125,7 +1124,6 @@ public class MainActivity extends Activity {
         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         return;
       }
-
       request.validate();
       Log.i(this.getClass().getSimpleName(), request.toString());
       if (this.paymentServiceConnector != null) {
@@ -1561,28 +1559,31 @@ public class MainActivity extends Activity {
 
   @Override
   public void onSaveInstanceState(Bundle savedInstanceState) {
-    super.onSaveInstanceState(savedInstanceState);
-
-    Log.d("MainActivity", "Saving state");
     if(lastPayment != null)
     {
-      Log.d("MainActivity", "Saving lastPayment["+lastPayment+"]");
-      savedInstanceState.putParcelable("lastPayment", lastPayment);
+      try {
+        savedInstanceState.putParcelable("lastPayment", lastPayment);
+      }catch(Exception e)
+      {
+        Log.e("MainActivity", e.getMessage());
+      }
     }
-
+    super.onSaveInstanceState(savedInstanceState);
   }
 
   @Override
   public void onRestoreInstanceState(Bundle savedInstanceState) {
       super.onRestoreInstanceState(savedInstanceState);
 
-      Log.d("MainActivity", "Restoring state");
-      Object lp = savedInstanceState.getParcelable("lastPayment");
-      if(lp != null)
+      try{
+        Object lp = savedInstanceState.getParcelable("lastPayment");
+        if(lp != null)
+        {
+          this.lastPayment = (Payment) lp;
+        }
+      }catch(Exception e)
       {
-        Log.d("MainActivity", "Restoring last payment");
-        this.lastPayment = (Payment) lp;
+        Log.e("MainActivity", e.getMessage());
       }
-
   }
 }
