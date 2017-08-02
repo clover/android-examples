@@ -113,20 +113,15 @@ public class MainActivity extends Activity {
   final PaymentV3Connector.PaymentServiceListener paymentConnectorListener = new PaymentV3Connector.PaymentServiceListener() {
 
     private void displayoutput(GenericParcelable response) {
-
-      //something is preventing bundle saving, so for now we skip this to avoid breaking MainActivity. Use log for now
-      if(false)
-      {
-        final Intent intent = new Intent(MainActivity.this, SerializationTestActivity.class);
-        intent.putExtra("response", response);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-          @Override
-          public void run() {
-            startActivity(intent);
-          }
-        }, 1000);
-      }
+      final Intent intent = new Intent(MainActivity.this, SerializationTestActivity.class);
+      intent.putExtra("response", response);
+      Handler handler = new Handler();
+      handler.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+          startActivity(intent);
+        }
+      }, 1000);
     }
 
     public void onPaymentResponse(PaymentResponse response) {
