@@ -20,6 +20,7 @@ import com.clover.sdk.v3.payments.DataEntryLocation;
 import com.clover.sdk.v3.payments.Payment;
 import com.clover.sdk.v3.payments.TipMode;
 import com.clover.sdk.v3.payments.TransactionSettings;
+import com.clover.sdk.v3.payments.VaultedCard;
 import com.clover.sdk.v3.remotepay.AuthRequest;
 import com.clover.sdk.v3.remotepay.AuthResponse;
 import com.clover.sdk.v3.remotepay.CapturePreAuthRequest;
@@ -87,6 +88,7 @@ public class MainActivity extends Activity {
   private PaymentConnector paymentServiceConnector;
 
   private Payment lastPayment = null;
+  private VaultedCard vaultedCard = null;
   private Button connectorButton_sale;
 
   private Account account;
@@ -203,6 +205,7 @@ public class MainActivity extends Activity {
     @Override
     public void onVaultCardResponse(VaultCardResponse response) {
       Log.d(this.getClass().getSimpleName(), "onVaultCardResponse " + response);
+      setVaultedCard(response);
       displayoutput(response);
     }
 
@@ -223,6 +226,11 @@ public class MainActivity extends Activity {
     connectorButton_void.setEnabled(lastPayment != null);
     connectorButton_capturepreauth.setEnabled(lastPayment != null);
   }
+
+  public void setVaultedCard(VaultCardResponse response) {
+    this.vaultedCard = response.hasCard() ? response.getCard() : null;
+  }
+
   private AsyncTask waitingTask;
 
   private Boolean approveOfflinePaymentWithoutPrompt;
@@ -1369,6 +1377,12 @@ public class MainActivity extends Activity {
     String orderId = getStringFromEditText(R.id.order_id_edit_text);
     if (orderId != null) {
       request.setOrderId(orderId);
+    }
+
+    if (vaultedCard != null) {
+      VaultedCard tempVaultedCard = vaultedCard;
+      request.setVaultedCard(tempVaultedCard);
+      vaultedCard = null;
     }
 
     CheckBox advancedCheckBox = (CheckBox) findViewById(R.id.show_advanced_check_box);
