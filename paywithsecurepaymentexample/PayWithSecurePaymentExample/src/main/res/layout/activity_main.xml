@@ -25,6 +25,26 @@
                 android:inputType="numberDecimal"
                 android:hint="@string/required"/>
     </LinearLayout>
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_alignParentLeft="true"
+                  android:layout_alignParentStart="true"
+                  android:layout_alignParentTop="true"
+                  android:id="@+id/tip_amount_layout">
+      <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tip_amount"
+                android:textSize="20sp"
+                android:labelFor="@+id/tip_amount_edit_text"/>
+      <EditText android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tip_amount_edit_text"
+                android:maxLength="15"
+                android:minEms="15"
+                android:inputType="numberDecimal"
+                android:hint="@string/optional"/>
+    </LinearLayout>
 
     <LinearLayout android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
@@ -329,33 +349,12 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/advanced_options"
                     android:visibility="gone">
-      <LinearLayout android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:id="@+id/tip_amount_layout">
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/tip_amount"
-                  android:textSize="20sp"
-                  android:labelFor="@+id/tip_amount_edit_text"/>
-        <EditText android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/tip_amount_edit_text"
-                  android:maxLength="15"
-                  android:minEms="15"
-                  android:inputType="numberDecimal"
-                  android:hint="@string/optional"/>
-      </LinearLayout>
 
       <LinearLayout android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/tip_amount_layout"
                     android:id="@+id/tax_amount_layout">
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
