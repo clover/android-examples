@@ -25,6 +25,26 @@
                 android:inputType="numberDecimal"
                 android:hint="@string/required"/>
     </LinearLayout>
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_alignParentLeft="true"
+                  android:layout_alignParentStart="true"
+                  android:layout_alignParentTop="true"
+                  android:id="@+id/tip_amount_layout">
+      <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tip_amount"
+                android:textSize="20sp"
+                android:labelFor="@+id/tip_amount_edit_text"/>
+      <EditText android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tip_amount_edit_text"
+                android:maxLength="15"
+                android:minEms="15"
+                android:inputType="numberDecimal"
+                android:hint="@string/optional"/>
+    </LinearLayout>
 
     <LinearLayout android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
@@ -192,17 +212,7 @@
         android:id="@+id/connector_title"
         android:foreground="#ffffff"
         android:fontFamily="@android:string/dialog_alert_title"/>
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/connector_title"
-          android:textSize="20sp"
-          android:id="@+id/connector_title"
-          android:autoText="false"
-          android:foreground="#ffffff"
-          android:fontFamily="@android:string/dialog_alert_title"/>
-
-    <GridLayout
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -249,18 +259,7 @@
           android:layout_marginLeft="10sp"
           android:textSize="15sp"/>
       <Button
-          android:id="@+id/connector_button_tip_adjust"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/connector_tip_adjust"
-          android:paddingLeft="10sp"
-          android:paddingRight="10sp"
-          android:layout_marginLeft="10sp"
-          android:textSize="15sp"
-          android:layout_row="2"
-          android:layout_column="0"/>
-
-      <Button
+          android:background="@drawable/button_border"
           android:id="@+id/connector_button_full_refund"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -276,30 +275,6 @@
           android:layout_height="wrap_content"
           android:text="@string/connector_void"
           android:paddingLeft="10sp"
-          android:layout_column="2"/>
-
-      <Button
-          android:id="@+id/connector_button_rpp"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/connector_rpp"
-          android:layout_row="2"
-          android:layout_column="3"/>
-
-      <Button
-          android:id="@+id/connector_button_read_card_data"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/connector_read_card_data"
-          android:layout_row="3"
-          android:layout_column="0"/>
-
-      <Button
-          android:id="@+id/connector_button_manual_refund"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/connector_manual_refund"
-          android:layout_row="3"
           android:paddingRight="10sp"
           android:layout_marginLeft="10sp"
           android:textSize="15sp"/>
@@ -314,7 +289,6 @@
           android:layout_marginLeft="10sp"
           android:textSize="15sp"/>
     </LinearLayout>
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -375,33 +349,12 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/advanced_options"
                     android:visibility="gone">
-      <LinearLayout android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:id="@+id/tip_amount_layout">
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/tip_amount"
-                  android:textSize="20sp"
-                  android:labelFor="@+id/tip_amount_edit_text"/>
-        <EditText android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/tip_amount_edit_text"
-                  android:maxLength="15"
-                  android:minEms="15"
-                  android:inputType="numberDecimal"
-                  android:hint="@string/optional"/>
-      </LinearLayout>
 
       <LinearLayout android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/tip_amount_layout"
                     android:id="@+id/tax_amount_layout">
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"

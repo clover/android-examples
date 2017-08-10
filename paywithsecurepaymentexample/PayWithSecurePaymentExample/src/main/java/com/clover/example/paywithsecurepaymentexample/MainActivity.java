@@ -2,6 +2,7 @@ package com.clover.example.paywithsecurepaymentexample;
 
 import android.os.*;
 import com.clover.connector.sdk.v3.PaymentConnector;
+import com.clover.connector.sdk.v3.CardEntryMethods;
 import com.clover.connector.sdk.v3.PaymentV3Connector;
 import com.clover.sdk.GenericParcelable;
 import com.clover.sdk.util.CloverAccount;
@@ -20,6 +21,7 @@ import com.clover.sdk.v3.payments.DataEntryLocation;
 import com.clover.sdk.v3.payments.Payment;
 import com.clover.sdk.v3.payments.TipMode;
 import com.clover.sdk.v3.payments.TransactionSettings;
+import com.clover.sdk.v3.payments.VaultedCard;
 import com.clover.sdk.v3.remotepay.AuthRequest;
 import com.clover.sdk.v3.remotepay.AuthResponse;
 import com.clover.sdk.v3.remotepay.CapturePreAuthRequest;
@@ -87,6 +89,7 @@ public class MainActivity extends Activity {
   private PaymentConnector paymentServiceConnector;
 
   private Payment lastPayment = null;
+  private VaultedCard vaultedCard = null;
   private Button connectorButton_sale;
 
   private Account account;
@@ -203,6 +206,7 @@ public class MainActivity extends Activity {
     @Override
     public void onVaultCardResponse(VaultCardResponse response) {
       Log.d(this.getClass().getSimpleName(), "onVaultCardResponse " + response);
+      setVaultedCard(response);
       displayoutput(response);
     }
 
@@ -223,6 +227,11 @@ public class MainActivity extends Activity {
     connectorButton_void.setEnabled(lastPayment != null);
     connectorButton_capturepreauth.setEnabled(lastPayment != null);
   }
+
+  public void setVaultedCard(VaultCardResponse response) {
+    this.vaultedCard = response.hasCard() ? response.getCard() : null;
+  }
+
   private AsyncTask waitingTask;
 
   private Boolean approveOfflinePaymentWithoutPrompt;
@@ -237,7 +246,7 @@ public class MainActivity extends Activity {
   private Boolean autoAcceptSignature;
   private static final int SECURE_PAY_REQUEST_CODE = 1;
   //This bit value is used to store selected card entry methods, which can be combined with bitwise 'or' and passed to EXTRA_CARD_ENTRY_METHODS
-  private int cardEntryMethodsAllowed = Intents.CARD_ENTRY_METHOD_MAG_STRIPE | Intents.CARD_ENTRY_METHOD_ICC_CONTACT | Intents.CARD_ENTRY_METHOD_NFC_CONTACTLESS | Intents.CARD_ENTRY_METHOD_MANUAL;
+  private int cardEntryMethodsAllowed = CardEntryMethods.ALL;
   private CurrencyTextHandler amountHandler;
   private CurrencyTextHandler taxAmountHandler;
   private CurrencyTextHandler tipAmountHandler;
@@ -348,25 +357,25 @@ public class MainActivity extends Activity {
     magStripeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        cardEntryMethodsAllowed = cardEntryMethodsAllowed ^ Intents.CARD_ENTRY_METHOD_MAG_STRIPE;
+        cardEntryMethodsAllowed = cardEntryMethodsAllowed ^ CardEntryMethods.CARD_ENTRY_METHOD_MAG_STRIPE;
       }
     });
     chipCardCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        cardEntryMethodsAllowed = cardEntryMethodsAllowed ^ Intents.CARD_ENTRY_METHOD_ICC_CONTACT;
+        cardEntryMethodsAllowed = cardEntryMethodsAllowed ^ CardEntryMethods.CARD_ENTRY_METHOD_ICC_CONTACT;
       }
     });
     nfcCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        cardEntryMethodsAllowed = cardEntryMethodsAllowed ^ Intents.CARD_ENTRY_METHOD_NFC_CONTACTLESS;
+        cardEntryMethodsAllowed = cardEntryMethodsAllowed ^ CardEntryMethods.CARD_ENTRY_METHOD_NFC_CONTACTLESS;
       }
     });
     manualEntryCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        cardEntryMethodsAllowed = cardEntryMethodsAllowed ^ Intents.CARD_ENTRY_METHOD_MANUAL;
+        cardEntryMethodsAllowed = cardEntryMethodsAllowed ^ CardEntryMethods.CARD_ENTRY_METHOD_MANUAL;
       }
     });
     showAdvancedCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1172,6 +1181,12 @@ public class MainActivity extends Activity {
       if (orderId != null) {
         intent.putExtra(Intents.EXTRA_ORDER_ID, orderId);
       }
+      Long tipAmount = tipAmountHandler.getValue();
+      if (tipAmount != null) {
+        intent.putExtra(Intents.EXTRA_TIP_AMOUNT, tipAmount);
+      }
+
+      intent.putExtra(Intents.EXTRA_CARD_ENTRY_METHODS, cardEntryMethodsAllowed);
 
       CheckBox advancedCheckBox = (CheckBox) findViewById(R.id.show_advanced_check_box);
       if (advancedCheckBox.isChecked()) {
@@ -1273,11 +1288,6 @@ public class MainActivity extends Activity {
           intent.putExtra(Intents.EXTRA_EXTERNAL_PAYMENT_ID, externalPaymentId);
         }
 
-        Long tipAmount = tipAmountHandler.getValue();
-        if (tipAmount != null) {
-          intent.putExtra(Intents.EXTRA_TIP_AMOUNT, tipAmount);
-        }
-
         Long taxAmount = taxAmountHandler.getValue();
         if (taxAmount != null) {
           intent.putExtra(Intents.EXTRA_TAX_AMOUNT, taxAmount);
@@ -1371,6 +1381,15 @@ public class MainActivity extends Activity {
       request.setOrderId(orderId);
     }
 
+    //Allow only selected card entry methods
+    request.setCardEntryMethods(cardEntryMethodsAllowed);
+
+    if (vaultedCard != null) {
+      VaultedCard tempVaultedCard = vaultedCard;
+      request.setVaultedCard(tempVaultedCard);
+      vaultedCard = null;
+    }
+
     CheckBox advancedCheckBox = (CheckBox) findViewById(R.id.show_advanced_check_box);
     if (advancedCheckBox.isChecked()) {
       boolean restartTxn = getBooleanFromCheckbox(R.id.restart_tx_when_failed_check_box);
@@ -1411,9 +1430,6 @@ public class MainActivity extends Activity {
       if (disableReceiptOptions != null) {
         request.setDisableReceiptSelection(disableReceiptOptions);
       }
-
-      //Allow only selected card entry methods
-      request.setCardEntryMethods(cardEntryMethodsAllowed);
 
       boolean cardNotPresent = getBooleanFromCheckbox(R.id.card_not_present_check_box);
       if (cardNotPresent) {
