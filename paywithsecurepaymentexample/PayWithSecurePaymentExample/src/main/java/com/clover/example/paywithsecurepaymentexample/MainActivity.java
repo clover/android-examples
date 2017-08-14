@@ -3,13 +3,11 @@ package com.clover.example.paywithsecurepaymentexample;
 import android.os.*;
 import com.clover.connector.sdk.v3.PaymentConnector;
 import com.clover.connector.sdk.v3.CardEntryMethods;
-import com.clover.connector.sdk.v3.PaymentV3Connector;
 import com.clover.sdk.GenericParcelable;
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v1.BindingException;
 import com.clover.sdk.v1.ClientException;
 import com.clover.sdk.v1.Intents;
-import com.clover.sdk.v1.ServiceConnector;
 import com.clover.sdk.v1.ServiceException;
 import com.clover.sdk.v3.connector.IPaymentConnectorListener;
 import com.clover.sdk.v3.inventory.InventoryConnector;
@@ -27,6 +25,7 @@ import com.clover.sdk.v3.remotepay.AuthRequest;
 import com.clover.sdk.v3.remotepay.AuthResponse;
 import com.clover.sdk.v3.remotepay.CapturePreAuthRequest;
 import com.clover.sdk.v3.remotepay.CapturePreAuthResponse;
+import com.clover.sdk.v3.remotepay.CloseoutResponse;
 import com.clover.sdk.v3.remotepay.ConfirmPaymentRequest;
 import com.clover.sdk.v3.remotepay.ManualRefundRequest;
 import com.clover.sdk.v3.remotepay.ManualRefundResponse;
@@ -37,6 +36,7 @@ import com.clover.sdk.v3.remotepay.ReadCardDataRequest;
 import com.clover.sdk.v3.remotepay.ReadCardDataResponse;
 import com.clover.sdk.v3.remotepay.RefundPaymentRequest;
 import com.clover.sdk.v3.remotepay.RefundPaymentResponse;
+import com.clover.sdk.v3.remotepay.RetrievePaymentResponse;
 import com.clover.sdk.v3.remotepay.RetrievePendingPaymentsResponse;
 import com.clover.sdk.v3.remotepay.SaleRequest;
 import com.clover.sdk.v3.remotepay.SaleResponse;
@@ -44,7 +44,6 @@ import com.clover.sdk.v3.remotepay.TipAdded;
 import com.clover.sdk.v3.remotepay.TipAdjustAuthRequest;
 import com.clover.sdk.v3.remotepay.TipAdjustAuthResponse;
 import com.clover.sdk.v3.remotepay.TransactionRequest;
-import com.clover.sdk.v3.remotepay.VaultCardRequest;
 import com.clover.sdk.v3.remotepay.VaultCardResponse;
 import com.clover.sdk.v3.remotepay.VerifySignatureRequest;
 import com.clover.sdk.v3.remotepay.VoidPaymentRequest;
@@ -75,8 +74,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-// import com.clover.sdk.v3.payments.PaymentResponse;
-
 public class MainActivity extends Activity {
 
   private static final String TAG = MainActivity.class.getName();
@@ -87,7 +84,7 @@ public class MainActivity extends Activity {
     return lastPayment;
   }
 
-  private PaymentConnector paymentServiceConnector;
+  private PaymentConnector paymentConnector;
 
   private Payment lastPayment = null;
   private VaultedCard vaultedCard = null;
@@ -222,6 +219,28 @@ public class MainActivity extends Activity {
     }
 
     /**
+     * Called in response to a closeout being processed
+     *
+     * @param response
+     */
+    @Override
+    public void onCloseoutResponse(CloseoutResponse response) {
+      Log.d(this.getClass().getSimpleName(), "onCloseoutResponse " + response);
+      displayoutput(response);
+    }
+
+    /**
+     * Called in response to a doRetrievePayment(...) request
+     *
+     * @param response
+     */
+    @Override
+    public void onRetrievePaymentResponse(RetrievePaymentResponse response) {
+      Log.d(this.getClass().getSimpleName(), "onRetrievePaymentResponse " + response);
+      displayoutput(response);
+    }
+
+    /**
      * Called when the Clover device is disconnected
      */
     @Override
@@ -297,8 +316,8 @@ public class MainActivity extends Activity {
   }
 
   private void connectToPaymentService() {
-    if (this.paymentServiceConnector == null) {
-      this.paymentServiceConnector = new PaymentConnector(MainActivity.this, account, paymentConnectorListener);
+    if (this.paymentConnector == null) {
+      this.paymentConnector = new PaymentConnector(MainActivity.this, account, paymentConnectorListener);
     }
   }
 
@@ -653,13 +672,13 @@ public class MainActivity extends Activity {
 
   @Override
   protected void onDestroy() {
-    if (this.paymentServiceConnector != null) {
+    if (this.paymentConnector != null) {
       // see https://developer.android.com/guide/components/bound-services.html#Additional_Notes
       // If you want your activity to receive responses even while it is stopped in the background,
       // then you can bind during onCreate() and unbind during onDestroy().
-      this.paymentServiceConnector.removeCloverConnectorListener(this.paymentConnectorListener);
-      this.paymentServiceConnector.dispose();
-      this.paymentServiceConnector = null;
+      this.paymentConnector.removeCloverConnectorListener(this.paymentConnectorListener);
+      this.paymentConnector.dispose();
+      this.paymentConnector = null;
     }
     super.onDestroy();
   }
@@ -730,51 +749,23 @@ public class MainActivity extends Activity {
   }
 
   private void startPaymentConnector_refundPayment(Payment payment) {
-/*
     if (payment != null) {
-      try {
-        final RefundPaymentRequest request = new RefundPaymentRequest();
-        request.setAmount(payment.getAmount());
-        request.setPaymentId(payment.getId());
-        request.setFullRefund(true);
-        request.setOrderId(payment.getOrder().getId());
+      final RefundPaymentRequest request = new RefundPaymentRequest();
+      request.setAmount(payment.getAmount());
+      request.setPaymentId(payment.getId());
+      request.setFullRefund(true);
+      request.setOrderId(payment.getOrder().getId());
 
-        request.validate();
-        Log.i(this.getClass().getSimpleName(), request.toString());
-        if (this.paymentServiceConnector != null) {
-          if (this.paymentServiceConnector.isConnected()) {
-            this.paymentServiceConnector.getService().refundPayment(request);
-          } else {
-            Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
-            this.paymentServiceConnector.connect();
-            waitingTask = new AsyncTask() {
-              @Override
-              protected Object doInBackground(Object[] params) {
-                try {
-                  MainActivity.this.paymentServiceConnector.getService().refundPayment(request);
-                } catch (RemoteException e) {
-                  Log.e(this.getClass().getSimpleName(), " refund", e);
-                }
-                return null;
-              }
-            };
-          }
-        }
-      } catch (IllegalArgumentException e) {
-        Log.e(this.getClass().getSimpleName(), " refund", e);
-        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-      } catch (RemoteException e) {
-        Log.e(this.getClass().getSimpleName(), " refund", e);
-      }
+      request.validate();
+      Log.i(this.getClass().getSimpleName(), request.toString());
+      paymentConnector.refundPayment(request);
     } else {
       Toast.makeText(getApplicationContext(), getString(R.string.payment_null), Toast.LENGTH_LONG).show();
     }
-*/
   }
 
   private void startPaymentConnector_adjustTip(Payment payment) {
     if (payment != null) {
-      try {
         final TipAdjustAuthRequest request = new TipAdjustAuthRequest();
         try{
           Long tipAmount = tipAmountHandler.getValue();
@@ -793,206 +784,55 @@ public class MainActivity extends Activity {
 
         request.validate();
         Log.i(this.getClass().getSimpleName(), request.toString());
-        if (this.paymentServiceConnector != null) {
-          if (this.paymentServiceConnector.isConnected()) {
-            this.paymentServiceConnector.getService().tipAdjustAuth(request);
-          } else {
-            Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
-            this.paymentServiceConnector.connect();
-            waitingTask = new AsyncTask() {
-              @Override
-              protected Object doInBackground(Object[] params) {
-                try {
-                  MainActivity.this.paymentServiceConnector.getService().tipAdjustAuth(request);
-                } catch (RemoteException e) {
-                  Log.e(this.getClass().getSimpleName(), " tip adjust", e);
-                }
-                return null;
-              }
-            };
-          }
-        }
-      } catch (IllegalArgumentException e) {
-        Log.e(this.getClass().getSimpleName(), " tip adjust", e);
-        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-      } catch (RemoteException e) {
-        Log.e(this.getClass().getSimpleName(), " tip adjust", e);
-      }
+        paymentConnector.tipAdjustAuth(request);
     } else {
       Toast.makeText(getApplicationContext(), getString(R.string.payment_null), Toast.LENGTH_LONG).show();
     }
   }
 
   private void startPaymentConnector_voidPayment(Payment payment) {
-/*
     if (payment != null) {
-      try {
-        final VoidPaymentRequest request = new VoidPaymentRequest();
-        request.setPaymentId(payment.getId());
-        request.setOrderId(payment.getOrder().getId());
-        request.setVoidReason(VoidReason.USER_CANCEL.toString());
+      final VoidPaymentRequest request = new VoidPaymentRequest();
+      request.setPaymentId(payment.getId());
+      request.setOrderId(payment.getOrder().getId());
+      request.setVoidReason(VoidReason.USER_CANCEL.toString());
 
-        request.validate();
-        Log.i(this.getClass().getSimpleName(), request.toString());
-        if (this.paymentServiceConnector != null) {
-          if (this.paymentServiceConnector.isConnected()) {
-            this.paymentServiceConnector.getService().voidPayment(request);
-          } else {
-            Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
-            this.paymentServiceConnector.connect();
-            waitingTask = new AsyncTask() {
-              @Override
-              protected Object doInBackground(Object[] params) {
-                try {
-                  MainActivity.this.paymentServiceConnector.getService().voidPayment(request);
-                } catch (RemoteException e) {
-                  Log.e(this.getClass().getSimpleName(), " void", e);
-                }
-                return null;
-              }
-            };
-          }
-        }
-      } catch (IllegalArgumentException e) {
-        Log.e(this.getClass().getSimpleName(), " void", e);
-        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-      } catch (RemoteException e) {
-        Log.e(this.getClass().getSimpleName(), " void", e);
-      }
+      request.validate();
+      Log.i(this.getClass().getSimpleName(), request.toString());
+      paymentConnector.voidPayment(request);
     } else {
       Toast.makeText(getApplicationContext(), getString(R.string.payment_null), Toast.LENGTH_LONG).show();
     }
-*/
   }
 
   private void startPaymentConnector_retrievePendingPayments() {
-    try {
-      Log.i(this.getClass().getSimpleName(), "");
-      if (this.paymentServiceConnector != null) {
-        if (this.paymentServiceConnector.isConnected()) {
-          this.paymentServiceConnector.getService().retrievePendingPayments();
-        } else {
-          Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
-          this.paymentServiceConnector.connect();
-          waitingTask = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-              try {
-                MainActivity.this.paymentServiceConnector.getService().retrievePendingPayments();
-              } catch (RemoteException e) {
-                Log.e(this.getClass().getSimpleName(), " retrieve pending payments", e);
-              }
-              return null;
-            }
-          };
-        }
-      }
-    } catch (IllegalArgumentException e) {
-      Log.e(this.getClass().getSimpleName(), " retrieve pending payments", e);
-      Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-    } catch (RemoteException e) {
-      Log.e(this.getClass().getSimpleName(), " retrieve pending payments", e);
-    }
+    Log.i(this.getClass().getSimpleName(), "");
+    paymentConnector.retrievePendingPayments();
   }
 
   private void startPaymentConnector_readCardData() {
-    try {
-      final ReadCardDataRequest request = new ReadCardDataRequest();
-      request.setCardEntryMethods(cardEntryMethodsAllowed);
-      request.setIsForceSwipePinEntry(false);
-      Log.i(this.getClass().getSimpleName(), "");
-      if (this.paymentServiceConnector != null) {
-        if (this.paymentServiceConnector.isConnected()) {
-          this.paymentServiceConnector.getService().readCardData(request);
-        } else {
-          Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
-          this.paymentServiceConnector.connect();
-          waitingTask = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-              try {
-                MainActivity.this.paymentServiceConnector.getService().readCardData(request);
-              } catch (RemoteException e) {
-                Log.e(this.getClass().getSimpleName(), "read card data", e);
-              }
-              return null;
-            }
-          };
-        }
-      }
-    } catch (IllegalArgumentException e) {
-      Log.e(this.getClass().getSimpleName(), "read card data", e);
-      Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-    } catch (RemoteException e) {
-      Log.e(this.getClass().getSimpleName(), "read card data", e);
-    }
+    final ReadCardDataRequest request = new ReadCardDataRequest();
+    request.setCardEntryMethods(cardEntryMethodsAllowed);
+    request.setIsForceSwipePinEntry(false);
+    Log.i(this.getClass().getSimpleName(), "");
+    paymentConnector.readCardData(request);
   }
 
   private void startPaymentConnector_vaultCard() {
-    try {
-      Log.i(this.getClass().getSimpleName(), "");
-      if (this.paymentServiceConnector != null) {
-        if (this.paymentServiceConnector.isConnected()) {
-          this.paymentServiceConnector.getService().vaultCard(cardEntryMethodsAllowed);
-        } else {
-          Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
-          this.paymentServiceConnector.connect();
-          waitingTask = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-              try {
-                MainActivity.this.paymentServiceConnector.getService().vaultCard(cardEntryMethodsAllowed);
-              } catch (RemoteException e) {
-                Log.e(this.getClass().getSimpleName(), "vault card", e);
-              }
-              return null;
-            }
-          };
-        }
-      }
-    } catch (IllegalArgumentException e) {
-      Log.e(this.getClass().getSimpleName(), "vault card", e);
-      Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-    } catch (RemoteException e) {
-      Log.e(this.getClass().getSimpleName(), "vault card", e);
-    }
+    Log.i(this.getClass().getSimpleName(), "");
+    paymentConnector.vaultCard(cardEntryMethodsAllowed);
   }
 
   private void startPaymentConnector_manualRefund() {
+    final ManualRefundRequest request = new ManualRefundRequest();
     try {
-      final ManualRefundRequest request = new ManualRefundRequest();
-      try {
-        setUpTransactionRequest(request);
-      } catch (ParseException pe) {
-        Toast.makeText(getApplicationContext(), getString(R.string.invalid_amount), Toast.LENGTH_LONG).show();
-      }
-
-      Log.i(this.getClass().getSimpleName(), "");
-      if (this.paymentServiceConnector != null) {
-        if (this.paymentServiceConnector.isConnected()) {
-          this.paymentServiceConnector.getService().manualRefund(request);
-        } else {
-          Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
-          this.paymentServiceConnector.connect();
-          waitingTask = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-              try {
-                MainActivity.this.paymentServiceConnector.getService().manualRefund(request);
-              } catch (RemoteException e) {
-                Log.e(this.getClass().getSimpleName(), "manual refund", e);
-              }
-              return null;
-            }
-          };
-        }
-      }
-    } catch (IllegalArgumentException e) {
-      Log.e(this.getClass().getSimpleName(), "manual refund", e);
-      Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-    } catch (RemoteException e) {
-      Log.e(this.getClass().getSimpleName(), "manual refund", e);
+      setUpTransactionRequest(request);
+    } catch (ParseException pe) {
+      Toast.makeText(getApplicationContext(), getString(R.string.invalid_amount), Toast.LENGTH_LONG).show();
     }
+
+    Log.i(this.getClass().getSimpleName(), "");
+    paymentConnector.manualRefund(request);
   }
 
   private void startPaymentConnector_sale() {
@@ -1000,144 +840,60 @@ public class MainActivity extends Activity {
     setUpSaleRequest(request);
     request.validate();
     Log.i(this.getClass().getSimpleName(), request.toString());
-    paymentServiceConnector.sale(request);
+    paymentConnector.sale(request);
   }
 
   private void startPaymentConnector_auth() {
-/*
     final AuthRequest request = new AuthRequest();
     setUpAuthRequest(request);
-
-    try {
-      request.validate();
-      Log.i(this.getClass().getSimpleName(), request.toString());
-      if (this.paymentServiceConnector != null) {
-        if (this.paymentServiceConnector.isConnected()) {
-          this.paymentServiceConnector.getService().auth(request);
-        } else {
-          Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
-          this.paymentServiceConnector.connect();
-          waitingTask = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-              try {
-                MainActivity.this.paymentServiceConnector.getService().auth(request);
-              } catch (RemoteException e) {
-                Log.e(this.getClass().getSimpleName(), " auth", e);
-              }
-              return null;
-            }
-          };
-        }
-      }
-    } catch (IllegalArgumentException e) {
-      Log.e(this.getClass().getSimpleName(), " auth", e);
-      Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-    } catch (RemoteException e) {
-      Log.e(this.getClass().getSimpleName(), " auth", e);
-    }
-*/
+    request.validate();
+    Log.i(this.getClass().getSimpleName(), request.toString());
+    paymentConnector.auth(request);
   }
 
   private void startPaymentConnector_preauth() {
-/*
     final PreAuthRequest request = new PreAuthRequest();
     try {
       setUpTransactionRequest(request);
     } catch (ParseException pe) {
       Toast.makeText(getApplicationContext(), getString(R.string.invalid_amount), Toast.LENGTH_LONG).show();
     }
-
-    try {
-      request.validate();
-      Log.i(this.getClass().getSimpleName(), request.toString());
-      if (this.paymentServiceConnector != null) {
-        if (this.paymentServiceConnector.isConnected()) {
-          this.paymentServiceConnector.getService().preAuth(request);
-        } else {
-          Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
-          this.paymentServiceConnector.connect();
-          waitingTask = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-              try {
-                MainActivity.this.paymentServiceConnector.getService().preAuth(request);
-              } catch (RemoteException e) {
-                Log.e(this.getClass().getSimpleName(), " preAuth", e);
-              }
-              return null;
-            }
-          };
-        }
-      }
-    } catch (IllegalArgumentException e) {
-      Log.e(this.getClass().getSimpleName(), " preAuth", e);
-      Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-    } catch (RemoteException e) {
-      Log.e(this.getClass().getSimpleName(), " preAuth", e);
-    }
-*/
+    request.validate();
+    Log.i(this.getClass().getSimpleName(), request.toString());
+    paymentConnector.preAuth(request);
   }
 
   private void startPaymentConnector_capturepreauth(Payment payment) {
-/*
     final CapturePreAuthRequest request = new CapturePreAuthRequest();
-    try {
-      request.setPaymentId(payment.getId());
-
-      try{
-        Long amount = amountHandler.getValue();
-        if (amount != null) {
-          request.setAmount(amount);
-        } else {
-          Toast.makeText(getApplicationContext(), "Sale amount must have a numeric value", Toast.LENGTH_LONG).show();
-        }
-      } catch (ParseException e) {
-        Log.e(this.getClass().getSimpleName(), " capture preauth", e);
-        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-        return;
+    request.setPaymentId(payment.getId());
+    try{
+      Long amount = amountHandler.getValue();
+      if (amount != null) {
+        request.setAmount(amount);
+      } else {
+        Toast.makeText(getApplicationContext(), "Sale amount must have a numeric value", Toast.LENGTH_LONG).show();
       }
-
-      try{
-        Long tipAmount = tipAmountHandler.getValue();
-        if (tipAmount != null) {
-          request.setTipAmount(tipAmount);
-        } else {
-          Toast.makeText(getApplicationContext(), "Tip amount must have a numeric value", Toast.LENGTH_LONG).show();
-        }
-      } catch (ParseException e) {
-        Log.e(this.getClass().getSimpleName(), " capture preauth", e);
-        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-        return;
-      }
-      request.validate();
-      Log.i(this.getClass().getSimpleName(), request.toString());
-      if (this.paymentServiceConnector != null) {
-        if (this.paymentServiceConnector.isConnected()) {
-          this.paymentServiceConnector.getService().capturePreAuth(request);
-        } else {
-          Toast.makeText(getApplicationContext(), getString(R.string.connector_not_connected), Toast.LENGTH_LONG).show();
-          this.paymentServiceConnector.connect();
-          waitingTask = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-              try {
-                MainActivity.this.paymentServiceConnector.getService().capturePreAuth(request);
-              } catch (RemoteException e) {
-                Log.e(this.getClass().getSimpleName(), " capturePreAuth", e);
-              }
-              return null;
-            }
-          };
-        }
-      }
-    } catch (IllegalArgumentException e) {
-      Log.e(this.getClass().getSimpleName(), " capturePreAuth", e);
+    } catch (ParseException e) {
+      Log.e(this.getClass().getSimpleName(), " capture preauth", e);
       Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-    } catch (RemoteException e) {
-      Log.e(this.getClass().getSimpleName(), " capturePreAuth", e);
+      return;
     }
-*/
+
+    try{
+      Long tipAmount = tipAmountHandler.getValue();
+      if (tipAmount != null) {
+        request.setTipAmount(tipAmount);
+      } else {
+        Toast.makeText(getApplicationContext(), "Tip amount must have a numeric value", Toast.LENGTH_LONG).show();
+      }
+    } catch (ParseException e) {
+      Log.e(this.getClass().getSimpleName(), " capture preauth", e);
+      Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+      return;
+    }
+    request.validate();
+    Log.i(this.getClass().getSimpleName(), request.toString());
+    paymentConnector.capturePreAuth(request);
   }
 
   // Start intent to launch Clover's secure payment activity
