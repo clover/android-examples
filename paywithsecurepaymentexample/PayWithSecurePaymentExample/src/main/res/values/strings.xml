@@ -2,28 +2,21 @@
 <resources>
 
   <string name="app_name">PayWithSecurePaymentExample</string>
-
   <string name="no_account">There is no Clover account.</string>
-
-  <string name="payintent_sale">Sale</string>
-  <string name="payintent_auth">Auth</string>
-  <string name="payintent_full_refund">Full refund</string>
-  <string name="payintent_void">Void</string>
-  <string name="payintent_preauth">Pre Auth</string>
-  <string name="payintent_capturepreauth">Capture Pre Auth</string>
+  <string name="services_not_connected">The required services are not yet connected.</string>
   <string name="payintent_title">Intent Operations</string>
 
-  <string name="connector_sale">Sale</string>
-  <string name="connector_auth">Auth</string>
-  <string name="connector_full_refund">Full Refund</string>
-  <string name="connector_tip_adjust">Tip Adjust</string>
-  <string name="connector_void">Void</string>
-  <string name="connector_rpp">Retrieve Pending Payments</string>
-  <string name="connector_manual_refund">Manual Refund</string>
-  <string name="connector_vault_card">Vault Card</string>
-  <string name="connector_read_card_data">Read Card Data</string>
-  <string name="connector_preauth">Pre Auth</string>
-  <string name="connector_capturepreauth">Capture Pre Auth</string>
+  <string name="btn_txt_sale">Sale</string>
+  <string name="btn_txt_auth">Auth</string>
+  <string name="btn_txt_full_refund">Full Refund</string>
+  <string name="btn_txt_tip_adjust">Tip Adjust Auth</string>
+  <string name="btn_txt_void">Void</string>
+  <string name="btn_txt_rpp">Retrieve Pending Payments</string>
+  <string name="btn_txt_manual_refund">Manual Refund</string>
+  <string name="btn_txt_vault_card">Vault Card</string>
+  <string name="btn_txt_read_card_data">Read Card Data</string>
+  <string name="btn_txt_preauth">Pre Auth</string>
+  <string name="btn_txt_capturepreauth">Capture Pre Auth</string>
 
 
   <string name="connector_title">Connector Operations</string>
@@ -39,9 +32,39 @@
 
   <string name="empty_inventory">Please add an item to the inventory before attempting to take orders.</string>
 
+  <string name="capture_preauth_successful">Capture for PreAuth succeeded for Payment ID: %1$s Amount: %2$d Tip Amount: %3$d</string>
+
+  <string name="capture_preauth_failed">Capture for PreAuth not successful</string>
+
+  <string name="refund_successful">Payment Refund succeeded for Payment ID: %1$s Amount: %2$d </string>
+
+  <string name="refund_failed">Payment Refund not successful</string>
+
+  <string name="void_successful">Payment Void succeeded for Payment ID: %1$s</string>
+
+  <string name="void_failed">Payment Void not successful</string>
+
+  <string name="retrieve_pending_payments_successful">Retrieve Pending Payments succeeded</string>
+
+  <string name="retrieve_pending_payments_failed">Retrieve Pending Payments not successful</string>
+
+  <string name="read_card_data_successful">Read Card Data call succeeded - Track1 Data = %1$s</string>
+
+  <string name="read_card_data_failed">Read Card Data call not successful</string>
+
+  <string name="manual_refund_successful">Manual Refund Succeeded for Order: %1$s</string>
+
+  <string name="manual_refund_failed">Manual Refund Not Successful</string>
+
+  <string name="vault_card_successful">Vault Card Successful</string>
+
+  <string name="vault_card_failed">Vault Card Not Successful</string>
+
   <string name="payment_successful">Payment Succeeded for Order: %1$s</string>
 
   <string name="payment_failed">Payment Not Successful</string>
+
+  <string name="start_secure_pay_failed">Start Secure Pay Not Successful</string>
 
   <string name="payment_amount">Payment Amount</string>
 
@@ -79,6 +102,14 @@
 
   <string name="amount_required">Valid amount is required</string>
 
+  <string name="could_not_create_order">Order was not successfully created for this payment</string>
+
+  <string name="tip_amount_required">Valid tip amount is required for TipMode of TIP_PROVIDED</string>
+
+  <string name="tip_mode_invalid_for_sale">TipMode invalid for a Sale transaction type</string>
+
+  <string name="tip_amount_ignored">TipAmount will be ignored based on AUTH/PREAUTH payment request</string>
+
   <string name="payment_ext_id">Payment with external id %1$s</string>
 
   <string name="data_returned">Data returned is $s</string>
@@ -94,5 +125,7 @@
   <string name="signature_entry_location">Signature Entry Location:</string>
 
   <string name="signature_threshold">Signature Threshold</string>
+
+  <string name="insert_or_swipe_card">Insert or Swipe Card</string>
 
 </resources>
