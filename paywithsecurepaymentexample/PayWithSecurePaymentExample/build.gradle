@@ -11,7 +11,7 @@ android {
   buildToolsVersion '25.0.0'
 
   defaultConfig {
-    minSdkVersion 16
+    minSdkVersion 17
     targetSdkVersion 17
     versionCode 1
     versionName "1.0"
@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-  compile 'com.clover.sdk:clover-android-connector-sdk:181-SNAPSHOT'
+  compile 'com.clover.sdk:clover-android-connector-sdk:182-SNAPSHOT'
   compile 'com.clover:common-payments:208-SNAPSHOT@aar'
   compile 'com.clover:common:208-SNAPSHOT'
 }

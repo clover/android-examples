@@ -1,9 +1,20 @@
 package com.clover.example.paywithsecurepaymentexample;
 
+import android.content.Context;
 import android.os.*;
 
+import com.clover.common.analytics.ALog;
+import com.clover.common.cardreader.CardReader;
+import com.clover.common.cardreader.ReadCardResult;
+import com.clover.common.http.Callback;
+import com.clover.common.http.HttpRequestTask;
+import com.clover.common.http.ServerPing;
+import com.clover.common.util.ScreenReceiver;
+import com.clover.common2.CommonActivity;
+import com.clover.common2.appservices.ServiceConnectorManager;
 import com.clover.common2.clover.CloverConnector;
 import com.clover.common2.clover.MerchantGateway;
+import com.clover.common2.payments.PayIntent;
 import com.clover.common2.securepay.SecurePay;
 import com.clover.commonpayments.CapturePreAuthService;
 import com.clover.commonpayments.RefundPaymentService;
@@ -13,13 +24,16 @@ import com.clover.commonpayments.RetreivePendingPaymentsService;
 import com.clover.commonpayments.VoidPaymentService;
 import com.clover.connector.sdk.v3.PaymentConnector;
 import com.clover.connector.sdk.v3.CardEntryMethods;
+import com.clover.http.DeviceHttpClient;
 import com.clover.sdk.GenericParcelable;
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.util.Platform;
 import com.clover.sdk.v1.BindingException;
 import com.clover.sdk.v1.ClientException;
 import com.clover.sdk.v1.Intents;
+import com.clover.sdk.v1.ServiceConnector;
 import com.clover.sdk.v1.ServiceException;
+import com.clover.sdk.v1.merchant.Merchant;
 import com.clover.sdk.v3.base.PendingPaymentEntry;
 import com.clover.sdk.v3.connector.IPaymentConnectorListener;
 import com.clover.sdk.v3.employees.Employee;
@@ -29,6 +43,8 @@ import com.clover.sdk.v3.order.LineItem;
 import com.clover.sdk.v3.order.Order;
 import com.clover.sdk.v3.order.OrderConnector;
 import com.clover.sdk.v3.order.VoidReason;
+import com.clover.sdk.v3.pay.PaymentRequest;
+import com.clover.sdk.v3.pay.PaymentRequestCardDetails;
 import com.clover.sdk.v3.payments.Credit;
 import com.clover.sdk.v3.payments.DataEntryLocation;
 import com.clover.sdk.v3.payments.Payment;
@@ -89,7 +105,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ServiceActivity {
 
   private static final String TAG = MainActivity.class.getName();
 
@@ -100,16 +116,22 @@ public class MainActivity extends Activity {
   }
 
   private PaymentConnector paymentConnector;
+
+  /**
+   * @param orderId    The ID of the updated order.
+   * @param selfChange True if the update was triggered by the listening application running on the same device.
+   */
+  @Override
+  public void onOrderUpdated(String orderId, boolean selfChange) {
+
+  }
+
   private enum PaymentType {SALE, AUTH, PREAUTH, CREDIT}
 
   private Payment lastPayment = null;
   private VaultedCard vaultedCard = null;
-  private Button connectorButton_sale;
 
-  private Account account;
-
-  private Employee employee;
-  private Button payButton;
+  private Button saleButton;
   private Button authButton;
   private Button preauthButton;
   private Button tipadjustButton;
@@ -121,6 +143,7 @@ public class MainActivity extends Activity {
   private Button readCardDataButton;
   private Button manualRefundButton;
 
+  private Button connectorButton_sale;
   private Button connectorButton_preauth;
   private Button connectorButton_capturepreauth;
   private Button connectorButton_auth;
@@ -131,11 +154,6 @@ public class MainActivity extends Activity {
   private Button connectorButton_vault_card;
   private Button connectorButton_read_card_data;
   private Button connectorButton_manual_refund;
-
-  private Clover clover;
-  private CloverConnector cloverConnector;
-  private EmployeeConnector employeeConnector;
-  private OrderConnector orderConnector;
   private Order lastOrder = null;
   private boolean isStation;
 
@@ -273,6 +291,7 @@ public class MainActivity extends Activity {
 
     /**
      * Called when the Clover device is disconnected
+     * Not applicable to the PaymentConnector (Native)
      */
     @Override
     public void onDeviceDisconnected() {
@@ -281,6 +300,7 @@ public class MainActivity extends Activity {
 
     /**
      * Called when the Clover device is connected, but not ready to communicate
+     * Not applicable to the PaymentConnector (Native)
      */
     @Override
     public void onDeviceConnected() {
@@ -299,8 +319,6 @@ public class MainActivity extends Activity {
     this.vaultedCard = response.hasCard() ? response.getCard() : null;
   }
 
-  private AsyncTask waitingTask;
-
   private Boolean approveOfflinePaymentWithoutPrompt;
   private Boolean allowOfflinePayment;
   private Boolean disableCloverHandlesReceipts;
@@ -313,6 +331,8 @@ public class MainActivity extends Activity {
   private Boolean autoAcceptSignature;
   private static final int SECURE_PAY_REQUEST_CODE = 1;
   private static final int MANUAL_REFUND_REQUEST_CODE = 2;
+  private static final int READ_CARD_DATA_REQUEST_CODE = 3;
+  private static final int VAULT_CARD_REQUEST_CODE = 4;
   //This bit value is used to store selected card entry methods, which can be combined with bitwise 'or' and passed to EXTRA_CARD_ENTRY_METHODS
   private int cardEntryMethodsAllowed = CardEntryMethods.ALL;
   private CurrencyTextHandler amountHandler;
@@ -331,7 +351,7 @@ public class MainActivity extends Activity {
 
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
@@ -354,29 +374,19 @@ public class MainActivity extends Activity {
   }
 
   @Override
-  protected void onResume() {
+  public void onResume() {
     Log.i(this.getClass().getSimpleName(), "MRH onResume");
     super.onResume();
-
+    if (!setupComplete) {
+      Toast.makeText(this, getString(R.string.services_not_connected), Toast.LENGTH_LONG).show();
+      return;
+    }
     isStation = Platform.isCloverStation();
 
-      // Retrieve the Clover account
-    if (account == null) {
-      account = CloverAccount.getAccount(this);
-
-      // If an account can't be acquired, exit the app
-      if (account == null) {
-        Toast.makeText(this, getString(R.string.no_account), Toast.LENGTH_SHORT).show();
-        finish();
-        return;
-      }
-    }
-
     // Create and Connect
-    connect();
     connectToPaymentService();
 
-    payButton = (Button) findViewById(R.id.sale_button);
+    saleButton = (Button) findViewById(R.id.sale_button);
     authButton = (Button) findViewById(R.id.auth_button);
     preauthButton = (Button) findViewById(R.id.preauth_button);
     preauthButton.setEnabled(!isStation);
@@ -476,6 +486,31 @@ public class MainActivity extends Activity {
       }
     });
 
+    /*
+       Intent Button Actions (Payments are intent-based, other actions - not so much)
+       ******************************************************************************
+     */
+
+    saleButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        startSecurePayment(PaymentType.SALE);
+      }
+    });
+
+    authButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        startSecurePayment(PaymentType.AUTH);
+      }
+    });
+
+    preauthButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        startSecurePayment(PaymentType.PREAUTH);
+      }
+    });
 
     tipadjustButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -487,33 +522,13 @@ public class MainActivity extends Activity {
     capturePreauthButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        CloverConnectorAsyncTask ccat = new CloverConnectorAsyncTask();
-        ccat.execute();
-        try {
-          clover = ccat.get();
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        } catch (ExecutionException e) {
-          e.printStackTrace();
-        }
-
-        EmployeeConnectorAsyncTask ecat = new EmployeeConnectorAsyncTask();
-        ecat.execute();
-        try {
-          employee = ecat.get();
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        } catch (ExecutionException e) {
-          e.printStackTrace();
-        }
-
         final Long amount;
         final Long tipAmount;
         try {
           amount = amountHandler.getValue();
           if (amount != null) {
             final String employeeId = employee.getId();
-            final String merchantId = clover.getMerchant().getId();
+            final String merchantId = merchant.getId();
             tipAmount = tipAmountHandler.getValue() != null ? tipAmountHandler.getValue() : 0L;
             doCapturePreAuth(lastPayment.getId(), amount, tipAmount, merchantId, employeeId);
           } else {
@@ -524,29 +539,10 @@ public class MainActivity extends Activity {
         }
       }
     });
+
     voidButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        CloverConnectorAsyncTask ccat = new CloverConnectorAsyncTask();
-        ccat.execute();
-        try {
-          clover = ccat.get();
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        } catch (ExecutionException e) {
-          e.printStackTrace();
-        }
-
-        EmployeeConnectorAsyncTask ecat = new EmployeeConnectorAsyncTask();
-        ecat.execute();
-        try {
-          employee = ecat.get();
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        } catch (ExecutionException e) {
-          e.printStackTrace();
-        }
-
         doVoid(lastPayment.getId(), lastOrder.getId(), employee.getId(), null, VoidReason.USER_CANCEL, getPackageName());
       }
     });
@@ -554,29 +550,10 @@ public class MainActivity extends Activity {
     refundButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        CloverConnectorAsyncTask ccat = new CloverConnectorAsyncTask();
-        ccat.execute();
-        try {
-          clover = ccat.get();
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        } catch (ExecutionException e) {
-          e.printStackTrace();
-        }
-
-        EmployeeConnectorAsyncTask ecat = new EmployeeConnectorAsyncTask();
-        ecat.execute();
-        try {
-          employee = ecat.get();
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        } catch (ExecutionException e) {
-          e.printStackTrace();
-        }
-
         doFullRefund(lastPayment.getId(), lastOrder.getId(), 0L, true);
      }
     });
+
     rppButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -587,17 +564,6 @@ public class MainActivity extends Activity {
     manualRefundButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if (clover == null) {
-          CloverConnectorAsyncTask ccat = new CloverConnectorAsyncTask();
-          ccat.execute();
-          try {
-            clover = ccat.get();
-          } catch (InterruptedException e) {
-            e.printStackTrace();
-          } catch (ExecutionException e) {
-            e.printStackTrace();
-          }
-        }
         MerchantGateway merchantGateway = clover.getMerchantGateway();
         if (!merchantGateway.isSupportsNakedCredit()) {
           // Does not support this.
@@ -609,24 +575,25 @@ public class MainActivity extends Activity {
 
       }
     });
-    payButton.setOnClickListener(new View.OnClickListener() {
+
+    readCardDataButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startSecurePayment(PaymentType.SALE);
+        doReadCardData();
       }
     });
-    authButton.setOnClickListener(new View.OnClickListener() {
+
+    vaultCardButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startSecurePayment(PaymentType.AUTH);
+        doVaultCard();
       }
     });
-    preauthButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        startSecurePayment(PaymentType.PREAUTH);
-      }
-    });
+
+    /*
+       Connector Button Actions
+       ***************************************************************
+     */
 
     connectorButton_sale.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -708,9 +675,15 @@ public class MainActivity extends Activity {
       }
     });
 
-    tipAmountHandler = new CurrencyTextHandler((EditText)findViewById(R.id.tip_amount_edit_text));
-    sigatureThresholdHandler = new CurrencyTextHandler((EditText)findViewById(R.id.signatureThreshold));
     amountHandler = new CurrencyTextHandler((EditText)findViewById(R.id.amount_edit_text));
+    tipAmountHandler = new CurrencyTextHandler((EditText)findViewById(R.id.tip_amount_edit_text));
+
+    /*
+     Advance Settings (Transaction_Settings)
+     ***************************************
+     */
+
+    sigatureThresholdHandler = new CurrencyTextHandler((EditText)findViewById(R.id.signatureThreshold));
     taxAmountHandler = new CurrencyTextHandler((EditText)findViewById(R.id.tax_amount_edit_text));
     allowOfflineRG = (RadioGroup) findViewById(R.id.AcceptOfflinePaymentRG);
     approveOfflineNoPromptRG = (RadioGroup) findViewById(R.id.ApproveOfflineWithoutPromptRG);
@@ -836,9 +809,8 @@ public class MainActivity extends Activity {
   }
 
   @Override
-  protected void onPause() {
+  public void onPause() {
     Log.i(this.getClass().getSimpleName(), "MRH onPause");
-    disconnect();
     super.onPause();
 
     tipAmountHandler.editText.removeTextChangedListener(tipAmountHandler);
@@ -852,35 +824,6 @@ public class MainActivity extends Activity {
 
     taxAmountHandler.editText.removeTextChangedListener(taxAmountHandler);
     taxAmountHandler = null;
-  }
-
-  // Establishes a connection with the connectors
-  private void connect() {
-    disconnect();
-    if (account != null) {
-      cloverConnector = new CloverConnector(this, account, null);
-      cloverConnector.connect();
-      employeeConnector = new EmployeeConnector(this, account, null);
-      employeeConnector.connect();
-      orderConnector = new OrderConnector(this, account, null);
-      orderConnector.connect();
-    }
-  }
-
-  // Disconnects from the connectors
-  private void disconnect() {
-    if (cloverConnector != null) {
-      cloverConnector.disconnect();
-      cloverConnector = null;
-    }
-    if (employeeConnector != null) {
-      employeeConnector.disconnect();
-      employeeConnector = null;
-    }
-    if (orderConnector != null) {
-      orderConnector.disconnect();
-      orderConnector = null;
-    }
   }
 
   @Override
@@ -1210,6 +1153,12 @@ public class MainActivity extends Activity {
     int request_code = SECURE_PAY_REQUEST_CODE;
 
     Intent intent = new Intent(Intents.ACTION_SECURE_PAY);
+    if (vaultedCard != null && (paymentType.equals(PaymentType.AUTH) || paymentType.equals(PaymentType.SALE))) {
+      VaultedCard tempVaultedCard = vaultedCard;
+      intent.putExtra(Intents.EXTRA_VAULTED_CARD, tempVaultedCard);
+      vaultedCard = null;
+    }
+
     try {
       //EXTRA_AMOUNT is required for secure payment
       Long amount = amountHandler.getValue();
@@ -1485,6 +1434,33 @@ public class MainActivity extends Activity {
     VoidPaymentService.start(this, paymentId, orderId, employeeId, iccContainer, voidReason, packageName, voidResultReceiver);
   }
 
+  private void doReadCardData() {
+    PayIntent.Builder builder = new PayIntent.Builder();
+    builder.transactionType(PayIntent.TransactionType.DATA);
+    builder.cardEntryMethods(cardEntryMethodsAllowed);
+    builder.forceSwipePinEntry(false);
+
+    PayIntent payIntent = builder.build();
+
+    try {
+      Intent intent = new Intent(Intents.ACTION_SECURE_PAY);
+      PayIntent.Builder payIntentBuilder = new PayIntent.Builder()
+          .payIntent(payIntent)
+          .action(Intents.ACTION_SECURE_CARD_DATA);
+
+      if (payIntent.cardDataMessage == null) {
+        payIntentBuilder.cardDataMessage(getString(R.string.insert_or_swipe_card));
+      }
+
+      PayIntent pIntent = payIntentBuilder.build();
+      pIntent.addTo(intent);
+
+      startActivityForResult(intent, READ_CARD_DATA_REQUEST_CODE);
+    } catch (Exception e) {
+      Toast.makeText(getApplicationContext(), getString(R.string.read_card_data_failed), Toast.LENGTH_LONG).show();
+    }
+  }
+
   private void doRetrievePendingPayments() {
     ResultReceiver resultReceiver = new ResultReceiver(new Handler()) {
       @Override
@@ -1494,7 +1470,9 @@ public class MainActivity extends Activity {
           if (success) {
             ArrayList<Payment> pendingPayments = resultInfo.getParcelableArrayList(RetreivePendingPaymentsService.EXTRA_PAYMENTS);
             ArrayList<PendingPaymentEntry> pendingPaymentEntries = new ArrayList(0);
+            Integer paymentCount = new Integer(0);
             if (pendingPayments != null && pendingPayments.size() > 0) {
+              paymentCount = new Integer(pendingPayments.size());
               Iterator pendingPaymentsIter = pendingPayments.iterator();
               while (pendingPaymentsIter.hasNext()) {
                 Payment payment = (Payment) pendingPaymentsIter.next();
@@ -1504,7 +1482,7 @@ public class MainActivity extends Activity {
                 pendingPaymentEntries.add(pendingPaymentsEntry);
               }
             }
-            Toast.makeText(getApplicationContext(), getString(R.string.retrieve_pending_payments_successful), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.retrieve_pending_payments_successful) + " - Count = " + paymentCount.toString(), Toast.LENGTH_LONG).show();
           } else {
             String msg = resultInfo.getString(ResultIntentService.RESULT_ERR_MSG);
             Toast.makeText(getApplicationContext(), getString(R.string.retrieve_pending_payments_failed) + " - " + msg, Toast.LENGTH_LONG).show();
@@ -1513,6 +1491,23 @@ public class MainActivity extends Activity {
       }
     };
     RetreivePendingPaymentsService.start(this, clover.getAccount(), resultReceiver);
+  }
+
+  private void doVaultCard() {
+    try {
+      Intent intent = new Intent();
+      PayIntent payIntent = new PayIntent.Builder()
+          .action(Intents.ACTION_SECURE_CARD_DATA)
+          .cardEntryMethods(cardEntryMethodsAllowed)
+          .transactionType(PayIntent.TransactionType.DATA)
+          .cardDataMessage(getString(R.string.insert_or_swipe_card))
+          .build();
+      payIntent.addTo(intent);
+      startActivityForResult(intent, VAULT_CARD_REQUEST_CODE);
+    } catch (Exception e) {
+      ALog.e(this, e, "Error capturing card data");
+      Toast.makeText(getApplicationContext(), "Error adding card: Vault Card failed to start the required activity", Toast.LENGTH_LONG).show();
+    }
   }
 
   private void setUpSaleRequest(SaleRequest request) {
@@ -1681,30 +1676,132 @@ public class MainActivity extends Activity {
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode == SECURE_PAY_REQUEST_CODE){
-      if (resultCode == RESULT_OK){
-        //Once the secure payment activity completes the result and its extras can be worked with
-        Payment payment = data.getParcelableExtra(Intents.EXTRA_PAYMENT);
-        Credit credit = data.getParcelableExtra(Intents.EXTRA_CREDIT);
-        lastPayment = payment;
-        Toast.makeText(getApplicationContext(), getString(R.string.payment_successful, lastOrder != null ? lastOrder.getId() : ""), Toast.LENGTH_SHORT).show();
-      } else {
-        Toast.makeText(getApplicationContext(), getString(R.string.payment_failed), Toast.LENGTH_SHORT).show();
-      }
-    } else {
-      if (requestCode == MANUAL_REFUND_REQUEST_CODE){
+    //Once the secure payment activity completes the result and its extras can be worked with
+    switch (requestCode) {
+      case SECURE_PAY_REQUEST_CODE :
         if (resultCode == RESULT_OK){
-          //Once the secure payment activity completes the result and its extras can be worked with
+          Payment payment = data.getParcelableExtra(Intents.EXTRA_PAYMENT);
+          lastPayment = payment;
+          Toast.makeText(getApplicationContext(), getString(R.string.payment_successful, lastOrder != null ? lastOrder.getId() : ""), Toast.LENGTH_SHORT).show();
+        } else {
+          Toast.makeText(getApplicationContext(), getString(R.string.payment_failed), Toast.LENGTH_LONG).show();
+        }
+        break;
+      case MANUAL_REFUND_REQUEST_CODE :
+        if (resultCode == RESULT_OK){
           Credit credit = data.getParcelableExtra(Intents.EXTRA_CREDIT);
           Toast.makeText(getApplicationContext(), getString(R.string.manual_refund_successful, lastOrder != null ? lastOrder.getId() : ""), Toast.LENGTH_SHORT).show();
         } else {
-          Toast.makeText(getApplicationContext(), getString(R.string.manual_refund_failed), Toast.LENGTH_SHORT).show();
+          Toast.makeText(getApplicationContext(), getString(R.string.manual_refund_failed), Toast.LENGTH_LONG).show();
         }
-      }
-
+        break;
+      case READ_CARD_DATA_REQUEST_CODE :
+        if (resultCode == RESULT_OK){
+          PaymentRequestCardDetails cardDetails = data.getParcelableExtra(Intents.EXTRA_CARD_DATA);
+          Toast.makeText(getApplicationContext(), getString(R.string.read_card_data_successful, cardDetails != null ? cardDetails.getTrack1() : ""), Toast.LENGTH_SHORT).show();
+        } else {
+          Toast.makeText(getApplicationContext(), getString(R.string.read_card_data_failed), Toast.LENGTH_LONG).show();
+        }
+        break;
+      case VAULT_CARD_REQUEST_CODE :
+        handleVaultCardResult(resultCode, data);
+        break;
+      default:
+        Toast.makeText(getApplicationContext(), getString(R.string.start_secure_pay_failed), Toast.LENGTH_LONG).show();
+        break;
     }
   }
 
+  private void handleVaultCardResult (int resultCode, Intent data) {
+    if (resultCode != RESULT_OK || !data.hasExtra(Intents.EXTRA_CARD_DATA)) {
+      Toast.makeText(getApplicationContext(), getString(R.string.vault_card_failed), Toast.LENGTH_LONG).show();
+      return;
+    }
+
+    final PaymentRequestCardDetails details = data.getParcelableExtra(Intents.EXTRA_CARD_DATA);
+
+    String uri = ServerPing.getTokenUrl(this, merchant.getId());
+    final String url = DeviceHttpClient.getCloudUri(this, uri).toString();
+
+    final PaymentRequest paymentRequest = new PaymentRequest();
+    paymentRequest.setCard(details);
+
+    // TODO: Should use remoteControlClient.doUiState(...) before task to show status and allow cancel on POS?
+
+    executeAsyncTask(HttpRequestTask.newPostRequest(this, url, paymentRequest, employee.getId(),
+        new Callback<String>() {
+          @Override
+          public void onSuccess(String result) {
+            if (isFinishing() || isDestroyed()) {
+              ALog.i(MainActivity.class, "Activity is not valid");
+              return;
+            }
+
+            if (result != null) {
+              vaultedCard = new VaultedCard(result);
+              // if the first 6 aren't 6 digits, then get the first 6(i.e. first4()) from the card details.
+              // For manual cards, first6 is "XXXXXX"
+              if (vaultedCard.getFirst6() == null || !vaultedCard.getFirst6().matches("\\d{6}")) {
+                vaultedCard.setFirst6(details.getFirst4());
+              }
+              ALog.d(this, "Token = " + vaultedCard.getToken());
+
+              runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                  Toast.makeText(getApplicationContext(), getString(R.string.vault_card_successful), Toast.LENGTH_SHORT).show();
+                }
+              });
+            } else {
+              vaultedCard = null;
+              ALog.e(this, "Error adding card: empty result from tokenization service");
+              runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                  Toast.makeText(getApplicationContext(), "Error adding card: empty result from tokenization service", Toast.LENGTH_LONG).show();
+                }
+              });
+            }
+          }
+
+          @Override
+          public void onFailure(int errorCode, String message) {
+            vaultedCard = null;
+            ALog.e(MainActivity.class, "Add card failed: " + errorCode + ", " + message);
+            boolean offline = clover != null && clover.getConnectionStatus() == Clover.ConnectionState.DISCONNECTED;
+            if (offline) {
+              ALog.e(this, "Error adding card: device is currently offline");
+              runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                  Toast.makeText(getApplicationContext(), "Error adding card: device is currently offline", Toast.LENGTH_LONG).show();
+                }
+              });
+            } else {
+              ALog.e(this, "Error adding card: empty result from tokenization service");
+              runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                  Toast.makeText(getApplicationContext(), "Error adding card: empty result from tokenization service", Toast.LENGTH_LONG).show();
+                }
+              });
+            }
+          }
+
+          @Override
+          public void onTransportError(Throwable ex, Context context) {
+            super.onTransportError(ex, context);
+            vaultedCard = null;
+            ALog.e(MainActivity.class, ex, "Transport error");
+            Toast.makeText(getApplicationContext(), "Error adding card: Transport error", Toast.LENGTH_LONG).show();
+          }
+        }));
+  }
+
+  private <Params> void executeAsyncTask(AsyncTask<Params, ?, ?> task, Params... params) {
+    // Use pool because thread interrupt does not affect IPC which will continue to hang
+    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
+  }
 
   protected boolean getBooleanFromCheckbox(int id) {
     CheckBox cb = (CheckBox)findViewById(id);
@@ -1844,4 +1941,275 @@ public class MainActivity extends Activity {
         Log.e("MainActivity", e.getMessage());
       }
   }
+}
+
+abstract class ServiceActivity
+    extends Activity
+    implements ServiceConnector.OnServiceConnectedListener, EmployeeConnector.OnActiveEmployeeChangedListener, CloverConnector.OnCloverChangedListener, OrderConnector.OnOrderUpdateListener{
+  @SuppressWarnings("unused")
+  private static final String TAG = "CommonActivity";
+
+  public enum CardReaderStatus {
+    CONNECTED(R.string.cardReaderStatusConnected), DISCONNECTED(R.string.cardReaderStatusDisconnected);
+
+    private final int messageId;
+    CardReaderStatus(int messageId) {
+      this.messageId = messageId;
+    }
+  }
+
+  public static final String MERCHANT_CONNECTOR = "merchant";
+  public static final String EMPLOYEE_CONNECTOR = "employee";
+  public static final String CLOVER_CONNECTOR = "clover";
+  public static final String CUSTOMER_CONNECTOR = "customer";
+  public static final String PRINTER_CONNECTOR = "printer";
+  public static final String SHIFT_CONNECTOR = "shift";
+  public static final String INVENTORY_CONNECTOR = "inventory";
+  public static final String ORDER_CONNECTOR = "order";
+
+  private static final int MAX_SERVICE_RETRY_ATTEMPTS = 5;
+  private static final int SERVICE_REBIND_DELAY = 2000;
+  private static final int MSG_REBIND = 0;
+
+  protected Merchant merchant = null;
+  protected Employee employee = null;
+  protected CloverConnector cloverConnector;
+  protected EmployeeConnector employeeConnector;
+  protected OrderConnector orderConnector;
+
+  protected Clover clover = null;
+  protected CardReaderStatus cardReaderStatus = CardReaderStatus.DISCONNECTED;
+  protected CardReader cardReader;
+  protected Account account = null;
+  ServiceConnectorManager mServiceConnectorManager;
+
+  boolean setupComplete;
+  long resumeTimestamp;
+
+  private final CardReader.CardReadReceiver readCardReceiver = new CardReader.CardReadReceiver() {
+    @Override
+    protected void onReadCardSuccess(ReadCardResult result) {
+      cardReaderStatus = CardReaderStatus.CONNECTED;
+      onCardReaderConnected();
+      invalidateOptionsMenu();
+    }
+
+    @Override
+    protected void onReadCardEmpty() {
+      cardReaderStatus = CardReaderStatus.CONNECTED;
+      onCardReaderConnected();
+      invalidateOptionsMenu();
+    }
+
+    @Override
+    protected void onReadCardFailure(int reason, String message) {
+    }
+  };
+  private final ScreenReceiver screenReceiver = new ScreenReceiver(this) {
+    @Override
+    protected void onScreenOff() {
+      cardReaderStatus = CardReaderStatus.DISCONNECTED;
+      onCardReaderDisconnected();
+      invalidateOptionsMenu();
+    }
+
+    @Override
+    protected void onScreenOn() {
+    }
+  };
+  private final CardReader.OpenReaderReceiver openReaderReceiver = new CardReader.OpenReaderReceiver() {
+    @Override
+    protected void onOpenReaderSuccess() {
+    }
+
+    @Override
+    protected void onOpenReaderFailure() {
+      cardReaderStatus = CardReaderStatus.DISCONNECTED;
+      onCardReaderDisconnected();
+      invalidateOptionsMenu();
+    }
+
+    @Override
+    protected void onReaderClose() {
+      cardReaderStatus = CardReaderStatus.DISCONNECTED;
+      onCardReaderDisconnected();
+      invalidateOptionsMenu();
+    }
+  };
+
+  @Override
+  public void onCreate(Bundle savedInstance) {
+    ALog.i(this, "%s +onCreate: %s", this, savedInstance);
+    super.onCreate(savedInstance);
+    // Retrieve the Clover account
+    if (account == null) {
+      account = CloverAccount.getAccount(this);
+
+      // If an account can't be acquired, exit the app
+      if (account == null) {
+        Toast.makeText(this, getString(R.string.no_account), Toast.LENGTH_SHORT).show();
+        finish();
+        return;
+      }
+    }
+    mServiceConnectorManager = new ServiceConnectorManager(this.getApplicationContext(), account, this);
+    this.cardReader = new CardReader(this);
+    if (!mServiceConnectorManager.connect()) {
+      finish();
+      return;
+    }
+
+    cloverConnector = mServiceConnectorManager.getConnector(CommonActivity.CLOVER_CONNECTOR);
+    cloverConnector.addOnCloverChangedListener(this);
+
+    employeeConnector = mServiceConnectorManager.getConnector(CommonActivity.EMPLOYEE_CONNECTOR);
+    employeeConnector.addOnActiveEmployeeChangedListener(this);
+
+    orderConnector = mServiceConnectorManager.getConnector(CommonActivity.ORDER_CONNECTOR);
+    orderConnector.addOnOrderChangedListener(this);
+    ALog.i(this, "%s -onCreate", this);
+  }
+
+  @Override
+  protected void onPostCreate(Bundle savedInstanceState) {
+    super.onPostCreate(savedInstanceState);
+    if (allServicesAreConnected()) {
+      new Thread(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            clover = cloverConnector.getClover();
+          } catch (RemoteException e) {
+            e.printStackTrace();
+          } catch (ClientException e) {
+            e.printStackTrace();
+          } catch (ServiceException e) {
+            e.printStackTrace();
+          } catch (BindingException e) {
+            e.printStackTrace();
+          }
+          try {
+            employee = employeeConnector.getEmployee();
+          } catch (RemoteException e) {
+            e.printStackTrace();
+          } catch (ClientException e) {
+            e.printStackTrace();
+          } catch (ServiceException e) {
+            e.printStackTrace();
+          } catch (BindingException e) {
+            e.printStackTrace();
+          }
+        }
+      }).start();
+    }
+  }
+
+
+  @Override
+  public void onResume() {
+    ALog.i(this, "%s +onResume", this);
+    super.onResume();
+    resumeTimestamp = SystemClock.elapsedRealtime();
+
+    cardReader.register(readCardReceiver);
+    cardReader.register(openReaderReceiver);
+    screenReceiver.register();
+    setupComplete = allServicesAreConnected();
+    ALog.i(this, "%s -onResume", this);
+  }
+
+  private boolean allServicesAreConnected() {
+    if (employeeConnector != null && cloverConnector != null && orderConnector != null) {
+      return true;
+    }
+    return false;
+  }
+  public <S extends ServiceConnector> S getConnector(String connectorId) {
+    return mServiceConnectorManager.getConnector(connectorId);
+  }
+
+  @Override
+  public void onPause() {
+    ALog.i(this, "%s +onPause", this);
+    setupComplete = false;
+    cardReader.unregister(readCardReceiver);
+    cardReader.unregister(openReaderReceiver);
+    screenReceiver.unregister();
+    super.onPause();
+    ALog.i(this, "%s -onPause", this);
+  }
+
+  @Override
+  protected void onDestroy() {
+    ALog.i(this, "%s +onDestroy", this);
+    CloverConnector cloverConnector = (CloverConnector) mServiceConnectorManager.get(CommonActivity.CLOVER_CONNECTOR);
+    if (cloverConnector != null) {
+      cloverConnector.removeOnCloverChangedListener(this);
+    }
+
+    EmployeeConnector employeeConnector = (EmployeeConnector) mServiceConnectorManager.get(CommonActivity.EMPLOYEE_CONNECTOR);
+    if (employeeConnector != null) {
+      employeeConnector.removeOnActiveEmployeeChangedListener(this);
+    }
+
+    OrderConnector orderConnector = (OrderConnector) mServiceConnectorManager.get(CommonActivity.ORDER_CONNECTOR);
+    if (orderConnector != null) {
+      orderConnector.removeOnOrderChangedListener(this);
+    }
+
+    disconnect();
+
+    super.onDestroy();
+    ALog.i(this, "%s -onDestroy", this);
+  }
+
+  @Override
+  public void onServiceConnected(ServiceConnector connector) {
+    ALog.d(this, "%s service connected: %s", this, connector);
+  }
+
+  @Override
+  public void onServiceDisconnected(ServiceConnector connector) {
+    ALog.i(this, "%s %s", this, connector);
+    mServiceConnectorManager.removeConnector(connector);
+  }
+
+  public void disconnect() {
+    mServiceConnectorManager.disconnect();
+  }
+
+  protected void onCardReaderConnected() {
+  }
+
+  protected void onCardReaderDisconnected() {
+  }
+
+  public CardReaderStatus getCardReaderStatus() {
+    return cardReaderStatus;
+  }
+
+  @Override
+  public void onActiveEmployeeChanged(final Employee employee) {
+    ALog.i(this, "%s employee changed: %s", this, employee);
+    this.employee = employee;
+  }
+
+  @Override
+  public void onCloverChanged(Clover clover) {
+    ALog.i(this, "%s clover changed: %s", this, clover);
+    this.clover = clover;
+    this.merchant = clover.getMerchant();
+  }
+
+  @Override
+  public void onOrderUpdated(String orderId, boolean selfChange) {
+    ALog.i(this, "%s order changed: %s", this, orderId);
+  }
+
+  @Override
+  public void finish() {
+    super.finish();
+    ALog.i(this, "%s finish", this);
+  }
+
 }

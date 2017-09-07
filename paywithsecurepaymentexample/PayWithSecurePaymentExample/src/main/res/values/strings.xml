@@ -2,9 +2,8 @@
 <resources>
 
   <string name="app_name">PayWithSecurePaymentExample</string>
-
   <string name="no_account">There is no Clover account.</string>
-
+  <string name="services_not_connected">The required services are not yet connected.</string>
   <string name="payintent_title">Intent Operations</string>
 
   <string name="btn_txt_sale">Sale</string>
@@ -49,13 +48,23 @@
 
   <string name="retrieve_pending_payments_failed">Retrieve Pending Payments not successful</string>
 
+  <string name="read_card_data_successful">Read Card Data call succeeded - Track1 Data = %1$s</string>
+
+  <string name="read_card_data_failed">Read Card Data call not successful</string>
+
   <string name="manual_refund_successful">Manual Refund Succeeded for Order: %1$s</string>
 
   <string name="manual_refund_failed">Manual Refund Not Successful</string>
 
+  <string name="vault_card_successful">Vault Card Successful</string>
+
+  <string name="vault_card_failed">Vault Card Not Successful</string>
+
   <string name="payment_successful">Payment Succeeded for Order: %1$s</string>
 
   <string name="payment_failed">Payment Not Successful</string>
+
+  <string name="start_secure_pay_failed">Start Secure Pay Not Successful</string>
 
   <string name="payment_amount">Payment Amount</string>
 
@@ -116,5 +125,7 @@
   <string name="signature_entry_location">Signature Entry Location:</string>
 
   <string name="signature_threshold">Signature Threshold</string>
+
+  <string name="insert_or_swipe_card">Insert or Swipe Card</string>
 
 </resources>
