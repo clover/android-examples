@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-  compile 'com.clover.sdk:clover-android-connector-sdk:182-SNAPSHOT'
+  compile 'com.clover.sdk:clover-android-connector-sdk:184-SNAPSHOT'
   compile 'com.clover:common-payments:208-SNAPSHOT@aar'
   compile 'com.clover:common:208-SNAPSHOT'
 }

@@ -31,6 +31,7 @@ import com.clover.sdk.util.Platform;
 import com.clover.sdk.v1.BindingException;
 import com.clover.sdk.v1.ClientException;
 import com.clover.sdk.v1.Intents;
+import com.clover.sdk.v1.ResultStatus;
 import com.clover.sdk.v1.ServiceConnector;
 import com.clover.sdk.v1.ServiceException;
 import com.clover.sdk.v1.merchant.Merchant;
@@ -45,9 +46,13 @@ import com.clover.sdk.v3.order.OrderConnector;
 import com.clover.sdk.v3.order.VoidReason;
 import com.clover.sdk.v3.pay.PaymentRequest;
 import com.clover.sdk.v3.pay.PaymentRequestCardDetails;
+import com.clover.sdk.v3.payments.CardTransaction;
+import com.clover.sdk.v3.payments.CardTransactionState;
+import com.clover.sdk.v3.payments.CardTransactionType;
 import com.clover.sdk.v3.payments.Credit;
 import com.clover.sdk.v3.payments.DataEntryLocation;
 import com.clover.sdk.v3.payments.Payment;
+import com.clover.sdk.v3.payments.Result;
 import com.clover.sdk.v3.payments.TipMode;
 import com.clover.sdk.v3.payments.TransactionSettings;
 import com.clover.sdk.v3.payments.VaultedCard;
@@ -55,6 +60,7 @@ import com.clover.sdk.v3.remotepay.AuthRequest;
 import com.clover.sdk.v3.remotepay.AuthResponse;
 import com.clover.sdk.v3.remotepay.CapturePreAuthRequest;
 import com.clover.sdk.v3.remotepay.CapturePreAuthResponse;
+import com.clover.sdk.v3.remotepay.CloseoutRequest;
 import com.clover.sdk.v3.remotepay.CloseoutResponse;
 import com.clover.sdk.v3.remotepay.ConfirmPaymentRequest;
 import com.clover.sdk.v3.remotepay.ManualRefundRequest;
@@ -66,6 +72,7 @@ import com.clover.sdk.v3.remotepay.ReadCardDataRequest;
 import com.clover.sdk.v3.remotepay.ReadCardDataResponse;
 import com.clover.sdk.v3.remotepay.RefundPaymentRequest;
 import com.clover.sdk.v3.remotepay.RefundPaymentResponse;
+import com.clover.sdk.v3.remotepay.RetrievePaymentRequest;
 import com.clover.sdk.v3.remotepay.RetrievePaymentResponse;
 import com.clover.sdk.v3.remotepay.RetrievePendingPaymentsResponse;
 import com.clover.sdk.v3.remotepay.SaleRequest;
@@ -128,9 +135,6 @@ public class MainActivity extends ServiceActivity {
 
   private enum PaymentType {SALE, AUTH, PREAUTH, CREDIT}
 
-  private Payment lastPayment = null;
-  private VaultedCard vaultedCard = null;
-
   private Button saleButton;
   private Button authButton;
   private Button preauthButton;
@@ -154,8 +158,17 @@ public class MainActivity extends ServiceActivity {
   private Button connectorButton_vault_card;
   private Button connectorButton_read_card_data;
   private Button connectorButton_manual_refund;
+  private Button connectorButton_retrieve_payment;
+  private Button connectorButton_closeout;
+
   private Order lastOrder = null;
   private boolean isStation;
+  private boolean allowOpenTabs = false;
+  private Payment lastPayment = null;
+  public boolean isSale = false;
+  public boolean isAuth = false;
+  public boolean isPreAuth = false;
+  private VaultedCard vaultedCard = null;
 
   final IPaymentConnectorListener paymentConnectorListener = new IPaymentConnectorListener() {
 
@@ -177,6 +190,12 @@ public class MainActivity extends ServiceActivity {
         Toast.makeText(MainActivity.this.getApplicationContext(), MainActivity.this.getString(R.string.payment_ext_id,
             payment.getExternalPaymentId()), Toast.LENGTH_LONG).show();
         setLastPayment(payment);
+        String orderId = payment.hasOrder() ? payment.getOrder().getId() : null;
+        if (orderId != null) {
+          new SetLastOrderAsyncTask(orderId).execute();
+        }
+        EditText externalIdText = (EditText)findViewById(R.id.external_txn_id_edit_text);
+        externalIdText.setText(payment.getExternalPaymentId());
       } else {
         Toast.makeText(MainActivity.this.getApplicationContext(), MainActivity.this.getString(R.string.payment_null), Toast.LENGTH_LONG).show();
         setLastPayment(null);
@@ -205,8 +224,21 @@ public class MainActivity extends ServiceActivity {
     @Override
     public void onCapturePreAuthResponse(CapturePreAuthResponse response) {
       Log.d(this.getClass().getSimpleName(), "onCapturePreAuthResponse " + response);
+
+      // Below is some super hacky code to allow the UI to reset the buttons properly
+      // The modified payment doesn't get returned after the capture, so it needs to
+      // be massaged to look like a normal auth (tip-adjustable)
+      Payment modifiedPayment = lastPayment;
+      CardTransaction ct = lastPayment.getCardTransaction();
+      ct.setType(CardTransactionType.PREAUTH);
+      ct.setState(CardTransactionState.PENDING);
+      modifiedPayment.setCardTransaction(ct);
+      modifiedPayment.setResult(Result.SUCCESS);
+      modifiedPayment.setAmount(response.getAmount());
+      modifiedPayment.setTipAmount(response.getTipAmount());
+      setLastPayment(modifiedPayment); // This resets the payment and the button states
+
       displayoutput(response);
-      lastPayment = null;
     }
 
     @Override
@@ -237,6 +269,7 @@ public class MainActivity extends ServiceActivity {
     public void onRefundPaymentResponse(RefundPaymentResponse response) {
       Log.d(this.getClass().getSimpleName(), "onRefundPaymentResponse " + response);
       displayoutput(response);
+      setLastPayment(null);
     }
 
     public void onTipAdded(TipAdded response) {
@@ -248,6 +281,7 @@ public class MainActivity extends ServiceActivity {
     public void onVoidPaymentResponse(VoidPaymentResponse response) {
       Log.d(this.getClass().getSimpleName(), "onVoidPaymentResponse " + response);
       displayoutput(response);
+      setLastPayment(null);
     }
 
     @Override
@@ -308,11 +342,73 @@ public class MainActivity extends ServiceActivity {
     }
   };
 
+  public void setLastOrder(Order order) {
+    lastOrder = order;
+    EditText orderIdText = (EditText)findViewById(R.id.order_id_edit_text);
+    if (lastOrder != null) {
+      orderIdText.setText(order.getId());
+    } else {
+      orderIdText.setText("");
+    }
+  }
+
   public void setLastPayment(Payment lastPayment) {
     this.lastPayment = lastPayment;
-    connectorButton_full_refund.setEnabled(lastPayment != null);
-    connectorButton_void.setEnabled(lastPayment != null);
-    connectorButton_capturepreauth.setEnabled(lastPayment != null);
+    if (lastPayment != null) {
+      if (lastPayment.getCardTransaction() != null && lastPayment.getCardTransaction().getType() != null) {
+        if (lastPayment.getCardTransaction().getType().equals(CardTransactionType.PREAUTH)) {
+          if (lastPayment.getResult().equals(Result.SUCCESS)) {
+            isAuth = true;
+            isSale = false;
+            isPreAuth = false;
+          } else {
+            isPreAuth = true;
+            isAuth = false;
+            isSale = false;
+          }
+        } else {
+          if (lastPayment.getCardTransaction().getType().equals(CardTransactionType.AUTH)) {
+            isSale = true;
+            isAuth = false;
+            isPreAuth = false;
+          }
+        }
+      } else {
+        if (lastPayment.getOffline()) {
+          isSale = true;
+          isAuth = false;
+          isPreAuth = false;
+        }
+      }
+    } else {
+      isSale = false;
+      isAuth = false;
+      isPreAuth = false;
+    }
+    setButtonStates();
+  }
+
+  public void setButtonStates() {
+    tipadjustButton.setEnabled(lastPayment != null && isAuth);
+    capturePreauthButton.setEnabled(!isStation && lastPayment != null && isPreAuth);
+    voidButton.setEnabled(lastPayment != null && (isSale || isAuth));
+    refundButton.setEnabled(lastPayment != null && (isSale || isAuth));
+
+    connectorButton_full_refund.setEnabled(lastPayment != null && (isSale || isAuth));
+    connectorButton_void.setEnabled(lastPayment != null && (isSale || isAuth));
+    connectorButton_capturepreauth.setEnabled(lastPayment != null && isPreAuth);
+    connectorButton_tip_adjust.setEnabled(lastPayment != null && isAuth);
+  }
+
+  public void onPaymentIntentResponse(Intent intent) {
+    Payment payment = intent.getParcelableExtra(Intents.EXTRA_PAYMENT);
+    if (payment != null) {
+      setLastPayment(payment);
+      new SetLastOrderAsyncTask(payment.getOrder().getId());
+    } else {
+      setLastPayment(null);
+      setLastOrder(null);
+    }
   }
 
   public void setVaultedCard(VaultCardResponse response) {
@@ -362,7 +458,7 @@ public class MainActivity extends ServiceActivity {
       if(lp != null)
       {
         Log.d("MainActivity", "Restoring last payment");
-        this.lastPayment = (Payment) lp;
+        setLastPayment((Payment)lp);
       }
     }
   }
@@ -381,8 +477,6 @@ public class MainActivity extends ServiceActivity {
       Toast.makeText(this, getString(R.string.services_not_connected), Toast.LENGTH_LONG).show();
       return;
     }
-    isStation = Platform.isCloverStation();
-
     // Create and Connect
     connectToPaymentService();
 
@@ -395,10 +489,6 @@ public class MainActivity extends ServiceActivity {
     capturePreauthButton = (Button) findViewById(R.id.capturepreauth_button);
     voidButton = (Button) findViewById(R.id.void_button);
     refundButton = (Button) findViewById(R.id.full_refund_button);
-    tipadjustButton.setEnabled(lastPayment != null);
-    capturePreauthButton.setEnabled(!isStation && lastPayment != null);
-    voidButton.setEnabled(lastPayment != null);
-    refundButton.setEnabled(lastPayment != null);
     rppButton = (Button) findViewById(R.id.button_rpp);
     rppButton.setEnabled(!isStation);
 
@@ -412,9 +502,7 @@ public class MainActivity extends ServiceActivity {
     manualRefundButton.setEnabled(!isStation);
 
     connectorButton_void = (Button) findViewById(R.id.connector_button_void);
-    connectorButton_void.setEnabled(lastPayment != null);
     connectorButton_capturepreauth = (Button) findViewById(R.id.connector_button_capturepreauth);
-    connectorButton_capturepreauth.setEnabled(lastPayment != null);
 
     connectorButton_sale = (Button) findViewById(R.id.connector_button_sale);
     connectorButton_auth = (Button) findViewById(R.id.connector_button_auth);
@@ -425,19 +513,29 @@ public class MainActivity extends ServiceActivity {
     connectorButton_manual_refund = (Button) findViewById(R.id.connector_button_manual_refund);
 
     connectorButton_full_refund = (Button) findViewById(R.id.connector_button_full_refund);
-    connectorButton_full_refund.setEnabled(lastPayment != null);
     connectorButton_tip_adjust = (Button) findViewById(R.id.connector_button_tip_adjust);
-    connectorButton_tip_adjust.setEnabled(lastPayment != null);
     connectorButton_void = (Button) findViewById(R.id.connector_button_void);
-    connectorButton_void.setEnabled(lastPayment != null);
     connectorButton_capturepreauth = (Button) findViewById(R.id.connector_button_capturepreauth);
-    connectorButton_capturepreauth.setEnabled(lastPayment != null);
+    connectorButton_retrieve_payment = (Button) findViewById(R.id.connector_button_retrieve_payment);
+    connectorButton_retrieve_payment.setEnabled(true);
+    connectorButton_closeout = (Button) findViewById(R.id.connector_button_closeout);
+    connectorButton_closeout.setEnabled(true);
+
+    setButtonStates(); //initializes button enabling based on the current value of lastPayment
 
     CheckBox magStripeCheckBox = (CheckBox) findViewById(R.id.mag_stripe_check_box);
     CheckBox chipCardCheckBox = (CheckBox) findViewById(R.id.chip_card_check_box);
     CheckBox nfcCheckBox = (CheckBox) findViewById(R.id.nfc_check_box);
     CheckBox manualEntryCheckBox = (CheckBox) findViewById(R.id.manual_entry_check_box);
     CheckBox showAdvancedCheckbox = (CheckBox) findViewById(R.id.show_advanced_check_box);
+    CheckBox allowOpenTabsCheckbox = (CheckBox) findViewById(R.id.allow_open_tabs_check_box);
+
+    allowOpenTabsCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        allowOpenTabs = isChecked;
+      }
+    });
 
     //These methods toggle the bitvalue storing which card entry methods are allowed
     magStripeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -675,6 +773,26 @@ public class MainActivity extends ServiceActivity {
       }
     });
 
+    connectorButton_retrieve_payment.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        String externalPaymentId = getStringFromEditText(R.id.external_txn_id_edit_text);
+        if (externalPaymentId == null) {
+          Toast.makeText(getApplicationContext(), getString(R.string.external_payment_id_null), Toast.LENGTH_LONG).show();
+        } else {
+          startPaymentConnector_retrievePayment(externalPaymentId);
+        }
+      }
+    });
+
+    connectorButton_closeout.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        String batchId = getStringFromEditText(R.id.batch_id_edit_text);
+        startPaymentConnector_closeout(batchId, allowOpenTabs);
+      }
+    });
+
     amountHandler = new CurrencyTextHandler((EditText)findViewById(R.id.amount_edit_text));
     tipAmountHandler = new CurrencyTextHandler((EditText)findViewById(R.id.tip_amount_edit_text));
 
@@ -880,6 +998,44 @@ public class MainActivity extends ServiceActivity {
     }
   }
 
+  // gets an order using the id
+  private class SetLastOrderAsyncTask extends AsyncTask<Void, Void, Order> {
+
+    private String orderId;
+    public SetLastOrderAsyncTask(String orderId) {
+      super();
+      this.orderId = orderId;
+    }
+
+    @Override
+    protected final Order doInBackground(Void... params) {
+      Order mOrder;
+      try {
+          mOrder = orderConnector.getOrder(orderId);
+          return mOrder;
+      } catch (RemoteException e) {
+        e.printStackTrace();
+      } catch (ClientException e) {
+        e.printStackTrace();
+      } catch (ServiceException e) {
+        e.printStackTrace();
+      } catch (BindingException e) {
+        e.printStackTrace();
+      }
+      return null;
+    }
+
+    @Override
+    protected final void onPostExecute(Order order) {
+      if (!isFinishing()) {
+        if (order != null) {
+          setLastOrder(order);
+          Toast.makeText(getApplicationContext(), "Order found for the provided ID", Toast.LENGTH_LONG).show();
+        }
+      }
+    }
+  }
+
   // Creates a new order w/ the first inventory item
   private class OrderAsyncTask extends AsyncTask<Void, Void, Order> {
 
@@ -926,11 +1082,8 @@ public class MainActivity extends ServiceActivity {
 
     @Override
     protected final void onPostExecute(Order order) {
-      // Enables the pay buttons if the order is valid
       if (!isFinishing()) {
-        MainActivity.this.lastOrder = order;
-        EditText orderIdText = (EditText)findViewById(R.id.order_id_edit_text);
-        orderIdText.setText(order.getId());
+        setLastOrder(order);
       }
     }
   }
@@ -995,6 +1148,10 @@ public class MainActivity extends ServiceActivity {
         } else {
           clover = cloverIn;
         }
+        EditText amountText = (EditText)findViewById(R.id.amount_edit_text);
+        amountText.setText(lastOrder.getTotal() + "");
+        EditText externalIdText = (EditText)findViewById(R.id.external_txn_id_edit_text);
+        externalIdText.setText("");
       }
     }
   }
@@ -1086,10 +1243,36 @@ public class MainActivity extends ServiceActivity {
     paymentConnector.manualRefund(request);
   }
 
+  private void startPaymentConnector_retrievePayment(String externalPaymentId) {
+    if (externalPaymentId != null) {
+      final RetrievePaymentRequest request = new RetrievePaymentRequest();
+      request.setExternalPaymentId(externalPaymentId);
+      request.validate();
+      Log.i(this.getClass().getSimpleName(), request.toString());
+      paymentConnector.retrievePayment(request);
+    } else {
+      Toast.makeText(getApplicationContext(), getString(R.string.external_payment_id_null), Toast.LENGTH_LONG).show();
+    }
+  }
+
+  private void startPaymentConnector_closeout(String batchId, boolean allowOpenTabs) {
+    final CloseoutRequest request = new CloseoutRequest();
+    request.setBatchId(batchId);
+    request.setAllowOpenTabs(allowOpenTabs);
+    request.validate();
+    Log.i(this.getClass().getSimpleName(), request.toString());
+    paymentConnector.closeout(request);
+  }
+
   private void startPaymentConnector_sale() {
     final SaleRequest request = new SaleRequest();
     setUpSaleRequest(request);
-    request.validate();
+    try {
+      request.validate();
+    } catch (IllegalArgumentException e) {
+      Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+      return;
+    }
     Log.i(this.getClass().getSimpleName(), request.toString());
     paymentConnector.sale(request);
   }
@@ -1097,7 +1280,12 @@ public class MainActivity extends ServiceActivity {
   private void startPaymentConnector_auth() {
     final AuthRequest request = new AuthRequest();
     setUpAuthRequest(request);
-    request.validate();
+    try {
+      request.validate();
+    } catch (IllegalArgumentException e) {
+      Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+      return;
+    }
     Log.i(this.getClass().getSimpleName(), request.toString());
     paymentConnector.auth(request);
   }
@@ -1109,7 +1297,12 @@ public class MainActivity extends ServiceActivity {
     } catch (ParseException pe) {
       Toast.makeText(getApplicationContext(), getString(R.string.invalid_amount), Toast.LENGTH_LONG).show();
     }
-    request.validate();
+    try {
+      request.validate();
+    } catch (IllegalArgumentException e) {
+      Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+      return;
+    }
     Log.i(this.getClass().getSimpleName(), request.toString());
     paymentConnector.preAuth(request);
   }
@@ -1131,18 +1324,19 @@ public class MainActivity extends ServiceActivity {
     }
 
     try{
-      Long tipAmount = tipAmountHandler.getValue();
-      if (tipAmount != null) {
-        request.setTipAmount(tipAmount);
-      } else {
-        Toast.makeText(getApplicationContext(), "Tip amount must have a numeric value", Toast.LENGTH_LONG).show();
-      }
+      Long tipAmount = tipAmountHandler.getValue() != null ? tipAmountHandler.getValue() : 0L;
+      request.setTipAmount(tipAmount);
     } catch (ParseException e) {
       Log.e(this.getClass().getSimpleName(), " capture preauth", e);
       Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
       return;
     }
-    request.validate();
+    try {
+      request.validate();
+    } catch (IllegalArgumentException e) {
+      Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+      return;
+    }
     Log.i(this.getClass().getSimpleName(), request.toString());
     paymentConnector.capturePreAuth(request);
   }
@@ -1191,7 +1385,7 @@ public class MainActivity extends ServiceActivity {
         OrderAsyncTask oat = new OrderAsyncTask();
         oat.execute();
         try {
-          lastOrder = oat.get();
+          setLastOrder(oat.get());
           if (lastOrder != null) {
             intent.putExtra(Intents.EXTRA_ORDER_ID, lastOrder.getId());
           } else {
@@ -1380,14 +1574,29 @@ public class MainActivity extends ServiceActivity {
       protected void onReceiveResult(int resultCode, Bundle resultInfo) {
         if (resultCode == 0) {
           boolean success = resultInfo.getBoolean(ResultIntentService.SUCCESS_TAG, true);
-          String paymentId = resultInfo.getString(SecurePay.EXTRA_PAYMENT_ID);
           if (!success) {
             String msg = resultInfo.getString(ResultIntentService.RESULT_ERR_MSG);
             Toast.makeText(getApplicationContext(), getString(R.string.capture_preauth_failed) + " - " + msg, Toast.LENGTH_LONG).show();
             return;
           }
+          String paymentId = resultInfo.getString(SecurePay.EXTRA_PAYMENT_ID);
+          String orderId = resultInfo.getString(SecurePay.EXTRA_ORDER_ID);
+
+          // Below is some super hacky code to allow the UI to reset the buttons properly
+          // The modified payment doesn't get returned after the capture, so it needs to
+          // be massaged to look like a normal auth (tip-adjustable)
+          new SetLastOrderAsyncTask(orderId);
+          Payment modifiedPayment = lastPayment;
+          CardTransaction ct = lastPayment.getCardTransaction();
+          ct.setType(CardTransactionType.PREAUTH);
+          ct.setState(CardTransactionState.PENDING);
+          modifiedPayment.setCardTransaction(ct);
+          modifiedPayment.setResult(Result.SUCCESS);
           long amount = resultInfo.getLong(CapturePreAuthService.PAY_AMOUNT);
           long tipAmount = resultInfo.getLong(ResultIntentService.EXTRA_TIP_AMOUNT);
+          modifiedPayment.setAmount(amount);
+          modifiedPayment.setTipAmount(tipAmount);
+          setLastPayment(modifiedPayment); // This resets the payment and the button states
 
           Toast.makeText(getApplicationContext(), getString(R.string.capture_preauth_successful, paymentId, amount, tipAmount), Toast.LENGTH_SHORT).show();
         }
@@ -1408,6 +1617,8 @@ public class MainActivity extends ServiceActivity {
             Toast.makeText(getApplicationContext(), getString(R.string.refund_failed) + " - " + msg, Toast.LENGTH_LONG).show();
             return;
           }
+          setLastPayment(null);
+          setLastOrder(null);
           Toast.makeText(getApplicationContext(), getString(R.string.refund_successful, paymentId, amount), Toast.LENGTH_SHORT).show();
         }
       }
@@ -1427,6 +1638,8 @@ public class MainActivity extends ServiceActivity {
             Toast.makeText(getApplicationContext(), getString(R.string.void_failed) + " - " + msg, Toast.LENGTH_LONG).show();
             return;
           }
+          setLastPayment(null);
+          setLastOrder(null);
           Toast.makeText(getApplicationContext(), getString(R.string.void_successful, paymentId), Toast.LENGTH_SHORT).show();
         }
       }
@@ -1680,8 +1893,7 @@ public class MainActivity extends ServiceActivity {
     switch (requestCode) {
       case SECURE_PAY_REQUEST_CODE :
         if (resultCode == RESULT_OK){
-          Payment payment = data.getParcelableExtra(Intents.EXTRA_PAYMENT);
-          lastPayment = payment;
+          onPaymentIntentResponse(data);
           Toast.makeText(getApplicationContext(), getString(R.string.payment_successful, lastOrder != null ? lastOrder.getId() : ""), Toast.LENGTH_SHORT).show();
         } else {
           Toast.makeText(getApplicationContext(), getString(R.string.payment_failed), Toast.LENGTH_LONG).show();
@@ -1689,7 +1901,6 @@ public class MainActivity extends ServiceActivity {
         break;
       case MANUAL_REFUND_REQUEST_CODE :
         if (resultCode == RESULT_OK){
-          Credit credit = data.getParcelableExtra(Intents.EXTRA_CREDIT);
           Toast.makeText(getApplicationContext(), getString(R.string.manual_refund_successful, lastOrder != null ? lastOrder.getId() : ""), Toast.LENGTH_SHORT).show();
         } else {
           Toast.makeText(getApplicationContext(), getString(R.string.manual_refund_failed), Toast.LENGTH_LONG).show();
@@ -1713,7 +1924,7 @@ public class MainActivity extends ServiceActivity {
   }
 
   private void handleVaultCardResult (int resultCode, Intent data) {
-    if (resultCode != RESULT_OK || !data.hasExtra(Intents.EXTRA_CARD_DATA)) {
+    if (resultCode != RESULT_OK || data == null || !data.hasExtra(Intents.EXTRA_CARD_DATA)) {
       Toast.makeText(getApplicationContext(), getString(R.string.vault_card_failed), Toast.LENGTH_LONG).show();
       return;
     }
@@ -1924,17 +2135,18 @@ public class MainActivity extends ServiceActivity {
   @Override
   public void onRestoreInstanceState(Bundle savedInstanceState) {
       super.onRestoreInstanceState(savedInstanceState);
+      isStation = Platform.isCloverStation();
 
       try{
         Object lp = savedInstanceState.getParcelable("lastPayment");
         if(lp != null)
         {
-          this.lastPayment = (Payment) lp;
+          setLastPayment((Payment) lp);
         }
         Object ord = savedInstanceState.getParcelable("lastOrder");
         if(ord != null)
         {
-          this.lastOrder = (Order) ord;
+          setLastOrder((Order) ord);
         }
       }catch(Exception e)
       {
@@ -2079,6 +2291,7 @@ abstract class ServiceActivity
         public void run() {
           try {
             clover = cloverConnector.getClover();
+            merchant = clover.getMerchant();
           } catch (RemoteException e) {
             e.printStackTrace();
           } catch (ClientException e) {

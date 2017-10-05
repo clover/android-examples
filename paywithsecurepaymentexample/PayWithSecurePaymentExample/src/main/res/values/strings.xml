@@ -6,17 +6,19 @@
   <string name="services_not_connected">The required services are not yet connected.</string>
   <string name="payintent_title">Intent Operations</string>
 
-  <string name="btn_txt_sale">Sale</string>
-  <string name="btn_txt_auth">Auth</string>
-  <string name="btn_txt_full_refund">Full Refund</string>
-  <string name="btn_txt_tip_adjust">Tip Adjust Auth</string>
-  <string name="btn_txt_void">Void</string>
-  <string name="btn_txt_rpp">Retrieve Pending Payments</string>
-  <string name="btn_txt_manual_refund">Manual Refund</string>
-  <string name="btn_txt_vault_card">Vault Card</string>
-  <string name="btn_txt_read_card_data">Read Card Data</string>
-  <string name="btn_txt_preauth">Pre Auth</string>
-  <string name="btn_txt_capturepreauth">Capture Pre Auth</string>
+  <string name="connector_sale">Sale</string>
+  <string name="connector_auth">Auth</string>
+  <string name="connector_full_refund">Full Refund</string>
+  <string name="connector_tip_adjust">Tip Adjust</string>
+  <string name="connector_void">Void</string>
+  <string name="connector_rpp">Retrieve Pending Payments</string>
+  <string name="connector_manual_refund">Manual Refund</string>
+  <string name="connector_vault_card">Vault Card</string>
+  <string name="connector_read_card_data">Read Card Data</string>
+  <string name="connector_preauth">Pre Auth</string>
+  <string name="connector_capturepreauth">Capture Pre Auth</string>
+  <string name="connector_retrieve_payment">Retrieve Payment</string>
+  <string name="connector_closeout">Closeout</string>
 
 
   <string name="connector_title">Connector Operations</string>
@@ -128,4 +130,9 @@
 
   <string name="insert_or_swipe_card">Insert or Swipe Card</string>
 
+  <string name="batch_id">Batch ID</string>
+
+  <string name="allow_open_tabs">Allow Open Tabs</string>
+
+  <string name="external_payment_id_null">The External Payment ID must be populated with a non-null value</string>
 </resources>
