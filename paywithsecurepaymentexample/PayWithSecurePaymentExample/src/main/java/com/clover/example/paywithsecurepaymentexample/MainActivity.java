@@ -20,7 +20,7 @@ import com.clover.commonpayments.CapturePreAuthService;
 import com.clover.commonpayments.RefundPaymentService;
 import com.clover.commonpayments.ResultIntentService;
 import com.clover.common2.clover.Clover;
-import com.clover.commonpayments.RetreivePendingPaymentsService;
+import com.clover.commonpayments.RetrievePendingPaymentsService;
 import com.clover.commonpayments.VoidPaymentService;
 import com.clover.connector.sdk.v3.PaymentConnector;
 import com.clover.connector.sdk.v3.CardEntryMethods;
@@ -1681,7 +1681,7 @@ public class MainActivity extends ServiceActivity {
         if (resultCode == 0) {
           boolean success = resultInfo.getBoolean(ResultIntentService.SUCCESS_TAG, true);
           if (success) {
-            ArrayList<Payment> pendingPayments = resultInfo.getParcelableArrayList(RetreivePendingPaymentsService.EXTRA_PAYMENTS);
+            ArrayList<Payment> pendingPayments = resultInfo.getParcelableArrayList(RetrievePendingPaymentsService.EXTRA_PAYMENTS);
             ArrayList<PendingPaymentEntry> pendingPaymentEntries = new ArrayList(0);
             Integer paymentCount = new Integer(0);
             if (pendingPayments != null && pendingPayments.size() > 0) {
@@ -1703,7 +1703,7 @@ public class MainActivity extends ServiceActivity {
         }
       }
     };
-    RetreivePendingPaymentsService.start(this, clover.getAccount(), resultReceiver);
+    RetrievePendingPaymentsService.start(this, clover.getAccount(), resultReceiver);
   }
 
   private void doVaultCard() {
