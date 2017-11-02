@@ -34,7 +34,7 @@
             android:label="@string/app_name"
             android:parentActivityName="com.clover.example.paywithsecurepaymentexample.MainActivity">
         </activity>
-        <service android:name="com.clover.commonpayments.RetreivePendingPaymentsService"/>
+        <service android:name="com.clover.commonpayments.RetrievePendingPaymentsService"/>
         <service android:name="com.clover.commonpayments.CapturePreAuthService"/>
         <service android:name="com.clover.commonpayments.TipAdjustAuthService"/>
         <service android:name="com.clover.commonpayments.VoidPaymentService"/>
