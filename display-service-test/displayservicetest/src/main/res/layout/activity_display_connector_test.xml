@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context=".DisplayConnectorTestActivity">
+
+  <ToggleButton
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Create Connector"
+      android:id="@+id/toggleConnector"
+      android:layout_row="0"
+      android:layout_column="0"
+      android:textOff="Dispose Connector"
+      android:onClick="onClickToggleConnector"
+      android:textOn="Create Connector"/>
+
+  <GridLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_alignParentStart="true"
+      android:layout_below="@id/toggleConnector"
+      android:rowCount="7"
+      android:columnCount="2"
+      android:orientation="vertical"
+      android:id="@+id/action_buttons"
+      android:padding="15dp">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Welcome"
+        android:id="@+id/show_welcome_button"
+        android:onClick="onClickShowWelcome"
+        android:layout_row="1"
+        android:layout_column="0"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Message"
+        android:id="@+id/show_message_button"
+        android:onClick="onClickShowMessage"
+        android:layout_row="2"
+        android:layout_column="0"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Thank You"
+        android:id="@+id/show_thank_you_button"
+        android:onClick="onClickShowThankYou"
+        android:layout_row="3"
+        android:layout_column="0"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Display Order"
+        android:id="@+id/display_order_1_button"
+        android:onClick="onClickDisplayOrder"
+        android:layout_row="4"
+        android:layout_column="0"/>
+  </GridLayout>
+
+</RelativeLayout>
