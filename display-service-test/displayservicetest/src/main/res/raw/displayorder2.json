@@ -1,0 +1,37 @@
+{
+  "subtotal": "$44.56",
+  "tax": "$3.28",
+  "total": "$50.18",
+  "lineItems": {
+    "elements": [
+      {
+        "id": "TI1",
+        "name": "Test Item 1",
+        "price": "$12.34",
+        "printed": "false",
+        "discounts": {
+          "elements": [
+            {
+              "id": "TD1",
+              "lineItemId": "TI1",
+              "name": "Test Discount 1",
+              "amount": "$2.34"
+            }
+          ]
+        },
+        "discountAmount": "$2.34",
+        "exchanged": "false",
+        "refunded": "false"
+      },
+      {
+        "id": "TI2",
+        "name": "Test Item 2",
+        "price": "$34.56",
+        "printed": "false",
+        "exchanged": "false",
+        "refunded": "false"
+      }
+    ]
+  }
+}
+
