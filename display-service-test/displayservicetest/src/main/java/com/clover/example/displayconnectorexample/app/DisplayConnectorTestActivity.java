@@ -1,6 +1,5 @@
-package com.clover.example.displayconnectorexample;
+package com.clover.example.displayconnectorexample.app;
 
-import com.clover.R;
 import com.clover.connector.sdk.v3.DisplayConnector;
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v3.connector.IDisplayConnector;
