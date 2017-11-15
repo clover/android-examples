@@ -1,0 +1,114 @@
+
+buildscript {
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.3.3'
+  }
+}
+
+apply plugin: 'com.android.application'
+
+android {
+  compileSdkVersion 21
+  buildToolsVersion '25.0.0'
+
+  defaultConfig {
+    minSdkVersion 17
+    targetSdkVersion 17
+    versionCode 1
+    versionName "1.0"
+    multiDexEnabled true
+
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+    }
+  }
+
+  packagingOptions {
+    exclude 'META-INF/DEPENDENCIES.txt'
+    exclude 'META-INF/LICENSE.txt'
+    exclude 'META-INF/NOTICE.txt'
+    exclude 'META-INF/NOTICE'
+    exclude 'META-INF/LICENSE'
+    exclude 'META-INF/DEPENDENCIES'
+    exclude 'META-INF/notice.txt'apply plugin: 'com.android.application'
+
+
+    repositories {
+      mavenLocal()
+      maven { url "http://artifactory.corp.clover.com:8081/artifactory/repo" }
+      mavenCentral()
+    }
+
+    android {
+      compileSdkVersion 21
+      buildToolsVersion '25.0.0'
+
+      defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 17
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+
+      }
+      buildTypes {
+        release {
+          minifyEnabled false
+          proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+      }
+
+      packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+      }
+      compileOptions {
+        targetCompatibility 1.7
+        sourceCompatibility 1.7
+      }
+    }
+
+    dependencies {
+      compile 'com.clover.sdk:clover-android-connector-sdk:187-SNAPSHOT'
+      compile 'com.clover:common-payments:214-SNAPSHOT@aar'
+      compile 'com.clover:common:214-SNAPSHOT'
+      compile 'com.google.code.gson:gson:2.3.1'
+      compile 'com.clover:clover-remote-interface:212-SNAPSHOT'
+      compile 'com.clover.sdk:remote-pay-android-connector:1.4.0'
+      compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
+      compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    }
+
+    exclude 'META-INF/license.txt'
+    exclude 'META-INF/dependencies.txt'
+    exclude 'META-INF/LGPL2.1'
+  }
+  compileOptions {
+    targetCompatibility 1.7
+    sourceCompatibility 1.7
+  }
+}
+
+dependencies {
+  compile 'com.clover.sdk:clover-android-connector-sdk:187-SNAPSHOT'
+  compile 'com.clover:common-payments:214-SNAPSHOT@aar'
+  compile 'com.clover:common:214-SNAPSHOT'
+  compile 'com.google.code.gson:gson:2.3.1'
+  compile 'com.clover:clover-remote-interface:212-SNAPSHOT'
+  compile 'com.clover.sdk:remote-pay-android-connector:1.4.0'
+  compile 'org.apache.commons:commons-lang3:3.6'
+  compile 'commons-io:commons-io:2.6'
+}
+
+defaultTasks=['build']
