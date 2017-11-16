@@ -10,7 +10,7 @@ repositories {
 
 android {
   compileSdkVersion 21
-  buildToolsVersion '25.0.0'
+  buildToolsVersion '25.0.2'
 
   defaultConfig {
     minSdkVersion 17
@@ -39,19 +39,24 @@ android {
     exclude 'META-INF/dependencies.txt'
     exclude 'META-INF/LGPL2.1'
   }
+  compileOptions {
+    sourceCompatibility 1.7
+    targetCompatibility 1.7
+  }
 }
 
 dependencies {
   compile 'com.clover.sdk:clover-android-connector-sdk:187-SNAPSHOT'
-  compile 'com.clover:common-payments:214-SNAPSHOT@aar'
-  compile 'com.clover:common:214-SNAPSHOT'
-  compile 'com.google.code.gson:gson:2.3.1'
-  compile 'com.clover.test:pidgin-test-native:1.0-SNAPSHOT'
-  compile 'com.clover:clover-remote-interface:212-SNAPSHOT'
-  compile 'com.clover.sdk:remote-pay-android-connector:1.4.0'
-  compile 'org.apache.commons:commons-lang3:3.6'
-  compile 'commons-io:commons-io:2.6'
-  //compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile 'com.clover:common-payments:214-SNAPSHOT@aar'
+    compile 'com.clover:common:214-SNAPSHOT'
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.clover.test:pidgin-test-native:1.0-SNAPSHOT'
+    compile 'com.clover:clover-remote-interface:212-SNAPSHOT'
+    compile 'com.clover.sdk:remote-pay-android-connector:1.4.0'
+    compile 'org.apache.commons:commons-lang3:3.6'
+    compile 'commons-io:commons-io:2.6'
+  compile 'com.android.support:appcompat-v7:21.0.3'
+  compile 'com.android.support:support-v13:21.0.3'
 }
 
-defaultTasks=['build']
+//defaultTasks=['build']
