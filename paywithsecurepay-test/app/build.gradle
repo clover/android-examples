@@ -9,7 +9,7 @@ repositories {
 
 
 android {
-  compileSdkVersion 26
+  compileSdkVersion 21
   buildToolsVersion '25.0.0'
 
   defaultConfig {
@@ -34,8 +34,10 @@ android {
     exclude 'META-INF/NOTICE'
     exclude 'META-INF/LICENSE'
     exclude 'META-INF/DEPENDENCIES'
-    //exclude 'META-INF/notice.txt' apply plugin: 'com.android.application'
-
+    exclude 'META-INF/notice.txt'
+    exclude 'META-INF/license.txt'
+    exclude 'META-INF/dependencies.txt'
+    exclude 'META-INF/LGPL2.1'
   }
 }
 
@@ -49,6 +51,7 @@ dependencies {
   compile 'com.clover.sdk:remote-pay-android-connector:1.4.0'
   compile 'org.apache.commons:commons-lang3:3.6'
   compile 'commons-io:commons-io:2.6'
+  //compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
 }
 
 defaultTasks=['build']
