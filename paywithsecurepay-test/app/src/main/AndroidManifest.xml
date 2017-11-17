@@ -2,13 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.clover.native_pidgin_test">
 
+  <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+  <uses-permission android:name="clover.permission.ACTION_PAY"/>
+  <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+  <uses-permission android:name="clover.android.permission.ADD_HDMI_WINDOW" />
+
   <application
+      android:name=".NativePidginTestApp"
       android:allowBackup="true"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
       android:supportsRtl="true"
       android:theme="@style/AppTheme"
-      android:name="android.support.multidex.MultiDexApplication">
+      >
     <activity android:name="com.clover.pidgin_test_native_lib.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -19,3 +29,5 @@
   </application>
 
 </manifest>
+
+<!-- android:name="android.support.multidex.MultiDexApplication" -->

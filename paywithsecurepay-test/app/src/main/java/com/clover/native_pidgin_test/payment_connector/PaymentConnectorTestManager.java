@@ -77,7 +77,6 @@ public class PaymentConnectorTestManager {
   private List<Throwable> threadExceptions = new ArrayList<>();
   private TestLogPaymentConnector testConnector;
 
-
   public void execute(List<TestCase> testCases, Context context, Account account) {
 
 

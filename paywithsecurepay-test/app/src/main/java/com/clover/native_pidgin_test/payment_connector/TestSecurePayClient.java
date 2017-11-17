@@ -24,6 +24,7 @@ import java.util.ArrayList;
  */
 public abstract class TestSecurePayClient extends TestSecurePay {
   public TestSecurePayClient(Context context) {
+
     super(context);
   }
 
