@@ -1,0 +1,1057 @@
+{
+  "name": "ConnectorActions",
+  "description": "All connector actions for reference.",
+  "tags": {
+    "id": "connector-actions"
+  },
+  "testActions": [
+    {
+      "name": "Vault-Card-Canx",
+      "tags": {
+        "id": "VC0"
+      },
+      "context": {
+        "request": {
+          "method": "VAULT_CARD",
+          "payload": {
+            "cardEntryMethods": 1
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "START",
+            "select": "ESC"
+          }
+        ]
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onVaultCardResponse",
+          "payload": {
+            "success": false
+          }
+        }
+      }
+    },
+    {
+      "name": "Vault-Card",
+      "tags": {
+        "id": "VC1"
+      },
+      "context": {
+        "request": {
+          "method": "VAULT_CARD"
+        }
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onVaultCardResponse",
+          "payload": {
+            "success": true,
+            "card": "*"
+          },
+          "store": {
+            "card": "vaultedCard1"
+          }
+        }
+      }
+    },
+    {
+      "name": "Sale w/ VC",
+      "tags": {
+        "id": "S1"
+      },
+      "before": [
+        {
+          "name": "SVC1",
+          "ref": "test.json#Vault-Card",
+          "context": {},
+          "method": {},
+          "assert": {}
+        }
+      ],
+      "context": {
+        "request": {
+          "method": "SALE",
+          "payload": {
+            "amount": 1500,
+            "externalId": "#:GEN_EXT_ID",
+            "disableTipOnScreen": true,
+            "vaultedCard": "$:vaultedCard1",
+            "cardEntryMethods": 1
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "START",
+            "description": ".* on File"
+          },
+          {
+            "on": "RECEIPT_OPTIONS",
+            "description": "No receipt"
+          }
+        ],
+        "deviceRequests": {
+          "paymentConfirmation": {
+            "DUPLICATE": "ACCEPT",
+            "OFFLINE": "ACCEPT"
+          },
+          "signatureVerification": "ACCEPT"
+        }
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onSaleResponse",
+          "payload": {
+            "success": true,
+            "payment": {
+              "amount": 1500
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Sale w/ Tip Provided",
+      "tags": {
+        "id": "S2"
+      },
+      "context": {
+        "request": {
+          "method": "SALE",
+          "payload": {
+            "amount": 900,
+            "tipAmount": 100,
+            "disableTipOnScreen": true,
+            "externalId": "#:GEN_EXT_ID"
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "RECEIPT_OPTIONS",
+            "description": "No receipt"
+          }
+        ]
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onSaleResponse",
+          "payload": {
+            "success": true,
+            "payment": {
+              "amount": 900,
+              "tipAmount": 100
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Sale",
+      "tags": {
+        "id": "S3"
+      },
+      "context": {
+        "request": {
+          "method": "SALE",
+          "payload": {
+            "amount": 1100,
+            "disableTipOnScreen": true,
+            "externalId": "#:GEN_EXT_ID"
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "RECEIPT_OPTIONS",
+            "description": "No receipt"
+          }
+        ]
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onSaleResponse",
+          "payload": {
+            "success": true,
+            "payment": {
+              "amount": 1100,
+              "tipAmount": "*"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Partial Refund",
+      "tags": {
+        "id": "R1"
+      },
+      "before": [
+        {
+          "name": "SALE",
+          "context": {
+            "request": {
+              "method": "SALE",
+              "payload": {
+                "amount": 1100,
+                "disableTipOnScreen": true,
+                "externalId": "#:GEN_EXT_ID"
+              }
+            },
+            "inputOptions": [
+              {
+                "on": "RECEIPT_OPTIONS",
+                "description": "No receipt"
+              }
+            ]
+          },
+          "method": {},
+          "assert": {
+            "response": {
+              "method": "onSaleResponse",
+              "payload": {
+                "success": true,
+                "payment": {
+                  "amount": 1100,
+                  "tipAmount": "*"
+                }
+              },
+              "store": {
+                "payment": {
+                  "id": "sale.PaymentId",
+                  "order": {
+                    "id": "sale.OrderId"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "context": {
+        "request": {
+          "method": "REFUND_PAYMENT",
+          "payload": {
+            "paymentId": "$:sale.PaymentId",
+            "orderId": "$:sale.OrderId",
+            "amount": 300
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "RECEIPT_OPTIONS",
+            "description": "No receipt"
+          }
+        ]
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onRefundPaymentResponse",
+          "payload": {
+            "success": true
+          }
+        }
+      }
+    },
+    {
+      "name": "Full Refund",
+      "tags": {
+        "id": "R2"
+      },
+      "before": [
+        {
+          "name": "SALE",
+          "context": {
+            "request": {
+              "method": "SALE",
+              "payload": {
+                "amount": 900,
+                "tipAmount": 100,
+                "disableTipOnScreen": true,
+                "externalId": "#:GEN_EXT_ID"
+              }
+            },
+            "inputOptions": [
+              {
+                "on": "RECEIPT_OPTIONS",
+                "description": "No receipt"
+              }
+            ]
+          },
+          "method": {},
+          "assert": {
+            "response": {
+              "method": "onSaleResponse",
+              "payload": {
+                "success": true,
+                "payment": {
+                  "amount": 900,
+                  "tipAmount": 100
+                }
+              },
+              "store": {
+                "payment": {
+                  "id": "sale.PaymentId",
+                  "order": {
+                    "id": "sale.OrderId"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "context": {
+        "request": {
+          "method": "REFUND_PAYMENT",
+          "payload": {
+            "paymentId": "$:sale.PaymentId",
+            "orderId": "$:sale.OrderId",
+            "fullRefund": true
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "RECEIPT_OPTIONS",
+            "description": "No receipt"
+          }
+        ]
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onRefundPaymentResponse",
+          "payload": {
+            "success": true
+          }
+        }
+      }
+    },
+    {
+      "name": "Sale Canx",
+      "tags": {
+        "id": "S4"
+      },
+      "context": {
+        "request": {
+          "method": "SALE",
+          "payload": {
+            "amount": 500,
+            "disableTipOnScreen": true,
+            "externalId": "#:GEN_EXT_ID",
+            "disableRestartTransactionOnFail": true,
+            "cardEntryMethods": 1
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "START",
+            "select": "ESC"
+          },
+          {
+            "on": "PROCESSING",
+            "select": "ESC"
+          }
+        ]
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onSaleResponse",
+          "payload": {
+            "success": false
+          }
+        }
+      }
+    },
+    {
+      "name": "Auth W/ VC",
+      "tags": {
+        "id": "A1"
+      },
+      "before": [
+        {
+          "name": "VC2",
+          "ref": "test.json#Vault-Card",
+          "context": {},
+          "method": {},
+          "assert": {}
+        }
+      ],
+      "context": {
+        "request": {
+          "method": "AUTH",
+          "payload": {
+            "amount": 1300,
+            "externalId": "#:GEN_EXT_ID",
+            "disableTipOnScreen": true,
+            "vaultedCard": "$:vaultedCard1",
+            "cardEntryMethods": 1
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "START",
+            "description": ".* on File"
+          },
+          {
+            "on": "RECEIPT_OPTIONS",
+            "description": "No receipt"
+          }
+        ],
+        "deviceRequests": {
+          "paymentConfirmation": {
+            "DUPLICATE": "ACCEPT",
+            "OFFLINE": "ACCEPT"
+          },
+          "signatureVerification": "ACCEPT"
+        }
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onAuthResponse",
+          "payload": {
+            "success": true,
+            "payment": {
+              "amount": 1300
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Auth",
+      "tags": {
+        "id": "A2"
+      },
+      "context": {
+        "request": {
+          "method": "AUTH",
+          "payload": {
+            "amount": 1000,
+            "externalId": "#:GEN_EXT_ID",
+            "disableTipOnScreen": true
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "RECEIPT_OPTIONS",
+            "description": "No receipt"
+          }
+        ],
+        "deviceRequests": {
+          "paymentConfirmation": {
+            "DUPLICATE": "ACCEPT",
+            "OFFLINE": "ACCEPT"
+          },
+          "signatureVerification": "ACCEPT"
+        }
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onAuthResponse",
+          "payload": {
+            "success": true,
+            "payment": {
+              "amount": 1000
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Auth Canx",
+      "tags": {
+        "id": "A3"
+      },
+      "context": {
+        "request": {
+          "method": "AUTH",
+          "payload": {
+            "amount": 100,
+            "externalId": "#:GEN_EXT_ID",
+            "disableRestartTransactionOnFail": true,
+            "cardEntryMethods": 1
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "START",
+            "select": "ESC"
+          },
+          {
+            "on": "PROCESSING",
+            "select": "ESC"
+          }
+        ]
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onAuthResponse",
+          "payload": {
+            "success": false
+          }
+        }
+      }
+    },
+    {
+      "name": "Tip Adjust Auth",
+      "tags": {
+        "id": "TA1"
+      },
+      "before": [
+        {
+          "name": "auth",
+          "context": {
+            "request": {
+              "method": "AUTH",
+              "payload": {
+                "amount": 1000,
+                "externalId": "#:GEN_EXT_ID",
+                "disableTipOnScreen": true
+              }
+            },
+            "inputOptions": [
+              {
+                "on": "RECEIPT_OPTIONS",
+                "description": "No receipt"
+              }
+            ],
+            "deviceRequests": {
+              "paymentConfirmation": {
+                "DUPLICATE": "ACCEPT",
+                "OFFLINE": "ACCEPT"
+              },
+              "signatureVerification": "ACCEPT"
+            }
+          },
+          "method": {},
+          "assert": {
+            "response": {
+              "method": "onAuthResponse",
+              "payload": {
+                "success": true,
+                "payment": {
+                  "amount": 1000
+                }
+              },
+              "store": {
+                "payment": {
+                  "id": "auth.PaymentId",
+                  "order": {
+                    "id": "auth.OrderId"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "context": {
+        "request": {
+          "method": "TIP_ADJUST",
+          "payload": {
+            "paymentId": "$:auth.PaymentId",
+            "orderId": "$:auth.OrderId",
+            "tipAmount": 200
+          }
+        }
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onTipAdjustAuthResponse",
+          "payload": {
+            "success": true,
+            "paymentId": "$:auth.PaymentId",
+            "tipAmount": 200
+          }
+        }
+      }
+    },
+    {
+      "name": "Pre Auth Canx",
+      "tags": {
+        "id": "PA1"
+      },
+      "context": {
+        "request": {
+          "method": "PREAUTH",
+          "payload": {
+            "amount": 1000,
+            "externalId": "#:GEN_EXT_ID",
+            "disableRestartTransactionOnFail": true,
+            "cardEntryMethods": 1
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "START",
+            "select": "ESC"
+          },
+          {
+            "on": "PROCESSING",
+            "select": "ESC"
+          }
+        ]
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onPreAuthResponse",
+          "payload": {
+            "success": false
+          }
+        }
+      }
+    },
+    {
+      "name": "Pre Auth w/ VC",
+      "tags": {
+        "id": "PA2"
+      },
+      "before": [
+        {
+          "name": "Vault Card",
+          "ref": "test.json#Vault-Card",
+          "context": {},
+          "method": {},
+          "assert": {}
+        }
+      ],
+      "context": {
+        "request": {
+          "method": "PREAUTH",
+          "payload": {
+            "amount": 3500,
+            "externalId": "#:GEN_EXT_ID",
+            "disableRestartTransactionOnFail": true,
+            "vaultedCard": "$:vaultedCard1",
+            "cardEntryMethods": 1
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "START",
+            "description": ".* on File"
+          },
+          {
+            "on": "RECEIPT_OPTIONS",
+            "description": "No receipt"
+          }
+        ],
+        "deviceRequests": {
+          "paymentConfirmation": {
+            "DUPLICATE": "ACCEPT",
+            "OFFLINE": "ACCEPT"
+          },
+          "signatureVerification": "ACCEPT"
+        }
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onPreAuthResponse",
+          "payload": {
+            "success": true,
+            "payment": {
+              "amount": 3500
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Pre Auth",
+      "tags": {
+        "id": "PA3"
+      },
+      "context": {
+        "request": {
+          "method": "PREAUTH",
+          "payload": {
+            "amount": 2500,
+            "externalId": "#:GEN_EXT_ID",
+            "disableRestartTransactionOnFail": true,
+            "vaultedCard": "$:vaultedCard1"
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "RECEIPT_OPTIONS",
+            "description": "No receipt"
+          }
+        ],
+        "deviceRequests": {
+          "paymentConfirmation": {
+            "DUPLICATE": "ACCEPT",
+            "OFFLINE": "ACCEPT"
+          },
+          "signatureVerification": "ACCEPT"
+        }
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onPreAuthResponse",
+          "payload": {
+            "success": true,
+            "payment": {
+              "amount": 2500
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Capture Pre Auth",
+      "tags": {
+        "id": "CPA"
+      },
+      "before": [
+        {
+          "name": "preauth",
+          "context": {
+            "request": {
+              "method": "PREAUTH",
+              "payload": {
+                "amount": 4500,
+                "externalId": "#:GEN_EXT_ID",
+                "disableRestartTransactionOnFail": true,
+                "vaultedCard": "$:vaultedCard1"
+              }
+            },
+            "inputOptions": [
+              {
+                "on": "RECEIPT_OPTIONS",
+                "description": "No receipt"
+              }
+            ],
+            "deviceRequests": {
+              "paymentConfirmation": {
+                "DUPLICATE": "ACCEPT",
+                "OFFLINE": "ACCEPT"
+              },
+              "signatureVerification": "ACCEPT"
+            }
+          },
+          "method": {},
+          "assert": {
+            "response": {
+              "method": "onPreAuthResponse",
+              "payload": {
+                "success": true,
+                "payment": {
+                  "amount": 4500
+                }
+              },
+              "store": {
+                "payment": {
+                  "id": "preauth.PaymentId",
+                  "order": {
+                    "id": "preauth.OrderId"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "context": {
+        "request": {
+          "method": "CAPTURE_PREAUTH",
+          "payload": {
+            "amount": 2500,
+            "paymentID": "$:preauth.PaymentId"
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "RECEIPT_OPTIONS",
+            "description": "No receipt"
+          }
+        ]
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onCapturePreAuthResponse",
+          "payload": {
+            "success": true,
+            "paymentID": "$:preauth.PaymentId",
+            "amount": 2500,
+            "tipAmount": 0
+          }
+        }
+      },
+      "after": [
+        {
+          "name": "tip adjust",
+          "context": {
+            "request": {
+              "method": "TIP_ADJUST",
+              "payload": {
+                "paymentId": "$:preauth.PaymentId",
+                "orderId": "$:preauth.OrderId",
+                "tipAmount": 150
+              }
+            },
+            "inputOptions": [
+              {
+                "on": "RECEIPT_OPTIONS",
+                "description": "No receipt"
+              }
+            ]
+          },
+          "method": {},
+          "assert": {
+            "response": {
+              "method": "onTipAdjustAuthResponse",
+              "payload": {
+                "success": true,
+                "paymentId": "$:preauth.PaymentId",
+                "tipAmount": 150
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Read Card Data",
+      "tags": {
+        "id": "RCD1"
+      },
+      "context": {
+        "request": {
+          "method": "READ_CARD_DATA",
+          "payload": {
+          }
+        }
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onReadCardDataResponse",
+          "payload": {
+            "success": true,
+            "cardData": "*"
+          }
+        }
+      }
+    },
+    {
+      "name": "Read Card Data Canx",
+      "tags": {
+        "id": "RCD2"
+      },
+      "context": {
+        "request": {
+          "method": "READ_CARD_DATA",
+          "payload": {
+            "cardEntryMethods": 1
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "START",
+            "select": "ESC"
+          }
+        ]
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onReadCardDataResponse",
+          "payload": {
+            "success": false
+          }
+        }
+      }
+    },
+    {
+      "name": "Manual Refund Canx",
+      "tags": {
+        "id": "MR1"
+      },
+      "context": {
+        "request": {
+          "method": "MANUAL_REFUND",
+          "payload": {
+            "amount": 1150,
+            "externalId": "#:GEN_EXT_ID",
+            "cardEntryMethods": 1
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "START",
+            "select": "ESC"
+          }
+        ]
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onManualRefundResponse",
+          "payload": {
+            "success": false
+          }
+        }
+      }
+    },
+    {
+      "name": "Manual Refund",
+      "tags": {
+        "id": "MR2"
+      },
+      "context": {
+        "request": {
+          "method": "MANUAL_REFUND",
+          "payload": {
+            "amount": 1350,
+            "externalId": "#:GEN_EXT_ID"
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "RECEIPT_OPTIONS",
+            "description": "No receipt"
+          }
+        ]
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onManualRefundResponse",
+          "payload": {
+            "success": true,
+            "credit": {
+              "amount": 1350
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Void Payment",
+      "tags": {
+        "id": "VP1"
+      },
+      "before": [
+        {
+          "name": "sale",
+          "context": {
+            "request": {
+              "method": "SALE",
+              "payload": {
+                "amount": 1100,
+                "disableTipOnScreen": true,
+                "externalId": "#:GEN_EXT_ID"
+              }
+            },
+            "inputOptions": [
+              {
+                "on": "RECEIPT_OPTIONS",
+                "description": "No receipt"
+              }
+            ]
+          },
+          "method": {},
+          "assert": {
+            "response": {
+              "method": "onSaleResponse",
+              "payload": {
+                "success": true,
+                "payment": {
+                  "amount": 1100,
+                  "tipAmount": "*"
+                }
+              },
+              "store": {
+                "payment": {
+                  "id": "sale.PaymentId",
+                  "order": {
+                    "id": "sale.OrderId"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "context": {
+        "request": {
+          "method": "VOID_PAYMENT",
+          "payload": {
+            "voidReason": "USER_CANCEL",
+            "orderId": "$:sale.OrderId",
+            "paymentId": "$:sale.PaymentId"
+          }
+        },
+        "inputOptions": [
+          {
+            "on": "RECEIPT_OPTIONS",
+            "description": "No receipt"
+          }
+        ]
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onVoidPaymentResponse",
+          "payload": {
+            "success": true,
+            "paymentId": "$:sale.PaymentId"
+          }
+        }
+      }
+    },
+    {
+      "name": "Print 1 Line Text",
+      "tags": {
+        "id": "PT1"
+      },
+      "context": {
+        "request": {
+          "method": "PRINT_TEXT",
+          "payload": {
+            "text": [
+              "Print this 1 line"
+            ]
+          }
+        }
+      },
+      "method": {},
+      "assert": {}
+    },
+    {
+      "name": "Print 3 Line Text",
+      "tags": {
+        "id": "PT2"
+      },
+      "context": {
+        "request": {
+          "method": "PRINT_TEXT",
+          "payload": {
+            "text": [
+              "Print this 1 line",
+              "Print this on line 2",
+              "This is printing on the 3rd"
+            ]
+          }
+        }
+      },
+      "method": {},
+      "assert": {}
+    }
+  ]
+}
