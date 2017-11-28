@@ -247,7 +247,7 @@ public class TestExecutor {
       switch (method) {
         case SALE:
           SaleRequest saleRequest = (SaleRequest) TestUtils.swapObjects(resolvedRequest, method);
-          //SaleRequest saleRequest = TestUtils.swapSale(resolvedRequest);
+          Thread.sleep(300);
           connector.sale(saleRequest);
           break;
 
