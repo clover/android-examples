@@ -20,6 +20,7 @@ import com.clover.native_pidgin_test.adapters.CloverEmbeddedJsonTypeAdapter;
 import com.clover.native_pidgin_test.models.TestExchangeRequest;
 import com.clover.sdk.JSONifiable;
 import com.clover.sdk.v3.base.Signature;
+import com.clover.sdk.v3.payments.TipMode;
 import com.clover.sdk.v3.remotepay.AuthRequest;
 import com.clover.sdk.v3.remotepay.CapturePreAuthRequest;
 import com.clover.sdk.v3.remotepay.CloseoutRequest;
@@ -162,10 +163,11 @@ public class TestUtils {
   /**
    * import com.clover.sdk.v3.remotepay.* objects are nonserializable so we need remote-pay messages to be
    * the objects being serialized and then transferring the data from that object to the equivalent v3 object
-    * @param payload
+   * @param payload
    * @param method
    * @return
    */
+
   public static Object swapObjects(JsonObject payload, TestExchangeRequest.Method method) {
     switch (method) {
 
@@ -208,6 +210,22 @@ public class TestUtils {
         if(request.getVaultedCard() != null) {
           returnRequest.setVaultedCard(request.getVaultedCard());
         }
+        if(request.getAutoAcceptSignature() != null) {
+          returnRequest.setAutoAcceptSignature(request.getAutoAcceptSignature());
+        }
+        if(request.getDisableDuplicateChecking() !=  null) {
+          returnRequest.setDisableDuplicateChecking(request.getDisableDuplicateChecking());
+        }
+        if(request.getDisableReceiptSelection() != null) {
+          returnRequest.setDisableReceiptSelection(request.getDisableReceiptSelection());
+        }
+        if(request.getTipMode() != null) {
+          com.clover.remote.client.messages.SaleRequest.TipMode tMode = request.getTipMode();
+          String temp = tMode.name();
+          TipMode tipMode = TipMode.valueOf(temp);
+          returnRequest.setTipMode(tipMode);
+        }
+
         return returnRequest;
 
 
@@ -238,6 +256,16 @@ public class TestUtils {
         if(authRequest.getAmount() != 0) {
           returnAuthRequest.setAmount(authRequest.getAmount());
         }
+        if(authRequest.getAutoAcceptSignature() != null) {
+          returnAuthRequest.setAutoAcceptSignature(authRequest.getAutoAcceptSignature());
+        }
+        if(authRequest.getDisableDuplicateChecking() !=  null) {
+          returnAuthRequest.setDisableDuplicateChecking(authRequest.getDisableDuplicateChecking());
+        }
+        if(authRequest.getDisableReceiptSelection() != null) {
+          returnAuthRequest.setDisableReceiptSelection(authRequest.getDisableReceiptSelection());
+        }
+
 
         return returnAuthRequest;
 
@@ -250,6 +278,15 @@ public class TestUtils {
         }
         if(preAuthRequest.getAmount() != 0) {
           returnPreAuthRequest.setAmount(preAuthRequest.getAmount());
+        }
+        if(preAuthRequest.getAutoAcceptSignature() != null) {
+          returnPreAuthRequest.setAutoAcceptSignature(preAuthRequest.getAutoAcceptSignature());
+        }
+        if(preAuthRequest.getDisableDuplicateChecking() !=  null) {
+          returnPreAuthRequest.setDisableDuplicateChecking(preAuthRequest.getDisableDuplicateChecking());
+        }
+        if(preAuthRequest.getDisableReceiptSelection() != null) {
+          returnPreAuthRequest.setDisableReceiptSelection(preAuthRequest.getDisableReceiptSelection());
         }
         return returnPreAuthRequest;
 

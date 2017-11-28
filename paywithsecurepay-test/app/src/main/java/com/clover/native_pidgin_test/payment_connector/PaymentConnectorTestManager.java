@@ -13,9 +13,6 @@ import java.util.prefs.Preferences;
 
 import com.clover.common.analytics.ALog;
 import com.clover.common2.payments.PayIntent;
-import com.clover.connector.sdk.v3.PaymentConnector;
-import com.clover.connector.sdk.v3.PaymentV3Connector;
-import com.clover.pidgin_test_native_lib.MainActivity;
 import com.clover.pidgin_test_native_lib.PidginTestActivityLogger;
 import com.clover.native_pidgin_test.models.CloverTestAction;
 import com.clover.native_pidgin_test.remote_terminal_kiosk.RemoteControlClient;
@@ -28,33 +25,12 @@ import com.clover.remote.UiState;
 import com.clover.remote.client.messages.CloverDeviceEvent;
 import com.clover.remote.order.DisplayOrder;
 import com.clover.remote.order.action.OrderActionResponse;
-import com.clover.sdk.v1.ServiceConnector;
-import com.clover.sdk.v3.connector.IDeviceConnectorListener;
-import com.clover.sdk.v3.connector.IPaymentConnector;
-import com.clover.sdk.v3.connector.IPaymentConnectorListener;
 import com.clover.sdk.v3.order.Order;
 import com.clover.sdk.v3.order.VoidReason;
 import com.clover.sdk.v3.payments.Credit;
 import com.clover.sdk.v3.payments.Payment;
 import com.clover.sdk.v3.printer.PrintCategory;
 import com.clover.sdk.v3.printer.Printer;
-import com.clover.sdk.v3.remotepay.AuthResponse;
-import com.clover.sdk.v3.remotepay.CapturePreAuthResponse;
-import com.clover.sdk.v3.remotepay.CloseoutResponse;
-import com.clover.sdk.v3.remotepay.ConfirmPaymentRequest;
-import com.clover.sdk.v3.remotepay.ManualRefundResponse;
-import com.clover.sdk.v3.remotepay.PreAuthResponse;
-import com.clover.sdk.v3.remotepay.ReadCardDataResponse;
-import com.clover.sdk.v3.remotepay.RefundPaymentResponse;
-import com.clover.sdk.v3.remotepay.RetrievePaymentResponse;
-import com.clover.sdk.v3.remotepay.RetrievePendingPaymentsResponse;
-import com.clover.sdk.v3.remotepay.SaleRequest;
-import com.clover.sdk.v3.remotepay.SaleResponse;
-import com.clover.sdk.v3.remotepay.TipAdded;
-import com.clover.sdk.v3.remotepay.TipAdjustAuthResponse;
-import com.clover.sdk.v3.remotepay.VaultCardResponse;
-import com.clover.sdk.v3.remotepay.VerifySignatureRequest;
-import com.clover.sdk.v3.remotepay.VoidPaymentResponse;
 import android.accounts.Account;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -114,7 +90,6 @@ public class PaymentConnectorTestManager {
         protected void onUiState(UiState uiState, String uiText, UiState.UiDirection uiDirection, InputOption... inputOptions) {
           PidginTestActivityLogger.appendLnToLog("onUiState called");
           ALog.i(this, "ui state: %s, ui name: %s, ui direction: %s, input options: %s", uiState, uiText, uiDirection, Arrays.toString(inputOptions));
-          remoteControlClient.doUiState(uiState, uiText, uiDirection, inputOptions);
 
           //There are two UiDirections (EXIT, ENTER) that have the same InputOptions, so we filter on ENTER
           if(uiDirection == UiState.UiDirection.ENTER) {

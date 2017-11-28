@@ -246,7 +246,9 @@ public class TestExecutor {
       // Execute request
       switch (method) {
         case SALE:
-          connector.sale((SaleRequest) TestUtils.swapObjects(resolvedRequest, method));
+          SaleRequest saleRequest = (SaleRequest) TestUtils.swapObjects(resolvedRequest, method);
+          //SaleRequest saleRequest = TestUtils.swapSale(resolvedRequest);
+          connector.sale(saleRequest);
           break;
 
         case ACCEPT_SIGNATURE:
@@ -499,6 +501,7 @@ public class TestExecutor {
           }
           if (option != null) {
             connector.getSecurePayClient().doKeyPress(option.keyPress);
+            connector.getRemoteControlClient().doKeyPress(option.keyPress);
           }
         }
       }
