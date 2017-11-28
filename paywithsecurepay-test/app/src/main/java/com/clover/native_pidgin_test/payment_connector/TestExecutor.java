@@ -501,7 +501,6 @@ public class TestExecutor {
           }
           if (option != null) {
             connector.getSecurePayClient().doKeyPress(option.keyPress);
-            connector.getRemoteControlClient().doKeyPress(option.keyPress);
           }
         }
       }
