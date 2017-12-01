@@ -69,15 +69,6 @@
       "tags": {
         "id": "S1"
       },
-      /*"before": [
-        {
-          "name": "SVC1",
-          "ref": "test.json#Vault-Card",
-          "context": {},
-          "method": {},
-          "assert": {}
-        }
-      ],*/
       "context": {
         "request": {
           "method": "SALE",

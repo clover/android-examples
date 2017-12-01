@@ -11,11 +11,6 @@
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
   <uses-permission android:name="android.permission.USE_CREDENTIALS" />
   <uses-permission android:name="clover.android.permission.ADD_HDMI_WINDOW" />
-
-  <permission
-      android:name="com.clover.remote.terminal.permission.REMOTE_TERMINAL"
-      android:protectionLevel="normal"/>
-
   <uses-permission android:name="com.clover.remote.terminal.permission.REMOTE_TERMINAL"/>
 
   <application

@@ -10,9 +10,9 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.prefs.Preferences;
-
 import com.clover.common.analytics.ALog;
 import com.clover.common2.payments.PayIntent;
+import com.clover.native_pidgin_test.R;
 import com.clover.pidgin_test_native_lib.PidginTestActivityLogger;
 import com.clover.native_pidgin_test.models.CloverTestAction;
 import com.clover.native_pidgin_test.remote_terminal_kiosk.RemoteControlClient;
@@ -34,6 +34,7 @@ import com.clover.sdk.v3.printer.Printer;
 import android.accounts.Account;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.widget.TableLayout;
 import com.google.gson.JsonElement;
 
 /**
@@ -52,9 +53,9 @@ public class PaymentConnectorTestManager {
   private RemoteControlClient remoteControlClient;
   private List<Throwable> threadExceptions = new ArrayList<>();
   private TestLogPaymentConnector testConnector;
+  private TableLayout tl;
 
   public void execute(List<TestCase> testCases, Context context, Account account) {
-
 
     try {
       TestSecurePayClient spc = setUpSecurePayClient(context);
@@ -73,7 +74,7 @@ public class PaymentConnectorTestManager {
 
       executor.shutdownNow();
     }catch (Exception e) {
-      PidginTestActivityLogger.appendLnToLog(e.getMessage());
+      PidginTestActivityLogger.appendToTableView(e.getMessage(), false);
     }
   }
 
@@ -88,7 +89,7 @@ public class PaymentConnectorTestManager {
 
         @Override
         protected void onUiState(UiState uiState, String uiText, UiState.UiDirection uiDirection, InputOption... inputOptions) {
-          PidginTestActivityLogger.appendLnToLog("onUiState called");
+          PidginTestActivityLogger.appendToTableView("onUiState called", true);
           ALog.i(this, "ui state: %s, ui name: %s, ui direction: %s, input options: %s", uiState, uiText, uiDirection, Arrays.toString(inputOptions));
 
           //There are two UiDirections (EXIT, ENTER) that have the same InputOptions, so we filter on ENTER
@@ -143,12 +144,12 @@ public class PaymentConnectorTestManager {
       remoteControlClient = new RemoteControlClient(context) {
         @Override
         protected void onActivityRequest(String action, String payload, boolean nonBlocking, boolean forceLaunch) {
-          PidginTestActivityLogger.appendLnToLog("ActivityRequest");
+          PidginTestActivityLogger.appendToTableView("ActivityRequest", true);
         }
 
         @Override
         protected void onMessageToActivity(String action, String payload) {
-          PidginTestActivityLogger.appendLnToLog("MessageToActivity");
+          PidginTestActivityLogger.appendToTableView("MessageToActivity", true);
         }
 
         @Override
@@ -163,7 +164,7 @@ public class PaymentConnectorTestManager {
 
         @Override
         protected void onKeyPress(KeyPress keyPress) {
-          PidginTestActivityLogger.appendLnToLog("onKeyPress");
+          PidginTestActivityLogger.appendToTableView("onKeyPress", true);
         }
 
         @Override
@@ -263,7 +264,7 @@ public class PaymentConnectorTestManager {
 
         @Override
         protected void onVaultCard(int cardEntryMethods) {
-          PidginTestActivityLogger.appendLnToLog("VaultCard");
+          PidginTestActivityLogger.appendToTableView("VaultCard", true);
         }
 
         @Override
@@ -356,10 +357,13 @@ public class PaymentConnectorTestManager {
             }
 
             System.out.println("=========== Test Case [" + testCase.tags.getString("id") + "-" + testCase.name + "] executed successfully =========== ");
+            PidginTestActivityLogger.appendToTableView("=========== Test Case [" + testCase.tags.getString("id") + "-" + testCase.name + "] executed successfully =========== ", true);
 
           } catch (TestExecutionException ex) {
             System.err.println("=========== Test Case [" + testCase.tags.getString("id") + "-" + testCase.name + "] failed =========== ");
-            PidginTestActivityLogger.appendLnToLog("=========== Test Case [" + testCase.tags.getString("id") + "-" + testCase.name + "] failed =========== ");
+            //PidginTestActivityLogger.
+            //    appendLnToLog("=========== Test Case [" + testCase.tags.getString("id") + "-" + testCase.name + "] failed =========== ");
+            PidginTestActivityLogger.appendToTableView("=========== Test Case [" + testCase.tags.getString("id") + "-" + testCase.name + "] failed =========== ", false);
             connector.getSecurePayClient().doBreak();
           }
         } catch (Exception e) {
@@ -396,7 +400,9 @@ public class PaymentConnectorTestManager {
     // Update the listener with the current executor
     testConnector.listener.setTestExecutor(executor);
     if (!executor.executeAction()) {
-      throw new TestExecutionException();
+      //
+
+      //throw new TestExecutionException();
     }
   }
 

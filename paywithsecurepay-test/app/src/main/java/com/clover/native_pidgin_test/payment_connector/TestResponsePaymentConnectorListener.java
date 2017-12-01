@@ -46,31 +46,31 @@ public class TestResponsePaymentConnectorListener implements IPaymentConnectorLi
 
   @Override
   public void onPreAuthResponse(PreAuthResponse response) {
-    PidginTestActivityLogger.appendLnToLog("onPreAuthResponse called");
+    PidginTestActivityLogger.appendToTableView("onPreAuthResponse called", true);
     testExecutor.processResult(TestExchangeResponse.Method.onPreAuthResponse, response);
   }
 
   @Override
   public void onAuthResponse(AuthResponse response) {
-    PidginTestActivityLogger.appendLnToLog("onAuthResponse called");
+    PidginTestActivityLogger.appendToTableView("onAuthResponse called", true);
     testExecutor.processResult(TestExchangeResponse.Method.onAuthResponse, response);
   }
 
   @Override
   public void onTipAdjustAuthResponse(TipAdjustAuthResponse response) {
-    PidginTestActivityLogger.appendLnToLog("onTipAdjustAuthResponse called");
+    PidginTestActivityLogger.appendToTableView("onTipAdjustAuthResponse called", true);
     testExecutor.processResult(TestExchangeResponse.Method.onTipAdjustAuthResponse, response);
   }
 
   @Override
   public void onCapturePreAuthResponse(CapturePreAuthResponse response) {
-    PidginTestActivityLogger.appendLnToLog("onCapturePreAuthResponse called");
+    PidginTestActivityLogger.appendToTableView("onCapturePreAuthResponse called", true);
     testExecutor.processResult(TestExchangeResponse.Method.onCapturePreAuthResponse, response);
   }
 
   @Override
   public void onVerifySignatureRequest(VerifySignatureRequest request) {
-    PidginTestActivityLogger.appendLnToLog("onVerifySignatureRequest called");
+    PidginTestActivityLogger.appendToTableView("onVerifySignatureRequest called", true);
     if(testExecutor.acceptSignature()) {
       paymentConnector.acceptSignature(request);
     }
@@ -81,69 +81,69 @@ public class TestResponsePaymentConnectorListener implements IPaymentConnectorLi
 
   @Override
   public void onConfirmPaymentRequest(ConfirmPaymentRequest request) {
-    PidginTestActivityLogger.appendLnToLog("onConfirmPaymentRequest called");
+    PidginTestActivityLogger.appendToTableView("onConfirmPaymentRequest called", true);
     //accept by default
     paymentConnector.acceptPayment(request.getPayment());
   }
 
   @Override
   public void onSaleResponse(SaleResponse response) {
-    PidginTestActivityLogger.appendLnToLog("onSaleResponse called");
+    PidginTestActivityLogger.appendToTableView("onSaleResponse called", true);
     testExecutor.processResult(TestExchangeResponse.Method.onSaleResponse, response);
   }
 
   @Override
   public void onManualRefundResponse(ManualRefundResponse response) {
-    PidginTestActivityLogger.appendLnToLog("onManualRefundResponse called");
+    PidginTestActivityLogger.appendToTableView("onManualRefundResponse called", true);
     testExecutor.processResult(TestExchangeResponse.Method.onManualRefundResponse, response);
   }
 
   @Override
   public void onRefundPaymentResponse(RefundPaymentResponse response) {
-    PidginTestActivityLogger.appendLnToLog("onRefundPaymentResponse called");
+    PidginTestActivityLogger.appendToTableView("onRefundPaymentResponse called", true);
     testExecutor.processResult(TestExchangeResponse.Method.onRefundPaymentResponse, response);
   }
 
   @Override
   public void onTipAdded(TipAdded tipAdded) {
-    PidginTestActivityLogger.appendLnToLog("onTipAdded called");
+    PidginTestActivityLogger.appendToTableView("onTipAdded called", true);
     testExecutor.processResult(TestExchangeResponse.Method.onTipAdded, tipAdded);
   }
 
   @Override
   public void onVoidPaymentResponse(VoidPaymentResponse response) {
-    PidginTestActivityLogger.appendLnToLog("onVoidPaymentResponse called");
+    PidginTestActivityLogger.appendToTableView("onVoidPaymentResponse called", true);
     testExecutor.processResult(TestExchangeResponse.Method.onVoidPaymentResponse, response);
   }
 
   @Override
   public void onVaultCardResponse(VaultCardResponse response) {
-    PidginTestActivityLogger.appendLnToLog("onVaultCardResponse called");
+    PidginTestActivityLogger.appendToTableView("onVaultCardResponse called", true);
     //response.setSuccess(false);
     testExecutor.processResult(TestExchangeResponse.Method.onVaultCardResponse, response);
   }
 
   @Override
   public void onRetrievePendingPaymentsResponse(RetrievePendingPaymentsResponse retrievePendingPaymentResponse) {
-    PidginTestActivityLogger.appendLnToLog("onRetrievePendingPaymentsResponse called");
+    PidginTestActivityLogger.appendToTableView("onRetrievePendingPaymentsResponse called", true);
     testExecutor.processResult(TestExchangeResponse.Method.onRetrievePendingPaymentsResponse, retrievePendingPaymentResponse);
   }
 
   @Override
   public void onReadCardDataResponse(ReadCardDataResponse response) {
-    PidginTestActivityLogger.appendLnToLog("onReadCardDataResponse called");
+    PidginTestActivityLogger.appendToTableView("onReadCardDataResponse called", true);
     testExecutor.processResult(TestExchangeResponse.Method.onReadCardDataResponse, response);
   }
 
   @Override
   public void onCloseoutResponse(CloseoutResponse response) {
-    PidginTestActivityLogger.appendLnToLog("onCloseoutResponse called");
+    PidginTestActivityLogger.appendToTableView("onCloseoutResponse called", true);
     testExecutor.processResult(TestExchangeResponse.Method.onCloseoutResponse, response);
   }
 
   @Override
   public void onRetrievePaymentResponse(RetrievePaymentResponse response) {
-    PidginTestActivityLogger.appendLnToLog("onRetrievePaymentResponse called");
+    PidginTestActivityLogger.appendToTableView("onRetrievePaymentResponse called", true);
     testExecutor.processResult(TestExchangeResponse.Method.onRetrievePaymentResponse, response);
   }
 

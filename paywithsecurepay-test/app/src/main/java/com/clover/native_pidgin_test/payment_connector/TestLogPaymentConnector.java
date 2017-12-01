@@ -242,14 +242,14 @@ public class TestLogPaymentConnector implements IPaymentConnector {
   }
   @Override
   public void sale(final SaleRequest saleRequest) {
-    PidginTestActivityLogger.appendLnToLog("calling sale()");
+    PidginTestActivityLogger.appendToTableView("calling sale()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
-          PidginTestActivityLogger.appendLnToLog("payment connector connected");
+          PidginTestActivityLogger.appendToTableView("payment connector connected", true);
           paymentV3Connector.getService().sale(saleRequest);
         } else {
-          PidginTestActivityLogger.appendLnToLog("payment connector not connected");
+          PidginTestActivityLogger.appendToTableView("payment connector not connected", false);
           this.paymentV3Connector.connect();
           waitingTask = new AsyncTask() {
             @Override
@@ -278,7 +278,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    **/
   @Override
   public void acceptSignature(final VerifySignatureRequest request) {
-    PidginTestActivityLogger.appendLnToLog("calling acceptSignature()");
+    PidginTestActivityLogger.appendToTableView("calling acceptSignature()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -313,7 +313,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    **/
   @Override
   public void rejectSignature(final VerifySignatureRequest request) {
-    PidginTestActivityLogger.appendLnToLog("calling rejectSignature()");
+    PidginTestActivityLogger.appendToTableView("calling rejectSignature()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -348,7 +348,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    **/
   @Override
   public void acceptPayment(final Payment payment) {
-    PidginTestActivityLogger.appendLnToLog("calling acceptPayment()");
+    PidginTestActivityLogger.appendToTableView("calling acceptPayment()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -383,7 +383,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    **/
   @Override
   public void rejectPayment(final Payment payment, final Challenge challenge) {
-    PidginTestActivityLogger.appendLnToLog("calling rejectPayment()");
+    PidginTestActivityLogger.appendToTableView("calling rejectPayment()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -418,7 +418,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    **/
   @Override
   public void auth(final AuthRequest request) {
-    PidginTestActivityLogger.appendLnToLog("calling auth()");
+    PidginTestActivityLogger.appendToTableView("calling auth()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -453,7 +453,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    **/
   @Override
   public void preAuth(final PreAuthRequest request) {
-    PidginTestActivityLogger.appendLnToLog("calling preauth()");
+    PidginTestActivityLogger.appendToTableView("calling preauth()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -487,7 +487,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    **/
   @Override
   public void capturePreAuth(final CapturePreAuthRequest request) {
-    PidginTestActivityLogger.appendLnToLog("calling capturePreAuth()");
+    PidginTestActivityLogger.appendToTableView("calling capturePreAuth()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -521,7 +521,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    **/
   @Override
   public void tipAdjustAuth(final TipAdjustAuthRequest request) {
-    PidginTestActivityLogger.appendLnToLog("calling tipAdjustAuth()");
+    PidginTestActivityLogger.appendToTableView("calling tipAdjustAuth()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -555,7 +555,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    **/
   @Override
   public void voidPayment(final VoidPaymentRequest request) {
-    PidginTestActivityLogger.appendLnToLog("calling voidPayment()");
+    PidginTestActivityLogger.appendToTableView("calling voidPayment()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -589,7 +589,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    **/
   @Override
   public void refundPayment(final RefundPaymentRequest request) {
-    PidginTestActivityLogger.appendLnToLog("calling refundPayment()");
+    PidginTestActivityLogger.appendToTableView("calling refundPayment()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -623,7 +623,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    **/
   @Override
   public void manualRefund(final ManualRefundRequest request) {
-    PidginTestActivityLogger.appendLnToLog("calling manualRefund()");
+    PidginTestActivityLogger.appendToTableView("calling manualRefund()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -658,8 +658,8 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    **/
   @Override
   public void vaultCard(final Integer cardEntryMethods) {
-    PidginTestActivityLogger.setLog("");
-    PidginTestActivityLogger.appendLnToLog("calling vaultCard()");
+    //PidginTestActivityLogger.setLog("");
+    PidginTestActivityLogger.appendToTableView("calling vaultCard()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -700,7 +700,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    */
   @Override
   public void retrievePendingPayments() {
-    PidginTestActivityLogger.appendLnToLog("calling retrievePendingPayments()");
+    PidginTestActivityLogger.appendToTableView("calling retrievePendingPayments()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -734,7 +734,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    */
   @Override
   public void readCardData(final ReadCardDataRequest request) {
-    PidginTestActivityLogger.appendLnToLog("calling readCardData()");
+    PidginTestActivityLogger.appendToTableView("calling readCardData()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -768,7 +768,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    */
   @Override
   public void closeout(final CloseoutRequest request) {
-    PidginTestActivityLogger.appendLnToLog("calling closeout()");
+    PidginTestActivityLogger.appendToTableView("calling closeout()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
@@ -803,7 +803,7 @@ public class TestLogPaymentConnector implements IPaymentConnector {
    */
   @Override
   public void retrievePayment(final RetrievePaymentRequest request) {
-    PidginTestActivityLogger.appendLnToLog("calling retrievePayment()");
+    PidginTestActivityLogger.appendToTableView("calling retrievePayment()", true);
     try {
       if (paymentV3Connector != null) {
         if (paymentV3Connector.isConnected()) {
