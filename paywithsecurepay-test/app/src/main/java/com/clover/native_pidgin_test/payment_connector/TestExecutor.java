@@ -332,12 +332,14 @@ public class TestExecutor {
   private void showActionResults(CloverTestAction action) {
 
     DateFormat dateFormat = DateFormat.getDateTimeInstance();
-    String result = "Request: " + action.request.method +
+    /*String result = "Request: " + action.request.method +
                     "  Start: " + dateFormat.format(action.result.requestTime) +
                     "  Stop: " + (action.result.responseTime != null ? dateFormat.format(action.result.responseTime) : "<unknown>") +
                     "  Result: " + action.result.pass +
-                    (action.result.pass ? "" : "  Reason: " + action.result.reason);
-    PidginTestActivityLogger.appendToTableView(result, action.result.pass);
+                    (action.result.pass ? "" : "  Reason: " + action.result.reason);*/
+    String result = "Test Action: " + action.name + "\n"
+        + (action.result.pass ? "" : "Failed because: " + action.result.reason);
+    PidginTestActivityLogger.appendToTableView(result, action.result.pass, action.request.payload, action.response.payload);
     System.out.println(result);
   }
 
