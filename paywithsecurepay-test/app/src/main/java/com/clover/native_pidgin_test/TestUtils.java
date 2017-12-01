@@ -408,7 +408,7 @@ public class TestUtils {
         return readCardDataRequest1;
 
         default:
-          PidginTestActivityLogger.appendToTableView("Error executing request: " + method, false);
+          //PidginTestActivityLogger.appendToTableView("Error executing request: " + method, false);
           return null;
     }
   }

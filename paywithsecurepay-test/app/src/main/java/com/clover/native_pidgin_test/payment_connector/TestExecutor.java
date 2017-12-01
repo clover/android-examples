@@ -1,5 +1,6 @@
 package com.clover.native_pidgin_test.payment_connector;
 
+import com.clover.pidgin_test_native_lib.MainActivity;
 import com.clover.pidgin_test_native_lib.PidginTestActivityLogger;
 import com.clover.native_pidgin_test.TestUtils;
 import com.clover.native_pidgin_test.models.CloverTestAction;
@@ -331,14 +332,11 @@ public class TestExecutor {
   private void showActionResults(CloverTestAction action) {
 
     DateFormat dateFormat = DateFormat.getDateTimeInstance();
-    //PidginTestActivityLogger.appendLnToLog("Action name: " + action.name);
     String result = "Request: " + action.request.method +
                     "  Start: " + dateFormat.format(action.result.requestTime) +
                     "  Stop: " + (action.result.responseTime != null ? dateFormat.format(action.result.responseTime) : "<unknown>") +
                     "  Result: " + action.result.pass +
                     (action.result.pass ? "" : "  Reason: " + action.result.reason);
-
-    //PidginTestActivityLogger.appendLnToLog(result);
     PidginTestActivityLogger.appendToTableView(result, action.result.pass);
     System.out.println(result);
   }
