@@ -73,7 +73,7 @@ public class PaymentConnectorTestManager {
 
       executor.shutdownNow();
     }catch (Exception e) {
-      PidginTestActivityLogger.appendToTableView(e.getMessage(), false, null, null);
+      PidginTestActivityLogger.appendToTableView(e.getMessage(), false, null, null, null);
     }
   }
 
@@ -355,11 +355,11 @@ public class PaymentConnectorTestManager {
             }
 
             System.out.println("=========== Test Case [" + testCase.tags.getString("id") + "-" + testCase.name + "] executed successfully =========== ");
-            PidginTestActivityLogger.appendToTableView("=========== Test Case [" + testCase.tags.getString("id") + "-" + testCase.name + "] executed successfully =========== ", true, null, null);
+            //PidginTestActivityLogger.appendToTableView("=========== Test Case [" + testCase.tags.getString("id") + "-" + testCase.name + "] executed successfully =========== ", true, null, null);
 
           } catch (TestExecutionException ex) {
             System.err.println("=========== Test Case [" + testCase.tags.getString("id") + "-" + testCase.name + "] failed =========== ");
-            PidginTestActivityLogger.appendToTableView("=========== Test Case [" + testCase.tags.getString("id") + "-" + testCase.name + "] failed =========== ", false, null, null);
+            //PidginTestActivityLogger.appendToTableView("=========== Test Case [" + testCase.tags.getString("id") + "-" + testCase.name + "] failed =========== ", false, null, null);
             connector.getSecurePayClient().doBreak();
           }
         } catch (Exception e) {

@@ -70,6 +70,7 @@ public class TestExecutor {
   private static final String URL = "url";
 
   private final Map<String, JsonElement> storedValues;
+  private JsonObject expectedJsonObject;
   private final CloverTestAction action;
   //private final IPaymentConnector connector;
   private final TestLogPaymentConnector connector;
@@ -339,7 +340,7 @@ public class TestExecutor {
                     (action.result.pass ? "" : "  Reason: " + action.result.reason);*/
     String result = "Test Action: " + action.name + "\n"
         + (action.result.pass ? "" : "Failed because: " + action.result.reason);
-    PidginTestActivityLogger.appendToTableView(result, action.result.pass, action.request.payload, action.response.payload);
+    PidginTestActivityLogger.appendToTableView(result, action.result.pass, action.request.payload, action.response.payload, expectedJsonObject);
     System.out.println(result);
   }
 
@@ -408,7 +409,7 @@ public class TestExecutor {
   }
 
   private void processResult(JsonObject result, JsonObject expected) {
-
+    expectedJsonObject = expected;
     for (Map.Entry<String, JsonElement> entry : expected.entrySet()) {
       JsonElement expectedElement = entry.getValue();
       JsonElement resultElement = result.get(entry.getKey());
