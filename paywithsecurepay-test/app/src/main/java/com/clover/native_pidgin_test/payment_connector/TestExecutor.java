@@ -10,6 +10,8 @@ import com.clover.native_pidgin_test.models.TestExchangeRequest;
 import com.clover.native_pidgin_test.models.TestExchangeResponse;
 import com.clover.pidgin_test_native_lib.models.TestAction;
 import com.clover.remote.InputOption;
+import com.clover.remote.UiState;
+import com.clover.sdk.util.Platform;
 import com.clover.sdk.v3.base.Challenge;
 import com.clover.sdk.v3.connector.IPaymentConnector;
 import com.clover.sdk.v3.order.DisplayOrder;
@@ -502,7 +504,16 @@ public class TestExecutor {
             }
           }
           if (option != null) {
-            connector.getSecurePayClient().doKeyPress(option.keyPress);
+
+            if(Platform.isCloverMini()) {
+              connector.getSecurePayClient().doKeyPress(option.keyPress);
+            }
+            else if(Platform.isCloverGoldenOak()) {
+              String t = event.getEventState().name();
+              UiState uiState = UiState.valueOf(t);
+              connector.getSecurePayServiceManager().sendInputOption(uiState, option);
+            }
+
           }
         }
       }

@@ -8,6 +8,7 @@ import com.clover.pidgin_test_native_lib.models.TestAction;
 import com.clover.pidgin_test_native_lib.models.TestCase;
 
 import android.accounts.Account;
+import android.app.Activity;
 import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 
@@ -27,7 +28,7 @@ public class PaymentConnectorLstrNester implements LstrNester {
    * Convert PidginConfig into test objects and execute testing.
    * @param pidginConfig as the pidgin config
    */
-  public void nestAndTest(PidginConfig pidginConfig, Account account) {
+  public void nestAndTest(PidginConfig pidginConfig, Account account, Activity activity) {
 
     // convert test case JSON object in to List<TestCase>
     List<TestCase> testCases = loadTests(pidginConfig.getTestCases());
@@ -57,6 +58,18 @@ public class PaymentConnectorLstrNester implements LstrNester {
 
   @Override
   public void nestAndTest(PidginConfig pidginConfig) {
+
+  }
+
+  @Override
+  public void nestAndTest(PidginConfig pidginConfig, Account account) {
+
+    // convert test case JSON object in to List<TestCase>
+    List<TestCase> testCases = loadTests(pidginConfig.getTestCases());
+
+
+    // execute test
+    new PaymentConnectorTestManager().execute(testCases, pidginConfig.getContext(), account);
 
   }
 }

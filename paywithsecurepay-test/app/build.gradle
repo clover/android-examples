@@ -52,10 +52,11 @@ android {
 
 dependencies {
   compile 'com.clover.sdk:clover-android-connector-sdk:187-SNAPSHOT'
-    compile 'com.clover:common-payments:214-SNAPSHOT@aar'
-    compile 'com.clover:common:214-SNAPSHOT'
+    compile 'com.clover:common-payments:217-SNAPSHOT@aar'
+    compile 'com.clover:common:217-SNAPSHOT'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.clover.test:pidgin-test-native:1.1-SNAPSHOT'
+  compile 'com.clover:payments-common:27-SNAPSHOT'
     compile 'com.clover:clover-remote-interface:212-SNAPSHOT'
     compile 'com.clover.sdk:remote-pay-android-connector:1.4.0'
     compile 'org.apache.commons:commons-lang3:3.6'

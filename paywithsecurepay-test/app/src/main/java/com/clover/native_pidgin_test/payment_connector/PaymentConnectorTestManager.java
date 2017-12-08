@@ -12,6 +12,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.prefs.Preferences;
 import com.clover.common.analytics.ALog;
 import com.clover.common2.payments.PayIntent;
+import com.clover.commonpayments.PaymentIntent;
+import com.clover.commonpayments.PaymentUiMessageRequest;
+import com.clover.payment.common.securepay.SecurePayServiceManager;
 import com.clover.pidgin_test_native_lib.PidginTestActivityLogger;
 import com.clover.native_pidgin_test.models.CloverTestAction;
 import com.clover.native_pidgin_test.remote_terminal_kiosk.RemoteControlClient;
@@ -24,17 +27,24 @@ import com.clover.remote.UiState;
 import com.clover.remote.client.messages.CloverDeviceEvent;
 import com.clover.remote.order.DisplayOrder;
 import com.clover.remote.order.action.OrderActionResponse;
+import com.clover.sdk.util.Platform;
 import com.clover.sdk.v3.order.Order;
 import com.clover.sdk.v3.order.VoidReason;
+import com.clover.sdk.v3.pay.PaymentRequestCardDetails;
 import com.clover.sdk.v3.payments.Credit;
 import com.clover.sdk.v3.payments.Payment;
 import com.clover.sdk.v3.printer.PrintCategory;
 import com.clover.sdk.v3.printer.Printer;
 import android.accounts.Account;
+import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.widget.TableLayout;
 import com.google.gson.JsonElement;
+
 
 /**
  * Created by connor on 10/31/17.
@@ -50,18 +60,54 @@ public class PaymentConnectorTestManager {
   private ScheduledThreadPoolExecutor executor;
   private TestSecurePayClient securePayClient;
   private RemoteControlClient remoteControlClient;
+  private SecurePayServiceManager securePayServiceManager;
   private List<Throwable> threadExceptions = new ArrayList<>();
   private TestLogPaymentConnector testConnector;
   private TableLayout tl;
 
+  private BroadcastReceiver receiver = new BroadcastReceiver() {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+      PaymentUiMessageRequest request = intent.getParcelableExtra(PaymentIntent.EXTRA_PAYMENT_UI_MESSAGE_REQUEST);
+      System.out.println("Request UI State: " + request.getUiState());
+      if(request.getUiState() == UiState.START) {
+
+      }
+
+      if(request.getInputFunctions().length >0 ) {
+        System.out.print("Request Input Options: " + request.getInputFunctions()[0].getInputOption());
+        TestExecutor testExecutor = testConnector.getListener().getTestExecutor();
+        CloverDeviceEvent cloverDeviceEvent = new CloverDeviceEvent();
+        String temp = request.getUiState().name();
+        CloverDeviceEvent.DeviceEventState des = CloverDeviceEvent.DeviceEventState.valueOf(temp);
+        cloverDeviceEvent.setEventState(des);
+        InputOption[] inputOptions = new InputOption[request.getInputFunctions().length];
+        for(int i =0; i < request.getInputFunctions().length; i++) {
+          inputOptions[i] = request.getInputFunctions()[i].getInputOption();
+        }
+        cloverDeviceEvent.setInputOptions(inputOptions);
+        testExecutor.processDeviceEvent(cloverDeviceEvent);
+      }
+
+
+    }
+  };
+
   public void execute(List<TestCase> testCases, Context context, Account account) {
 
     try {
-      TestSecurePayClient spc = setUpSecurePayClient(context);
       TestResponsePaymentConnectorListener paymentConnectorListener = new TestResponsePaymentConnectorListener();
       testConnector = new TestLogPaymentConnector(context, account, paymentConnectorListener);
       paymentConnectorListener.setPaymentConnector(testConnector);
-      testConnector.setSecurePayClient(spc);
+      if(Platform.isCloverGoldenOak()) {
+        SecurePayServiceManager spsm = setupSecurePayServiceManager(context);
+        context.registerReceiver(receiver, new IntentFilter("clover.payments.intent.action.PAYMENT_UI_MESSAGE"));
+        testConnector.setSecurePayServiceManager(spsm);
+      }
+      else if(Platform.isCloverMini()) {
+        TestSecurePayClient spc = setUpSecurePayClient(context);
+        testConnector.setSecurePayClient(spc);
+      }
 
       executor = new ScheduledThreadPoolExecutor(2);
 
@@ -78,7 +124,6 @@ public class PaymentConnectorTestManager {
   }
 
   private TestSecurePayClient setUpSecurePayClient(Context context) {
-
     if(securePayClient == null) {
       securePayClient = new TestSecurePayClient(context) {
         @Override
@@ -310,6 +355,46 @@ public class PaymentConnectorTestManager {
     }
 
     return securePayClient;
+  }
+
+  private SecurePayServiceManager setupSecurePayServiceManager(Context context) {
+
+
+
+    if(securePayServiceManager == null) {
+      securePayServiceManager = new SecurePayServiceManager(context, new SecurePayServiceManager.SecurePayServiceListener() {
+
+        @Override
+        public void onUserInterfaceUpdate(PaymentUiMessageRequest paymentUiMessageRequest) {
+          System.out.println("securePayServiceManager called");
+        }
+
+        @Override
+        public boolean onPaymentComplete(Payment payment, Map map) {
+          System.out.println("securePayServiceManager called");
+          return false;
+        }
+
+        @Override
+        public boolean onCreditComplete(Credit credit, Map map) {
+          System.out.println("securePayServiceManager called");
+          return false;
+        }
+
+        @Override
+        public void onReadCardDataComplete(PaymentRequestCardDetails paymentRequestCardDetails) {
+          System.out.println("securePayServiceManager called");
+        }
+
+        @Override
+        public void onStateChanged(SecurePayServiceManager.State state) {
+          System.out.println("securePayServiceManager called");
+        }
+      });
+    }
+
+    return securePayServiceManager;
+
   }
 
 

@@ -3,6 +3,7 @@ package com.clover.native_pidgin_test.payment_connector;
 import com.clover.common2.payments.PayIntent;
 import com.clover.connector.sdk.v3.PaymentConnector;
 import com.clover.connector.sdk.v3.PaymentV3Connector;
+import com.clover.payment.common.securepay.SecurePayServiceManager;
 import com.clover.pidgin_test_native_lib.PidginTestActivityLogger;
 import com.clover.native_pidgin_test.remote_terminal_kiosk.RemoteControlClient;
 import com.clover.remote.InputOption;
@@ -67,6 +68,8 @@ public class TestLogPaymentConnector implements IPaymentConnector {
   private PaymentV3Connector paymentV3Connector;
   private AsyncTask waitingTask;
   private TestSecurePayClient securePayClient;
+
+  private SecurePayServiceManager securePayServiceManager;
   public TestResponsePaymentConnectorListener listener;
   private ArrayList<IDeviceConnectorListener> listeners = new ArrayList<>();
   private final PaymentV3Connector.PaymentServiceListener paymentServiceListener = new PaymentV3Connector.PaymentServiceListener() {
@@ -836,5 +839,11 @@ public class TestLogPaymentConnector implements IPaymentConnector {
     return securePayClient;
   }
 
+  public SecurePayServiceManager getSecurePayServiceManager() {
+    return securePayServiceManager;
+  }
 
+  public void setSecurePayServiceManager(SecurePayServiceManager securePayServiceManager) {
+    this.securePayServiceManager = securePayServiceManager;
+  }
 }
