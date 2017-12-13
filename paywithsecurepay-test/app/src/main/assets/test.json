@@ -1,6 +1,7 @@
 {
   "name": "ConnectorActions",
   "description": "All connector actions for reference.",
+  "onFailure": "continue",
   "tags": {
     "id": "connector-actions"
   },
@@ -128,6 +129,7 @@
             "disableTipOnScreen": true,
             "disableReceiptSelection": true,
             "disableDuplicateChecking": true,
+            "vaultedCard": "$:vaultedCard1",
             "externalId": "#:GEN_EXT_ID"
           }
         },
@@ -135,6 +137,10 @@
           {
             "on": "RECEIPT_OPTIONS",
             "description": "No receipt"
+          },
+          {
+            "on": "START",
+            "description": ".* on File"
           },
           {
             "on": "SELECT_ACCOUNT",
@@ -168,7 +174,7 @@
             "disableTipOnScreen": true,
             "externalId": "#:GEN_EXT_ID",
             "vaultedCard": "$:vaultedCard1",
-            "disableTipOnScreen": true
+            "disableDuplicateChecking": true
 
           }
         },
@@ -210,6 +216,7 @@
               "payload": {
                 "amount": 1100,
                 "disableTipOnScreen": true,
+                "disableDuplicateChecking": true,
                 "externalId": "#:GEN_EXT_ID",
                 "vaultedCard": "$:vaultedCard1"
               }
@@ -288,6 +295,7 @@
                 "amount": 900,
                 "tipAmount": 100,
                 "disableTipOnScreen": true,
+                "disableDuplicateChecking": true,
                 "externalId": "#:GEN_EXT_ID",
                 "vaultedCard": "$:vaultedCard1"
               }
@@ -296,6 +304,10 @@
               {
                 "on": "RECEIPT_OPTIONS",
                 "description": "No receipt"
+              },
+              {
+                "on": "START",
+                "description": ".* on File"
               }
             ]
           },
@@ -359,6 +371,7 @@
           "payload": {
             "amount": 500,
             "disableTipOnScreen": true,
+            "disableDuplicateChecking": true,
             "externalId": "#:GEN_EXT_ID",
             "disableRestartTransactionOnFail": true,
             "cardEntryMethods": 1
@@ -406,6 +419,7 @@
             "amount": 1300,
             "externalId": "#:GEN_EXT_ID",
             "disableTipOnScreen": true,
+            "disableDuplicateChecking": true,
             "vaultedCard": "$:vaultedCard1",
             "cardEntryMethods": 1
           }

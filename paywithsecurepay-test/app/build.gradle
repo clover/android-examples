@@ -13,11 +13,12 @@ android {
   buildToolsVersion '25.0.2'
 
   defaultConfig {
-    minSdkVersion 17
-    targetSdkVersion 17
+    minSdkVersion 18
+    targetSdkVersion 18
     versionCode 1
     versionName "1.0"
     multiDexEnabled true
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
   }
   buildTypes {
@@ -63,6 +64,13 @@ dependencies {
   compile 'com.android.support:appcompat-v7:21.0.3'
   compile 'com.android.support:support-v13:21.0.3'
   compile 'com.android.support:multidex:1.0.1'
+  /*androidTestCompile 'com.android.support.test:runner:0.2'
+  androidTestCompile 'com.android.support.test:rules:0.2'*/
+  testCompile 'junit:junit:4.12'
+  compile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.0'
+  androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    exclude group: 'com.android.support', module: 'support-annotations'
+  })
 }
 
 //defaultTasks=['build']

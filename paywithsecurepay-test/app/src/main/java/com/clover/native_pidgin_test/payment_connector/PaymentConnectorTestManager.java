@@ -37,6 +37,7 @@ import com.clover.sdk.v3.printer.PrintCategory;
 import com.clover.sdk.v3.printer.Printer;
 import android.accounts.Account;
 import android.app.Activity;
+import android.app.UiAutomation;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -70,24 +71,30 @@ public class PaymentConnectorTestManager {
     public void onReceive(Context context, Intent intent) {
       PaymentUiMessageRequest request = intent.getParcelableExtra(PaymentIntent.EXTRA_PAYMENT_UI_MESSAGE_REQUEST);
       System.out.println("Request UI State: " + request.getUiState());
-      if(request.getUiState() == UiState.START) {
-
-      }
-
       if(request.getInputFunctions().length >0 ) {
-        System.out.print("Request Input Options: " + request.getInputFunctions()[0].getInputOption());
-        TestExecutor testExecutor = testConnector.getListener().getTestExecutor();
-        CloverDeviceEvent cloverDeviceEvent = new CloverDeviceEvent();
-        String temp = request.getUiState().name();
-        CloverDeviceEvent.DeviceEventState des = CloverDeviceEvent.DeviceEventState.valueOf(temp);
-        cloverDeviceEvent.setEventState(des);
-        InputOption[] inputOptions = new InputOption[request.getInputFunctions().length];
         for(int i =0; i < request.getInputFunctions().length; i++) {
-          inputOptions[i] = request.getInputFunctions()[i].getInputOption();
+          //inputOptions[i] = request.getInputFunctions()[i].getInputOption();
+          System.out.println("Request Input Option: " + request.getInputFunctions()[i].getInputOption());
         }
-        cloverDeviceEvent.setInputOptions(inputOptions);
-        testExecutor.processDeviceEvent(cloverDeviceEvent);
       }
+      if(request.getUiState() == UiState.START) {
+        if(request.getInputFunctions().length >0 ) {
+          TestExecutor testExecutor = testConnector.getListener().getTestExecutor();
+          CloverDeviceEvent cloverDeviceEvent = new CloverDeviceEvent();
+          String temp = request.getUiState().name();
+          CloverDeviceEvent.DeviceEventState des = CloverDeviceEvent.DeviceEventState.valueOf(temp);
+          cloverDeviceEvent.setEventState(des);
+          InputOption[] inputOptions = new InputOption[request.getInputFunctions().length];
+          for(int i =0; i < request.getInputFunctions().length; i++) {
+            inputOptions[i] = request.getInputFunctions()[i].getInputOption();
+            //System.out.print("Request KeyPress: " + request.getInputFunctions()[i].getInputOption().keyPress);
+          }
+          cloverDeviceEvent.setInputOptions(inputOptions);
+          testExecutor.processDeviceEvent(cloverDeviceEvent);
+        }
+      }
+
+
 
 
     }
@@ -481,7 +488,7 @@ public class PaymentConnectorTestManager {
     // Update the listener with the current executor
     testConnector.listener.setTestExecutor(executor);
     if (!executor.executeAction()) {
-      throw new TestExecutionException();
+      //throw new TestExecutionException();
     }
   }
 
