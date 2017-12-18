@@ -9,7 +9,8 @@ repositories {
 
 
 android {
-  compileSdkVersion 21
+  compileSdkVersion 25 //was 21
+
   buildToolsVersion '25.0.2'
 
   defaultConfig {

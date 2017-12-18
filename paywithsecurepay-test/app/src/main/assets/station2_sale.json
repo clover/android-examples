@@ -1,0 +1,32 @@
+{
+  "name": "saleStation2",
+  "tags": {
+    "id": "S4"
+  },
+  "testActions": [
+    {
+      "name": "Sale Station 2",
+      "context": {
+        "request": {
+          "method": "SALE",
+          "payload": {
+            "amount": 500,
+            "disableTipOnScreen": true,
+            "externalId": "#:GEN_EXT_ID",
+            "disableRestartTransactionOnFail": true,
+            "disableDuplicateChecking": true
+          }
+        }
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onSaleResponse",
+          "payload": {
+            "success": true
+          }
+        }
+      }
+    }
+  ]
+}

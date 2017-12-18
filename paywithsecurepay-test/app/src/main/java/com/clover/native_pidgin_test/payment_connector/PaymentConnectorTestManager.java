@@ -37,12 +37,14 @@ import com.clover.sdk.v3.printer.PrintCategory;
 import com.clover.sdk.v3.printer.Printer;
 import android.accounts.Account;
 import android.app.Activity;
+import android.app.Instrumentation;
 import android.app.UiAutomation;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.support.test.uiautomator.UiDevice;
 import android.widget.TableLayout;
 import com.google.gson.JsonElement;
 
@@ -407,7 +409,6 @@ public class PaymentConnectorTestManager {
 
 
   public void runTest(final TestCase testCase, final TestLogPaymentConnector connector) {
-
     List<ScheduledFuture> futures = new LinkedList<>();
     Thread testThread = new Thread(new Runnable() {
       @Override
@@ -483,7 +484,6 @@ public class PaymentConnectorTestManager {
 
 
   private void executeAction(CloverTestAction action, TestLogPaymentConnector testConnector, Map<String, JsonElement> resultCache) {
-
     TestExecutor executor = new TestExecutor(action, testConnector, resultCache);
     // Update the listener with the current executor
     testConnector.listener.setTestExecutor(executor);

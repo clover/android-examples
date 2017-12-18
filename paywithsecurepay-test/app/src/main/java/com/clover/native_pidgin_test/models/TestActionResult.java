@@ -1,5 +1,8 @@
 package com.clover.native_pidgin_test.models;
 
+import android.support.test.uiautomator.UiDevice;
+import org.junit.runner.RunWith;
+
 import java.util.Date;
 
 /**
