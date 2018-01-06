@@ -54,53 +54,13 @@ import com.google.gson.JsonElement;
  */
 public class PaymentConnectorTestManager {
 
-  private static final String APP_ID = "com.clover.remote.test-";
-  private static final String POS_NAME = "Clover Remote Pay Java Test Harness";
-  private static final String DEVICE_NAME = "Clover Device";
-  private static final String AUTH_TOKEN = "AUTH_TOKEN";
-  protected Account account = null;
-  private final Preferences preferences = Preferences.userNodeForPackage(PaymentConnectorTestManager.class);
   private ScheduledThreadPoolExecutor executor;
   private TestSecurePayClient securePayClient;
   private RemoteControlClient remoteControlClient;
-  private SecurePayServiceManager securePayServiceManager;
-  private List<Throwable> threadExceptions = new ArrayList<>();
   private TestLogPaymentConnector testConnector;
-  private TableLayout tl;
-
-  private BroadcastReceiver receiver = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-      PaymentUiMessageRequest request = intent.getParcelableExtra(PaymentIntent.EXTRA_PAYMENT_UI_MESSAGE_REQUEST);
-      System.out.println("Request UI State: " + request.getUiState());
-      if(request.getInputFunctions().length >0 ) {
-        for(int i =0; i < request.getInputFunctions().length; i++) {
-          //inputOptions[i] = request.getInputFunctions()[i].getInputOption();
-          System.out.println("Request Input Option: " + request.getInputFunctions()[i].getInputOption());
-        }
-      }
-      if(request.getUiState() == UiState.START) {
-        if(request.getInputFunctions().length >0 ) {
-          TestExecutor testExecutor = testConnector.getListener().getTestExecutor();
-          CloverDeviceEvent cloverDeviceEvent = new CloverDeviceEvent();
-          String temp = request.getUiState().name();
-          CloverDeviceEvent.DeviceEventState des = CloverDeviceEvent.DeviceEventState.valueOf(temp);
-          cloverDeviceEvent.setEventState(des);
-          InputOption[] inputOptions = new InputOption[request.getInputFunctions().length];
-          for(int i =0; i < request.getInputFunctions().length; i++) {
-            inputOptions[i] = request.getInputFunctions()[i].getInputOption();
-            //System.out.print("Request KeyPress: " + request.getInputFunctions()[i].getInputOption().keyPress);
-          }
-          cloverDeviceEvent.setInputOptions(inputOptions);
-          testExecutor.processDeviceEvent(cloverDeviceEvent);
-        }
-      }
 
 
 
-
-    }
-  };
 
   public void execute(List<TestCase> testCases, Context context, Account account) {
 
@@ -108,15 +68,8 @@ public class PaymentConnectorTestManager {
       TestResponsePaymentConnectorListener paymentConnectorListener = new TestResponsePaymentConnectorListener();
       testConnector = new TestLogPaymentConnector(context, account, paymentConnectorListener);
       paymentConnectorListener.setPaymentConnector(testConnector);
-      if(Platform.isCloverGoldenOak()) {
-        SecurePayServiceManager spsm = setupSecurePayServiceManager(context);
-        context.registerReceiver(receiver, new IntentFilter("clover.payments.intent.action.PAYMENT_UI_MESSAGE"));
-        testConnector.setSecurePayServiceManager(spsm);
-      }
-      else if(Platform.isCloverMini()) {
-        TestSecurePayClient spc = setUpSecurePayClient(context);
-        testConnector.setSecurePayClient(spc);
-      }
+      TestSecurePayClient spc = setUpSecurePayClient(context);
+      testConnector.setSecurePayClient(spc);
 
       executor = new ScheduledThreadPoolExecutor(2);
 
@@ -365,47 +318,6 @@ public class PaymentConnectorTestManager {
 
     return securePayClient;
   }
-
-  private SecurePayServiceManager setupSecurePayServiceManager(Context context) {
-
-
-
-    if(securePayServiceManager == null) {
-      securePayServiceManager = new SecurePayServiceManager(context, new SecurePayServiceManager.SecurePayServiceListener() {
-
-        @Override
-        public void onUserInterfaceUpdate(PaymentUiMessageRequest paymentUiMessageRequest) {
-          System.out.println("securePayServiceManager called");
-        }
-
-        @Override
-        public boolean onPaymentComplete(Payment payment, Map map) {
-          System.out.println("securePayServiceManager called");
-          return false;
-        }
-
-        @Override
-        public boolean onCreditComplete(Credit credit, Map map) {
-          System.out.println("securePayServiceManager called");
-          return false;
-        }
-
-        @Override
-        public void onReadCardDataComplete(PaymentRequestCardDetails paymentRequestCardDetails) {
-          System.out.println("securePayServiceManager called");
-        }
-
-        @Override
-        public void onStateChanged(SecurePayServiceManager.State state) {
-          System.out.println("securePayServiceManager called");
-        }
-      });
-    }
-
-    return securePayServiceManager;
-
-  }
-
 
 
   public void runTest(final TestCase testCase, final TestLogPaymentConnector connector) {

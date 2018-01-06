@@ -9,9 +9,9 @@ repositories {
 
 
 android {
-  compileSdkVersion 25 //was 21
+  compileSdkVersion 26 //was 21
 
-  buildToolsVersion '25.0.2'
+  buildToolsVersion '26.0.2'
 
   defaultConfig {
     minSdkVersion 18
@@ -62,8 +62,8 @@ dependencies {
     compile 'com.clover:clover-remote-interface:212-SNAPSHOT'
     compile 'com.clover.sdk:remote-pay-android-connector:1.4.0'
     compile 'org.apache.commons:commons-lang3:3.6'
-  compile 'com.android.support:appcompat-v7:21.0.3'
-  compile 'com.android.support:support-v13:21.0.3'
+  compile 'com.android.support:appcompat-v7:26.0.2'
+  compile 'com.android.support:support-v13:26.0.2'
   compile 'com.android.support:multidex:1.0.1'
   /*androidTestCompile 'com.android.support.test:runner:0.2'
   androidTestCompile 'com.android.support.test:rules:0.2'*/

@@ -190,7 +190,6 @@ public class TestLogPaymentConnector implements IPaymentConnector {
 
   public TestLogPaymentConnector(Context context, Account account, TestResponsePaymentConnectorListener paymentConnectorListener) {
     if(paymentConnectorListener != null) {
-
       listener = paymentConnectorListener;
       addCloverConnectorListener(paymentConnectorListener);
     }
