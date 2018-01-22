@@ -1,0 +1,38 @@
+{
+  "name": "auth1",
+  "description": "All connector actions for reference.",
+  "tags": {
+    "id": "connector-actions"
+  },
+  "testActions": [
+
+    {
+      "name": "Auth W/ VC",
+      "tags": {
+        "id": "A1"
+      },
+      "context": {
+        "request": {
+          "method": "AUTH",
+          "payload": {
+            "amount": 1300,
+            "externalId": "#:GEN_EXT_ID",
+            "disableDuplicateChecking": true
+          }
+        }
+      },
+      "method": {},
+      "assert": {
+        "response": {
+          "method": "onAuthResponse",
+          "payload": {
+            "success": true,
+            "payment": {
+              "amount": 1300
+            }
+          }
+        }
+      }
+    }
+  ]
+}
