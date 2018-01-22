@@ -44,7 +44,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.support.test.uiautomator.UiDevice;
 import android.widget.TableLayout;
 import com.google.gson.JsonElement;
 
@@ -81,7 +80,7 @@ public class PaymentConnectorTestManager {
 
       executor.shutdownNow();
     }catch (Exception e) {
-      PidginTestActivityLogger.appendToTableView(e.getMessage(), false, null, null, null);
+      //PidginTestActivityLogger.appendToTableView(e.getMessage(), false, null, null, null);
     }
   }
 

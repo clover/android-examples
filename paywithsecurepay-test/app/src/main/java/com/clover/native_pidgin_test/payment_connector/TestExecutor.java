@@ -342,7 +342,7 @@ public class TestExecutor {
                     (action.result.pass ? "" : "  Reason: " + action.result.reason);*/
     String result = "Test Action: " + action.name + "\n"
         + (action.result.pass ? "" : "Failed because: " + action.result.reason);
-    PidginTestActivityLogger.appendToTableView(result, action.result.pass, action.request.payload, action.response.payload, expectedJsonObject);
+    //PidginTestActivityLogger.appendToTableView(result, action.result.pass, action.request.payload, action.response.payload, expectedJsonObject);
     System.out.println(result);
   }
 

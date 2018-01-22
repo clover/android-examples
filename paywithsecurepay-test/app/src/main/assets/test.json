@@ -240,8 +240,7 @@
               "payload": {
                 "success": true,
                 "payment": {
-                  "amount": 900,
-                  "tipAmount": 100
+                  "amount": 900
                 }
               },
               "store": {
@@ -325,15 +324,6 @@
       "tags": {
         "id": "A1"
       },
-      "before": [
-        {
-          "name": "VC2",
-          "ref": "test.json#Vault-Card",
-          "context": {},
-          "method": {},
-          "assert": {}
-        }
-      ],
       "context": {
         "request": {
           "method": "AUTH",
