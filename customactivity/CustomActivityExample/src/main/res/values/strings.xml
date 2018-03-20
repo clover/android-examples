@@ -1,0 +1,9 @@
+<resources>
+  <string name="app_name">CustomActivity</string>
+  <string name="StartActivityPayloadText">Start Activity Payload:</string>
+  <string name="startactivityforresult_payload">StartActivityForResult payload…</string>
+  <string name="incoming_message_payload_here">Incoming message payload here…</string>
+  <string name="response_text">Because Obi-Wan Kenobi took the last two droids he was looking for.</string>
+  <string name="activity_finish_payload">{\“value\”:{\“click\”:\“Finish!\”}, \“rejected\”:false}</string>
+  <string name="finish">Finish</string>
+</resources>

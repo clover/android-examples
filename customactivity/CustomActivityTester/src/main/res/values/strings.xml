@@ -1,0 +1,22 @@
+<resources>
+  <string name="action_name_of_custom_activity">Action Name of Custom Activity:</string>
+  <string name="app_name">CustomActivityTester</string>
+  <string name="barcode_error_format">Error obtaining barcode: %s</string>
+  <string name="connect">Connect</string>
+  <string name="custom_activity_name">com.example.clover.customactivity</string>
+  <string name="final_payload">Final Payload:</string>
+  <string name="initial_payload_placeholder">{\“Message\”:\“Start Activity Payload\”}</string>
+  <string name="initial_payload">Initial Payload:</string>
+  <string name="lan_pay_address">wss://10.249.254.214:12345/remote_pay</string>
+  <string name="lan_pay_display">Network Clover Connector</string>
+  <string name="messages_from_custom_activity">Messages to/from Custom Activity</string>
+  <string name="non_blocking">Non-Blocking</string>
+  <string name="payload_description">Payload to be sent to Custom Activity:</string>
+  <string name="payload_placeholder">{\“Message\”:\“I am a message!\”}</string>
+  <string name="scan_qr_code">Scan QRCode</string>
+  <string name="send_initial_payload_to_activity">Send Initial Payload to Activity:</string>
+  <string name="send_payload">Send Payload</string>
+  <string name="start_activity">Start Activity</string>
+  <string name="test_custom_activity">Test Custom Activity</string>
+  <string name="usb_clover_connector">USB Clover Connector</string>
+</resources>

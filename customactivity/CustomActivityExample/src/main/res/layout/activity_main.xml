@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/basic_conversation_land_example"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="@android:color/white"
+    android:focusableInTouchMode="true"
+    android:gravity="center_horizontal">
+  <TextView android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Custom Activity Example"
+      android:textSize="24dp"
+      android:gravity="center_horizontal"/>
+  <View android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginBottom="10dp"
+      android:background="@color/colorAccent"/>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="Received Initial Payload: "/>
+    <TextView
+        android:id="@+id/PayloadReceived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        />
+  </LinearLayout>
+  <ListView
+      android:id="@+id/MessagesListView"
+      android:layout_width="fill_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:dividerHeight="0dp"
+      android:divider="@null"
+      android:layout_marginBottom="5dp"/>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:text="Send Payload: "
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+    <EditText
+        android:id="@+id/SendPayloadContent"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"/>
+    <Button
+        android:id="@+id/SendPayloadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_green"
+        android:textColor="@android:color/white"
+        android:text="Send"/>
+  </LinearLayout>
+  <LinearLayout android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_gravity="bottom"
+      android:layout_marginTop="20dp"
+      android:gravity="bottom">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End Activity Payload:"
+        android:layout_marginEnd="5dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="visible"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/resultPayload"
+        android:text="@string/activity_finish_payload"
+        android:layout_marginEnd="10dp"
+        android:textSize="20sp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/finish"
+        android:id="@+id/button"
+        android:onClick="finishClicked"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"/>
+
+  </LinearLayout>
+</LinearLayout>

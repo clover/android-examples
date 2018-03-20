@@ -1,0 +1,33 @@
+apply plugin: 'com.android.application'
+
+android {
+  compileSdkVersion 26
+
+
+
+  defaultConfig {
+    applicationId "com.example.clover.customactivitytester"
+    minSdkVersion 17
+    targetSdkVersion 26
+    versionCode 1
+    versionName "1.0"
+
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+
+}
+
+dependencies {
+  compile 'com.clover.sdk:remote-pay-android-connector:1.4.0'
+  compile 'com.google.code.gson:gson:2.8.0'
+  compile 'com.google.android.gms:play-services-vision:10.2.6'
+  implementation 'com.android.support:appcompat-v7:26.1.0'
+}
