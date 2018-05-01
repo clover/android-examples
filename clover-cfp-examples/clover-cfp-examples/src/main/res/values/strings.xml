@@ -1,0 +1,50 @@
+<resources>
+    <string name="title_activity_main_ratings">Ratings</string>
+    <string name="title_activity_web_view">WebView Example</string>
+    <string name="title_activity_basic_example">Basic Example</string>
+    <string name="title_activity_conversational_example">Basic Conversation Example</string>
+    <string name="title_activity_carousel">CarouselActivity</string>
+    <string name="title_activity_nfc_example">NFC Example</string>
+
+    <string name="login_message">Please enter your phone number:</string>
+    <string name="done_button">Done</string>
+    <string name="phonenumber_hint">(555)555–5555</string>
+    <string name="unknown_payload">The payload received in a message from the calling system is not a known class.  payloadClassName = </string>
+    <string name="welcome">Welcome back </string>
+    <string name="error">Error</string>
+    <string name="no_nfc">No NFC found on this device</string>
+    <string name="nfc_disabled">NFC is not enabled. Please go to the wireless settings to enable it.</string>
+    <string name="text_update_settings">Update Settings</string>
+    <string name="intro_message">Tap on the bottom of the display near the center.\n"</string>
+    <string name="question_1">How was your service?</string>
+  <string name="StartActivityPayloadText">Start Activity Payload:</string>
+    <string name="startactivityforresult_payload">StartActivityForResult payload…</string>
+  <string name="message_in_payload">Message In Payload:</string>
+    <string name="incoming_message_payload_here">Incoming message payload here…</string>
+    <string name="send_message">Send Message</string>
+    <string name="response_text">Because Obi-Wan Kenobi took the last two droids he was looking for.</string>
+    <string name="finish">Finish</string>
+    <string name="activity_finish_payload">{\“value\”:{\“click\”:\“Finish!\”}, \“rejected\”:false}</string>
+  <string name="welcome_back">Welcome back</string>
+  <string name="dining_experience">Would you like to rate your dining experience?</string>
+  <string name="sushi_photo">sushi photo</string>
+  <string name="login_background">login background</string>
+  <string name="sushi_portrait">sushi portrait</string>
+  <string name="big_star_off">big star off</string>
+  <string name="big_star_on">big star on</string>
+  <string name="thank_you">Thank You!</string>
+  <string name="waiting">Waiting...</string>
+  <string name="basic_text">{\"value\":{\"click\":\"Finish!\"}, \"rejected\":false}</string>
+
+  //numbers
+  <string name="one">1</string>
+  <string name="two">2</string>
+  <string name="three">3</string>
+  <string name="four">4</string>
+  <string name="five">5</string>
+  <string name="six">6</string>
+  <string name="seven">7</string>
+  <string name="eight">8</string>
+  <string name="nine">9</string>
+  <string name="zero">0</string>
+</resources>

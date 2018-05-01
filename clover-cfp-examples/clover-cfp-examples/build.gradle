@@ -1,0 +1,28 @@
+group 'com.clover.cfp'
+version = '19-SNAPSHOT'
+
+apply from: file("${androidBuild}/app.gradle")
+apply from: file("${androidBuild}/versions.gradle")
+apply from: file("${projectDir}/../versions.gradle")
+
+android {
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 21
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'LICENSE.txt'
+    }
+    buildToolsVersion "${BUILD_TOOLS_VERSION}"
+}
+
+dependencies {
+    compile "com.clover.cfp:clover-cfp-sdk:1.0"
+    compile "com.google.guava:guava:${GUAVA_VERSION}"
+    compile "com.clover:clover-remote-common:226-SNAPSHOT"
+    compile "com.google.code.gson:gson:${GSON_VERSION}"
+}

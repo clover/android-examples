@@ -1,0 +1,85 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.clover.cfp.examples.RatingsFragment"
+    android:gravity="center">
+
+    <ImageView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/sushi_portrait"
+        android:contentDescription="@string/sushi_portrait"
+        android:alpha="0.4"/>
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:id="@+id/linearLayout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text=""
+                android:id="@+id/textView"
+                android:textStyle="bold|italic"
+                android:textSize="24sp"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/dining_experience"
+                android:id="@+id/questionLabel"
+                android:gravity="center"
+                android:textStyle="bold|italic"
+                android:textSize="24sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/linearLayout"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentStart="true">
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@android:string/cancel"
+                android:gravity="center"
+                android:textStyle="bold|italic"
+                android:enabled="true"
+                android:fontFamily="@android:string/cancel"
+                android:paddingStart="30dp"
+                android:paddingEnd="30dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/button_border"/>
+
+            <Button android:id="@+id/okButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@android:string/ok"
+                android:gravity="center"
+                android:textStyle="bold|italic"
+                android:background="@drawable/button_border"
+                android:enabled="true"
+                android:paddingStart="30dp"
+                android:paddingEnd="30dp"
+                android:fontFamily="@android:string/ok"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

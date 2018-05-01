@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.clover.cfp.examples.RatingsFragment">
+
+    <ImageView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/sushi_landscape"
+        android:alpha="0.4"
+        android:contentDescription="@string/sushi_photo"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/thank_you"
+            android:id="@+id/textView"
+            android:textStyle="bold|italic"
+            android:layout_marginBottom="30dp"
+            android:textSize="36sp"/>
+        <Button android:id="@+id/ratingsDoneButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/done_button"
+            android:background="@drawable/button_border"
+            android:gravity="center"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:textStyle="bold|italic"
+            android:enabled="true"
+            android:fontFamily="@android:string/ok"
+            />
+    </LinearLayout>
+
+</RelativeLayout>
