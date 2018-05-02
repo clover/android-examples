@@ -1,0 +1,116 @@
+/*
+
+ Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+ Add common repos here
+
+*/
+
+
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        google()
+        if (project.hasProperty('jenkins')) {
+            maven {
+
+                url "http://isvartifactory.dev.clover.com:8081/artifactory/central-repo"
+
+                credentials {
+                    username = "${artifactory_user}"
+                    password = "${artifactory_password}"
+                }
+
+            }
+        } else {
+            maven {
+                url "http://artifactory.corp.clover.com:8081/artifactory/repo"
+            }
+        }
+    }
+
+  def mavenPlugin = "com.github.dcendents:android-maven-gradle-plugin:1.5"
+  dependencies {
+    classpath 'com.android.tools.build:gradle:3.1.2'
+    classpath mavenPlugin
+      classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.5.4'
+    classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.10.0'
+  }
+}
+
+
+
+allprojects {
+    apply plugin: 'com.jfrog.artifactory'
+    apply plugin: 'maven-publish'
+    apply plugin: 'com.github.dcendents.android-maven'
+    repositories {
+        google()
+        jcenter()
+    }
+    artifactory {
+        clientConfig.setIncludeEnvVars(true)
+        clientConfig.info.addEnvironmentProperty('test.adding.dynVar',new Date().toString())
+
+        if (project.hasProperty('jenkins')) {
+            contextUrl = 'http://isvartifactory.dev.clover.com:8081/artifactory'
+        }
+        else {
+            contextUrl = 'https://isvartifactory.dev.clover.com:8081/artifactory'
+        }
+        publish {
+            repository {
+                repoKey = 'libs-snapshot-local' // The Artifactory repository key to publish to
+                username = "${artifactory_user}" // The publisher user name
+                password = "${artifactory_password}" // The publisher password
+
+            }
+            defaults {
+                // Reference to Gradle publications defined in the build script.
+                // This is how we tell the Artifactory Plugin which artifacts should be
+                // published to Artifactory.
+                publishArtifacts = true
+                // Properties to be attached to the published artifacts.
+                properties = ['qa.level': 'basic', 'dev.team' : 'core']
+                publishPom = true // Publish generated POM files to Artifactory (true by default)
+            }
+        }
+        resolve {
+            repoKey = 'jcenter'
+        }
+    }
+}
+
+subprojects {
+
+  repositories {
+    mavenLocal()
+    mavenCentral()
+      google()
+      if (project.hasProperty('jenkins')) {
+          maven {
+
+              url "http://isvartifactory.dev.clover.com:8081/artifactory/central-repo"
+
+              credentials {
+                  username = "${artifactory_user}"
+                  password = "${artifactory_password}"
+              }
+
+          }
+      } else {
+          maven {
+              url "http://artifactory.corp.clover.com:8081/artifactory/repo"
+          }
+          maven {
+              url "http://artifactory.corp.clover.com:8081/artifactory/libs-release"
+          }
+      }
+  }
+}
+
+artifactoryPublish.skip = true
+

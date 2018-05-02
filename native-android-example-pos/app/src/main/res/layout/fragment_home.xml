@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ Copyright (C) 2018 Clover Network, Inc.
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~
+ ~ You may obtain a copy of the License at
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing, software
+ ~ distributed under the License is distributed on an "AS IS" BASIS,
+ ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ~ See the License for the specific language governing permissions and
+ ~ limitations under the License.
+ -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:weightSum="3"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:gravity="center"
+    android:id="@+id/fragment_home">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_marginBottom="10sp"
+      android:gravity="center">
+    <RelativeLayout
+        android:id="@+id/registerButton"
+        style="@style/HomeButtonFlex"
+        android:onClick="showRegister"> 
+      <TextView
+          android:id="@+id/register_text"
+          style="@style/HomeTextFlex"
+          android:text="@string/register"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/register_text"
+          android:gravity="center_horizontal"
+          android:padding="10dp"
+          android:src="@drawable/ic_new_order"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/PreAuthButton"
+        style="@style/HomeButtonFlex"
+        android:onClick="startPreAuth"> 
+      <TextView
+          android:id="@+id/preauth_text"
+          style="@style/HomeTextFlex"
+          android:text="@string/new_tab_preauth"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/preauth_text"
+          android:gravity="center_horizontal"
+          android:padding="15dp"
+          android:src="@drawable/ic_new_tab"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/OrdersButton"
+        style="@style/HomeButtonFlex"
+        android:onClick="showOrders"> 
+      <TextView
+          android:id="@+id/orders_text"
+          style="@style/HomeTextFlex"
+          android:text="@string/view_orders"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/orders_text"
+          android:gravity="center_horizontal"
+          android:padding="10dp"
+          android:src="@drawable/ic_orders"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+  </LinearLayout>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="10sp"
+      android:orientation="horizontal"
+      android:gravity="center">
+    <RelativeLayout
+        android:id="@+id/CardsButton"
+        style="@style/HomeButtonFlex"
+        android:onClick="showCards"> 
+      <TextView
+          android:id="@+id/card_text"
+          style="@style/HomeTextFlex"
+          android:text="@string/customers_vault_card"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/card_text"
+          android:gravity="center_horizontal"
+          android:padding="10dp"
+          android:src="@drawable/ic_customers"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/RefundButton"
+        style="@style/HomeButtonFlex"
+        android:onClick="showRefunds"> 
+      <TextView
+          android:id="@+id/refund_text"
+          style="@style/HomeTextFlex"
+          android:text="@string/refund"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/refund_text"
+          android:gravity="center_horizontal"
+          android:padding="10dp"
+          android:src="@drawable/ic_refunds"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/TransactionButton"
+        style="@style/HomeButtonFlex"
+        android:onClick="showTransactions"> 
+      <TextView
+          android:id="@+id/transaction_text"
+          style="@style/HomeTextFlex"
+          android:text="@string/transactions"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/transaction_text"
+          android:gravity="center_horizontal"
+          android:padding="10dp"
+          android:src="@drawable/ic_transactions"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+  </LinearLayout>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="10sp"
+      android:orientation="horizontal"
+      android:gravity="center">
+    <RelativeLayout
+        android:id="@+id/CustomActivityButton"
+        style="@style/HomeButtonFlex.Disabled">
+      <TextView
+          android:id="@+id/custom_activity_text"
+          style="@style/HomeTextFlex"
+          android:text="@string/custom_activities"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/custom_activity_text"
+          android:gravity="center_horizontal"
+          android:padding="10dp"
+          android:src="@drawable/ic_custom_activities"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/DeviceButton"
+        style="@style/HomeButtonFlex"
+        android:onClick="showDevice"> 
+      <TextView
+          android:id="@+id/device_text"
+          style="@style/HomeTextFlex"
+          android:text="@string/device"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/device_text"
+          android:gravity="center_horizontal"
+          android:padding="10dp"
+          android:src="@drawable/ic_device"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/RecoveryButton"
+        style="@style/HomeButtonFlex"
+        android:onClick="showRecoveryOptions"> 
+      <TextView
+          android:id="@+id/recovery_text"
+          style="@style/HomeTextFlex"
+          android:text="@string/recovery_options"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/recovery_text"
+          android:gravity="center_horizontal"
+          android:padding="5dp"
+          android:src="@drawable/ic_recovery"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+  </LinearLayout>
+</LinearLayout>

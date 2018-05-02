@@ -1,0 +1,366 @@
+<!--
+  ~ Copyright (C) 2018 Clover Network, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+
+  <!-- Base application theme. -->
+  <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
+  </style>
+
+  <style name="CustomDialog" parent="@android:style/Theme.Holo.Light" >
+    <item name="android:windowBackground">@null</item>
+    <item name="android:windowIsFloating">true</item>
+  </style>
+
+  <style name="Popup">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:background">@color/white</item>
+    <item name="android:orientation">vertical</item>
+  </style>
+
+  <style name="Popup.TransactionSettings">
+    <item name="android:minWidth">1000dp</item>
+    <item name="android:minHeight">525dp</item>
+    <item name="android:paddingStart">20dp</item>
+    <item name="android:paddingBottom">20dp</item>
+    <item name="android:paddingTop">20dp</item>
+  </style>
+
+  <style name="Popup.TransactionSettingsMiniMobile">
+    <item name="android:minWidth">880dp</item>
+    <item name="android:minHeight">475dp</item>
+    <item name="android:paddingStart">20dp</item>
+    <item name="android:paddingBottom">10dp</item>
+    <item name="android:paddingTop">20dp</item>
+    <item name="android:gravity">center</item>
+  </style>
+
+  <style name="Popup.TransactionSettingsFlex">
+    <item name="android:minWidth">350dp</item>
+    <item name="android:minHeight">500dp</item>
+    <item name="android:paddingStart">10dp</item>
+    <item name="android:paddingEnd">10dp</item>
+    <item name="android:paddingBottom">10dp</item>
+    <item name="android:paddingTop">10dp</item>
+    <item name="android:gravity">center</item>
+  </style>
+
+  <style name="Popup.EnterPaymentId">
+    <item name="android:minHeight">150dp</item>
+    <item name="android:minWidth">400dp</item>
+    <item name="android:gravity">center</item>
+  </style>
+
+  <style name="Popup.EnterPaymentId.Flex">
+    <item name="android:minHeight">150dp</item>
+    <item name="android:minWidth">350dp</item>
+    <item name="android:gravity">center</item>
+  </style>
+
+  <style name="Popup.Message">
+    <item name="android:minWidth">450dp</item>
+    <item name="android:paddingTop">5dp</item>
+    <item name="android:paddingEnd">10dp</item>
+  </style>
+
+  <style name="Popup.Message.Flex">
+    <item name="android:minWidth">350dp</item>
+    <item name="android:paddingTop">5dp</item>
+    <item name="android:paddingEnd">10dp</item>
+  </style>
+
+  <style name="LanTitle">
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:capitalize">characters</item>
+    <item name="android:textSize">12pt</item>
+  </style>
+
+  <style name="OptionsRow">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginTop">10dp</item>
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:orientation">horizontal</item>
+  </style>
+
+  <style name="OptionsEditText">
+    <item name="android:layout_width">250dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginEnd">10dp</item>
+  </style>
+
+  <style name="OptionsEditTextFlex">
+    <item name="android:layout_width">165dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginEnd">5dp</item>
+  </style>
+
+  <style name="OptionsButton">
+    <item name="android:layout_width">250dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:background">@drawable/button_border_padding</item>
+  </style>
+
+  <style name="OptionsButtonFlex">
+    <item name="android:layout_width">165dp</item>
+    <item name="android:textSize">12sp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:background">@drawable/button_border_padding</item>
+  </style>
+
+  <style name="OptionsButton.Left" parent="OptionsButton">
+    <item name="android:layout_marginEnd">10dp</item>
+  </style>
+
+  <style name="OptionsButtonFlex.Left" parent="OptionsButtonFlex">
+    <item name="android:layout_marginEnd">5dp</item>
+  </style>
+
+  <style name="HomeButtonFlex">
+    <item name="android:background">@drawable/button_border_padding</item>
+    <item name="android:layout_width">100dp</item>
+    <item name="android:layout_height">100dp</item>
+    <item name="android:layout_marginEnd">@dimen/home_button_margin_flex</item>
+    <item name="android:layout_marginStart">@dimen/home_button_margin_flex</item>
+    <item name="android:clickable">true</item>
+    <item name="android:gravity">center_horizontal</item>
+  </style>
+
+  <style name="HomeTextFlex">
+    <item name="android:textSize">10sp</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:layout_marginTop">8dp</item>
+  </style>
+
+  <style name="HomeButtonFlex.Disabled">
+    <item name="android:background">@drawable/button_border_padding</item>
+    <item name="android:layout_width">100dp</item>
+    <item name="android:layout_height">100dp</item>
+    <item name="android:layout_marginStart">@dimen/home_button_margin_flex</item>
+    <item name="android:layout_marginEnd">@dimen/home_button_margin_flex</item>
+    <item name="android:clickable">false</item>
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:alpha">.4</item>
+  </style>
+
+  <style name="HomeButtonMiniMobile">
+    <item name="android:background">@drawable/button_border_padding</item>
+    <item name="android:layout_width">130dp</item>
+    <item name="android:layout_height">130dp</item>
+    <item name="android:layout_marginEnd">@dimen/home_button_margin_minimobile</item>
+    <item name="android:clickable">true</item>
+    <item name="android:gravity">center_horizontal</item>
+  </style>
+
+  <style name="HomeTextMiniMobile">
+    <item name="android:textSize">16sp</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:layout_marginTop">8dp</item>
+  </style>
+
+  <style name="HomeButtonMiniMobile.Disabled">
+    <item name="android:background">@drawable/button_border_padding</item>
+    <item name="android:layout_width">135dp</item>
+    <item name="android:layout_height">135dp</item>
+    <item name="android:layout_marginEnd">@dimen/home_button_margin_minimobile</item>
+    <item name="android:clickable">false</item>
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:alpha">.4</item>
+  </style>
+
+  <style name="HomeButtonStation">
+    <item name="android:background">@drawable/button_border_padding</item>
+    <item name="android:layout_width">180dp</item>
+    <item name="android:layout_height">180dp</item>
+    <item name="android:layout_marginEnd">@dimen/home_button_margin_station</item>
+    <item name="android:layout_marginStart">@dimen/home_button_margin_station</item>
+    <item name="android:clickable">true</item>
+    <item name="android:gravity">center_horizontal</item>
+  </style>
+
+  <style name="HomeButtonStation.Disabled">
+    <item name="android:background">@drawable/button_border_padding</item>
+    <item name="android:layout_width">180dp</item>
+    <item name="android:layout_height">180dp</item>
+    <item name="android:layout_marginStart">@dimen/home_button_margin_station</item>
+    <item name="android:layout_marginEnd">@dimen/home_button_margin_station</item>
+    <item name="android:clickable">false</item>
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:alpha">.4</item>
+  </style>
+
+  <style name="HomeTextStation">
+    <item name="android:textSize">20sp</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:layout_marginTop">8dp</item>
+  </style>
+
+  <style name="HomeButtonGoldenOak">
+    <item name="android:background">@drawable/button_border_padding</item>
+    <item name="android:layout_width">200dp</item>
+    <item name="android:layout_height">200dp</item>
+    <item name="android:layout_marginEnd">@dimen/home_button_margin_goldenoak</item>
+    <item name="android:clickable">true</item>
+    <item name="android:gravity">center_horizontal</item>
+  </style>
+
+  <style name="HomeButtonGoldenOak.Disabled">
+    <item name="android:background">@drawable/button_border_padding</item>
+    <item name="android:layout_width">200dp</item>
+    <item name="android:layout_height">200dp</item>
+    <item name="android:layout_marginEnd">@dimen/home_button_margin_goldenoak</item>
+    <item name="android:clickable">false</item>
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:alpha">.4</item>
+  </style>
+
+  <style name="TransactionsSection">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginStart">20dp</item>
+    <item name="android:layout_marginEnd">20dp</item>
+    <item name="android:orientation">vertical</item>
+  </style>
+
+  <style name="TransactionsSectionMiniMobile">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginStart">10dp</item>
+    <item name="android:layout_marginEnd">5dp</item>
+    <item name="android:orientation">vertical</item>
+  </style>
+
+  <style name="TransactionsSectionFlex">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:orientation">vertical</item>
+  </style>
+
+  <style name="TransactionsSection.Right">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginStart">20dp</item>
+    <item name="android:orientation">vertical</item>
+  </style>
+
+  <style name="TransactionsSection.RightMiniMobile">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginStart">5dp</item>
+    <item name="android:orientation">vertical</item>
+  </style>
+
+  <style name="TransactionsSection.Title">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textSize">24sp</item>
+    <item name="android:textStyle">normal|bold</item>
+  </style>
+
+  <style name="TransactionsSection.TitleMiniMobile">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textSize">18sp</item>
+    <item name="android:textStyle">normal|bold</item>
+  </style>
+
+  <style name="TransactionsSection.TitleFlex">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textSize">18sp</item>
+    <item name="android:textStyle">normal|bold</item>
+    <item name="android:layout_marginStart">10dp</item>
+    <item name="android:padding">0dp</item>
+  </style>
+
+  <style name="TransactionsSection.Content">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:layout_marginStart">40dp</item>
+  </style>
+
+  <style name="TransactionsSection.ContentMobileMini">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:layout_marginStart">20dp</item>
+  </style>
+
+  <style name="TransactionsSection.ContentFlex">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:layout_marginStart">20dp</item>
+  </style>
+
+  <style name="PaymentDetailsLabel">
+    <item name="android:layout_width">150dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textSize">16dp</item>
+  </style>
+
+  <style name="PaymentDetailsLabelFlex">
+    <item name="android:layout_width">150dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textSize">14dp</item>
+  </style>
+
+  <style name="PaymentDetailsItem">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textSize">16dp</item>
+  </style>
+
+  <style name="PaymentDetailsItemFlex">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textSize">14dp</item>
+  </style>
+
+  <style name="SaleTypeButton">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">300dp</item>
+    <item name="android:paddingTop">20dp</item>
+    <item name="android:paddingBottom">20dp</item>
+    <item name="android:background">@drawable/button_border_padding</item>
+  </style>
+
+  <style name="PaymentDetailsButtonMiniMobile">
+    <item name="android:layout_width">195dp</item>
+    <item name="android:layout_height">75dp</item>
+    <item name="android:layout_marginBottom">10dp</item>
+  </style>
+
+  <style name="PaymentDetailsButtonFlex">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:layout_height">50dp</item>
+    <item name="android:layout_marginStart">5dp</item>
+    <item name="android:layout_marginEnd">5dp</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:layout_gravity">center</item>
+  </style>
+
+</resources>

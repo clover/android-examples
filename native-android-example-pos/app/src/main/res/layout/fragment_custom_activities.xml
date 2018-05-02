@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ Copyright (C) 2018 Clover Network, Inc.
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~
+ ~ You may obtain a copy of the License at
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing, software
+ ~ distributed under the License is distributed on an "AS IS" BASIS,
+ ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ~ See the License for the specific language governing permissions and
+ ~ limitations under the License.
+ -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center_horizontal"
+    android:layout_height="match_parent">
+  <LinearLayout
+      android:layout_width="400dp"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+    <TextView
+        android:text="@string/custom_activities"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView7"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:labelFor="@+id/CustomActivityEntry"
+        android:textSize="30sp"
+        android:textStyle="normal|bold"
+        android:layout_marginBottom="10dp"/>
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/non_blocking"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/customActivityBlocking"/>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/activity_id"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        android:dropDownWidth="match_parent"
+        android:minHeight="17dp"
+        android:layout_marginBottom="10dp"
+        android:padding="0dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/activity_payload"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:text="@string/payload_placeholder"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="51dp">
+      <Button
+          android:id="@+id/startCustomActivityButton"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:background="@drawable/button_border_padding"
+          android:text="@string/start"
+          android:onClick="startActivity"/>
+      <Button
+          android:id="@+id/sendMessageToActivityButton"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:background="@drawable/button_border_padding"
+          android:text="@string/send_message"
+          android:onClick="sendMessageToActivity"
+          android:visibility="invisible"/>
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

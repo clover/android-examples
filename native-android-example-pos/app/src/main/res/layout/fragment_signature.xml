@@ -1,0 +1,56 @@
+<!--
+  ~ Copyright (C) 2018 Clover Network, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="20sp"
+    tools:context=".SignatureFragment">
+  <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/RejectButton"
+      android:text="@string/reject"
+      android:onClick="rejectSignature"
+      android:background="@drawable/button_red"
+      android:textColor="@color/white"
+      android:layout_alignTop="@+id/AcceptButton"
+      android:layout_toStartOf="@+id/AcceptButton"
+      android:layout_marginRight="10sp"
+      android:paddingLeft="20sp"
+      android:paddingRight="20sp"
+      android:layout_toLeftOf="@+id/AcceptButton"/>
+  <Button android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/AcceptButton"
+      android:text="@string/accept"
+      android:background="@drawable/button_green"
+      android:textColor="@color/white"
+      android:onClick="acceptSignature"
+      android:paddingLeft="20sp"
+      android:paddingRight="20sp"
+      android:layout_marginRight="10sp"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentRight="true"/>
+  <com.clover.example.SignatureView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:id="@+id/SignatureView"
+      android:background="@color/white"
+      android:layout_above="@+id/AcceptButton"
+      android:layout_alignParentStart="true"/>
+</RelativeLayout>
