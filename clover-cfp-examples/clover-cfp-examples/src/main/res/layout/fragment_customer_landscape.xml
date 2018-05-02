@@ -1,9 +1,24 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+  ~ Copyright (C) 2018 Clover Network, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.clover.cfp.examples.RatingsFragment">
-
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -12,12 +27,11 @@
         android:layout_alignParentEnd="false"
         android:scaleType="centerCrop"
         android:alpha="0.4"/>
-
-    <LinearLayout android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -25,7 +39,6 @@
             android:layout_centerHorizontal="true"
             android:id="@+id/linearLayout"
             android:gravity="center_horizontal">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,8 +50,8 @@
                 android:layout_marginTop="30dp"
                 android:paddingStart="10dp"
                 android:alpha=".7"/>
-
-            <TextView android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/dining_experience"
@@ -47,17 +60,13 @@
                 android:textSize="36sp"
                 android:paddingStart="10dp"
                 android:alpha=".7"/>
-
         </LinearLayout>
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_marginTop="20dp">
-
-
             <Button
                 android:id="@+id/cancelButton"
                 android:layout_width="wrap_content"
@@ -70,8 +79,8 @@
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"
                 android:layout_marginEnd="20dp"/>
-
-            <Button android:id="@+id/okButton"
+            <Button
+                android:id="@+id/okButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@android:string/ok"
@@ -81,8 +90,6 @@
                 android:enabled="true"
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"/>
-
         </LinearLayout>
     </LinearLayout>
-
 </RelativeLayout>
