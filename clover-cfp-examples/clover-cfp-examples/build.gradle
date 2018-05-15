@@ -23,6 +23,6 @@ android {
 dependencies {
     compile "com.clover.cfp:clover-cfp-sdk:1.0"
     compile "com.google.guava:guava:${GUAVA_VERSION}"
-    compile "com.clover:clover-remote-common:226-SNAPSHOT"
+    compile "com.clover:clover-remote-common:226"
     compile "com.google.code.gson:gson:${GSON_VERSION}"
 }
