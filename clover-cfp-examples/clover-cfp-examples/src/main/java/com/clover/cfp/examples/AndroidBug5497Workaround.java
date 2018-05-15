@@ -7,7 +7,7 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 /**
- * Created by rachel.antion on 10/30/17.
+ * Used with permission from Github repo https://github.com/madebycm/AndroidBug5497Workaround
  */
 
 public class AndroidBug5497Workaround {
