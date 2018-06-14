@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2018 Clover Network, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/OrdersRowLayout">
+  <LinearLayout
+      android:layout_width="80dp"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:layout_marginEnd="20dp">
+    <TextView
+        android:id="@+id/OrderTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="14dp"/>
+    <TextView
+        android:id="@+id/OrderDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"/>
+  </LinearLayout>
+  <LinearLayout
+      android:layout_width="100dp"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:layout_marginEnd="40dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/OrdersRowSubtotalColumn"
+        android:text="@string/orders_total_placeholder"
+        android:textSize="14dp"
+        android:textStyle="bold"
+        android:textAlignment="viewEnd"/>
+    <TextView
+        android:id="@+id/OrderTender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+  </LinearLayout>
+  <LinearLayout
+      android:layout_width="100dp"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/OrdersRowStatusColumn"
+        android:text="@string/status"
+        android:textSize="@dimen/order_table_text_size"
+        android:layout_alignParentStart="true"
+        android:layout_alignBaseline="@+id/OrdersRowTaxColumn"/>
+    <TextView
+        android:layout_width="75dp"
+        android:layout_height="match_parent"
+        android:id="@+id/OrdersRowIdColumn"
+        android:layout_marginEnd="50dp"
+        android:text="@string/order_id_placeholder"
+        android:textSize="@dimen/table_primary_text_size"
+        android:textIsSelectable="false"/>
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/OrderEmployee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Employee"/>
+  </LinearLayout>
+</LinearLayout>

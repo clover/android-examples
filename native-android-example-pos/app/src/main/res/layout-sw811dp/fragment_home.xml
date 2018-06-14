@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ Copyright (C) 2018 Clover Network, Inc.
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~
+ ~ You may obtain a copy of the License at
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing, software
+ ~ distributed under the License is distributed on an "AS IS" BASIS,
+ ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ~ See the License for the specific language governing permissions and
+ ~ limitations under the License.
+ -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:weightSum="3"
+    android:orientation="vertical"
+    android:id="@+id/fragment_home">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:orientation="horizontal"
+      android:layout_marginBottom="10sp"
+      android:clickable="true"
+      android:onClick="showRegister"
+      android:gravity="center">
+    <RelativeLayout
+        style="@style/HomeButtonGoldenOak"
+        android:id="@+id/registerButton"
+        android:onClick="showRegister"> 
+      <TextView
+          android:id="@+id/register_text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center_horizontal"
+          android:layout_marginTop="10dp"
+          android:text="@string/register"
+          android:textSize="18sp"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/register_text"
+          android:gravity="center_horizontal"
+          android:padding="15dp"
+          android:src="@drawable/ic_new_order"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+    <RelativeLayout
+        style="@style/HomeButtonGoldenOak"
+        android:id="@+id/PreAuthButton"
+        android:onClick="startPreAuth"> 
+      <TextView
+          android:id="@+id/preauth_text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:gravity="center_horizontal"
+          android:text="@string/new_tab_preauth"
+          android:textSize="18sp"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/preauth_text"
+          android:gravity="center_horizontal"
+          android:padding="20dp"
+          android:src="@drawable/ic_new_tab"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+    <RelativeLayout
+        style="@style/HomeButtonGoldenOak"
+        android:id="@+id/OrdersButton"
+        android:onClick="showOrders"> 
+      <TextView
+          android:id="@+id/orders_text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:gravity="center_horizontal"
+          android:text="@string/view_orders"
+          android:textSize="18sp"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/orders_text"
+          android:gravity="center_horizontal"
+          android:padding="20dp"
+          android:src="@drawable/ic_orders"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+  </LinearLayout>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:layout_marginBottom="10sp"
+      android:orientation="horizontal"
+      android:gravity="center">
+    <RelativeLayout
+        style="@style/HomeButtonGoldenOak.Disabled"
+        android:id="@+id/CardsButton"> 
+      <TextView
+          android:id="@+id/card_text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:gravity="center_horizontal"
+          android:text="@string/customers_vault_card"
+          android:textSize="18sp"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/card_text"
+          android:gravity="center_horizontal"
+          android:padding="20dp"
+          android:src="@drawable/ic_customers"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+    <RelativeLayout
+        style="@style/HomeButtonGoldenOak"
+        android:id="@+id/RefundButton"
+        android:onClick="showRefunds"> 
+      <TextView
+          android:id="@+id/refund_text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:gravity="center_horizontal"
+          android:text="@string/refund"
+          android:textSize="18sp"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/refund_text"
+          android:gravity="center_horizontal"
+          android:padding="20dp"
+          android:src="@drawable/ic_refunds"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+    <RelativeLayout
+        style="@style/HomeButtonGoldenOak"
+        android:id="@+id/TransactionButton"
+        android:onClick="showTransactions"> 
+      <TextView
+          android:id="@+id/transaction_text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:gravity="center_horizontal"
+          android:text="@string/transactions"
+          android:textSize="18sp"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/transaction_text"
+          android:gravity="center_horizontal"
+          android:padding="20dp"
+          android:src="@drawable/ic_transactions"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+  </LinearLayout>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:layout_marginBottom="10sp"
+      android:orientation="horizontal"
+      android:gravity="center">
+    <RelativeLayout
+        style="@style/HomeButtonGoldenOak.Disabled"
+        android:id="@+id/CustomActivityButton"> 
+      <TextView
+          android:id="@+id/custom_activity_text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:gravity="center_horizontal"
+          android:text="@string/custom_activities"
+          android:textSize="18sp"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/custom_activity_text"
+          android:gravity="center_horizontal"
+          android:padding="20dp"
+          android:src="@drawable/ic_custom_activities"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+    <RelativeLayout
+        style="@style/HomeButtonGoldenOak"
+        android:id="@+id/DeviceButton"
+        android:onClick="showDevice"> 
+      <TextView
+          android:id="@+id/device_text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:gravity="center_horizontal"
+          android:text="@string/device"
+          android:textSize="18sp"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/device_text"
+          android:gravity="center_horizontal"
+          android:padding="20dp"
+          android:src="@drawable/ic_device"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+    <RelativeLayout
+        style="@style/HomeButtonGoldenOak"
+        android:id="@+id/RecoveryButton"
+        android:onClick="showRecoveryOptions"> 
+      <TextView
+          android:id="@+id/recovery_text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:gravity="center_horizontal"
+          android:text="@string/recovery_options"
+          android:textSize="18sp"/>
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/recovery_text"
+          android:gravity="center_horizontal"
+          android:padding="20dp"
+          android:src="@drawable/ic_recovery"
+          android:scaleType="fitCenter"/>
+    </RelativeLayout>
+  </LinearLayout>
+</LinearLayout>

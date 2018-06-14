@@ -1,0 +1,41 @@
+group = 'com.clover.sdk'
+version = '1.4.1-SNAPSHOT'
+
+apply plugin: 'com.android.application'
+
+
+android {
+  compileSdkVersion 21
+  buildToolsVersion '25.0.2'
+
+  lintOptions {
+    abortOnError false
+  }
+
+  defaultConfig {
+    minSdkVersion 17
+    targetSdkVersion 17
+  }
+  android {
+    lintOptions {
+      abortOnError false
+    }
+  }
+
+
+  packagingOptions {
+    exclude 'META-INF/NOTICE'
+    exclude 'META-INF/LICENSE'
+  }
+}
+
+dependencies {
+  // Use local project dependency in dev
+  compile 'com.clover.sdk:remote-pay-android-connector:1.4.1'
+  compile 'com.clover.sdk:clover-android-connector-sdk:195-SNAPSHOT'
+  // Use published artifact when releasing
+  //compile 'com.clover.sdk:clover-android-connector-sdk:1.4.1'
+  compile 'org.java-websocket:Java-WebSocket:1.3.0'
+  compile 'com.android.support:support-v4:21.0.0'
+  compile 'com.google.code.gson:gson:2.8.0'
+}

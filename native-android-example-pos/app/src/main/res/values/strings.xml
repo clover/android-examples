@@ -1,0 +1,225 @@
+<!--
+  ~ Copyright (C) 2018 Clover Network, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ You may obtain a copy of the License at
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+  <string name="_0">0</string>
+  <string name="_0_dollars">$0.00</string>
+  <string name="_50_dollars">$50.00</string>
+  <string name="accept">Accept</string>
+  <string name="accept_offline_no_prompt">Accept Offline w/o Prompt</string>
+  <string name="action_settings">Settings</string>
+  <string name="activity_message_payload">{&quot;Question&quot;:&quot;Why did the Storm Trooper buy an iPhone?&quot;}</string>
+  <string name="add_tip">Add Tip</string>
+  <string name="address">start service to see listen address</string>
+  <string name="adjust_tip_amount">Adjust Tip Amount:</string>
+  <string name="allow_offline_payments">Allow Offline Payments</string>
+  <string name="amount">Amount:</string>
+  <string name="amount_amount_here">Amount: Amount Here</string>
+  <string name="app_name">Native Clover Example POS</string>
+  <string name="auth">Auth</string>
+  <string name="automatically_confirm_payment_challenges">Automatically Confirm Payment Challenges</string>
+  <string name='automatically_confirm_signature'>Automatically Confirm Signature</string>
+  <string name="authorized">AUTHORIZED</string>
+  <string name="cancel">Cancel</string>
+  <string name="capture_card">Capture Card</string>
+  <string name="card">Card</string>
+  <string name="card_card_here">Card: Card Here</string>
+  <string name="card_details">Card Details:</string>
+  <string name="card_exp_date_placeholder">12/22</string>
+  <string name="card_first_six_placeholder">234567</string>
+  <string name="card_last_four_placeholder">4567</string>
+  <string name="card_middle_placeholder">xxxxxx</string>
+  <string name="card_number_placeholder">XXXXXXXXXXXXXXXXX</string>
+  <string name="card_options">Card Options</string>
+  <string name="cards">Cards</string>
+  <string name="cardholder_name">Cardholder Name</string>
+  <string name="checking_kiosk">Checking for kiosk application...</string>
+  <string name="chip">Chip</string>
+  <string name="closeout_orders">Closeout Orders</string>
+  <string name="connect">Connect</string>
+  <string name="contactless">Contactless</string>
+  <string name="_continue">Continue</string>
+  <string name="current_order">Current Order:</string>
+  <string name="customers_vault_card">Customers (Vault Card)</string>
+  <string name="custom_activities">Custom Activities</string>
+  <string name="_default">Default</string>
+  <string name="device">Device</string>
+  <string name="device_endpoint_settings_label">Device Endpoint</string>
+  <string name="device_id">Device ID:</string>
+  <string name="device_status_resend">Device Status (Resend)</string>
+  <string name="disable_device_printing">Disable Device Printing</string>
+  <string name="disable_device_receipt_options">Disable Device Receipt Options Screen</string>
+  <string name="device_options">Device Options</string>
+  <string name="device_status">Device Status: </string>
+  <string name="disable_duplicate_payment_checking">Disable Duplicate Payment Checking</string>
+  <string name="disconnected">Disconnected</string>
+  <string name="discounts">Discounts:</string>
+  <string name="employee">Employee:</string>
+  <string name="enter_amount_preauth">Enter Amount for PreAuth:</string>
+  <string name="enter_customer_name">Enter Customer Name to be Associated w/ Card:</string>
+  <string name="enter_name_preauth">Enter Name for PreAuth:</string>
+  <string name="enter_payment_id">Enter Payment ID:</string>
+  <string name="enter_refund_amount">Enter Refund Amount:</string>
+  <string name="enter_tip_amount">Enter Tip Amount</string>
+  <string name="entry_method">Entry Method:</string>
+  <string name="exp">Exp:</string>
+  <string name="external_id_placeholder">ABC123DEF456G</string>
+  <string name="force_offline_payment">Force Offline Payment</string>
+  <string name="get_device_status">Get Device Status</string>
+  <string name="get_device_status_resend">Get Device Status (Resend)</string>
+  <string name="hello_message">Hello Message!</string>
+  <string name="header_title">Configuration</string>
+  <string name="header_summary">Configure the adapter protocol and port.</string>
+  <string name="item_name">Item Name</string>
+  <string name="item_cost_placeholder">$3.99</string>
+  <string name="item_title_placeholder">Medium Fountain Drink</string>
+  <string name="kiosk_not_installed">Please install the kiosk application</string>
+  <string name="lan_pay_address">wss://192.168.1.101:12345/remote_pay</string>
+  <string name="lan_pay_display">LAN Pay Display (Developmental)</string>
+  <string name="native_display">Native App Integration</string>
+  <string name="lan_terminal_notification_text">Tap to start Local Network Pay Display.</string>
+  <string name="lan_terminal_notification_title">Web Socket payment device connected</string>
+  <string name="lan_placeholder">wss://192.168.1.101:12345/remote_pay</string>
+  <string name="lookup">Lookup</string>
+  <string name="make_full_refund">Make Full Refund</string>
+  <string name="make_partial_refund">Make Partial Refund</string>
+  <string name="make_refund">Make Refund</string>
+  <string name="manual">Manual</string>
+  <string name="misc">Misc.</string>
+  <string name="name">Name</string>
+  <string name="name_name_here">Name: Name Here</string>
+  <string name="_new">New</string>
+  <string name="new_customer_vaulted_card">New Customer (Vaulted Card)</string>
+  <string name="new_tab_preauth">New Tab (PreAuth)</string>
+  <string name="new_text">New Text</string>
+  <string name="new_order">New Order</string>
+  <string name="no">No</string>
+  <string name="no_account">There is no Clover account.</string>
+  <string name="no_pending_payments">There are no Pending Payments</string>
+  <string name="no_discount">No Discount</string>
+  <string name="non_blocking">Non-Blocking</string>
+  <string name="offline_payments">Offline Payments</string>
+  <string name="ok">Ok</string>
+  <string name="one">1</string>
+  <string name="open_cash_drawer">Open Cash Drawer</string>
+  <string name="open_in_register">Open in Register</string>
+  <string name="order_amount_placeholder">$0.00</string>
+  <string name="order_date_placeholder">Jan. 3, 2016</string>
+  <string name="order_id_placeholder">IDxxxx</string>
+  <string name="order_items">Order Items</string>
+  <string name="orders">Orders</string>
+  <string name="orders_total_placeholder">$0000000.00</string>
+  <string name="pay">Pay</string>
+  <string name="payload_placeholder">{&quot;name&quot;:&quot;Bob&quot;}</string>
+  <string name="_payment_id">Payment ID:</string>
+  <string name="payment_acceptance">Payment Acceptance</string>
+  <string name="payment_by_id">Payment by ID</string>
+  <string name="payment_details">Payment Details</string>
+  <string name="payment_example">$999.99</string>
+  <string name="payment_example_smaller">$99.99</string>
+  <string name="payment_id">PaymentID</string>
+  <string name="payment_id_example">JANRZXDFTF3JF</string>
+  <string name="payment_refund">Payment Refund</string>
+  <string name="payment_successful">Payment Successful</string>
+  <string name="_pending_payments">Pending Payments:</string>
+  <string name="pending_payments">Pending Payments</string>
+  <string name="preauth">PreAuth</string>
+  <string name="pre_authorization">Pre Authorization</string>
+  <string name="pref_default_protocol">ws</string>
+  <string name="pref_label_server">Device Endpoint</string>
+  <string name="pref_title_protocol">Protocol</string>
+  <string name="preferences_title">Preferences</string>
+  <string name="print_image">Print Image</string>
+  <string name="print_image_from_url">Print Image from URL</string>
+  <string name="print_image_sample_url">goo.gl/qzahch</string>
+  <string name="print_text">Print Text</string>
+  <string name="print_this">Print This!!!!!</string>
+  <string name="query_payment">Query Payment</string>
+  <string name="recovery_options">Recovery Options</string>
+  <string name="read_card_data">Read Card Data</string>
+  <string name="refresh">Refresh</string>
+  <string name="refund">Refund</string>
+  <string name="refund_amount_placeholder">$23.56</string>
+  <string name="refund_date_placeholder">Jan 3, 2016</string>
+  <string name="refund_id">Refund ID:</string>
+  <string name="refund_successful">Refund Successful</string>
+  <string name="refunds">Refunds</string>
+  <string name="register">Register</string>
+  <string name="reject">Reject</string>
+  <string name="reset">Reset</string>
+  <string name="reset_device">Reset Device</string>
+  <string name="review_order">Review Order</string>
+  <string name="sale">Sale</string>
+  <string name="sale_settings">Sale Settings</string>
+  <string name="sale_tip_amount">Sale Tip Amount</string>
+  <string name="save">Save</string>
+  <string name="send_message">Send Message</string>
+  <string name="show_message">Show Message</string>
+  <string name="show_thank_you">Show Thank You</string>
+  <string name="show_welcome_message">Show Welcome Message</string>
+  <string name="signature_entry_location">Signature Entry Location</string>
+  <string name="signature_threshold">Signature Threshold</string>
+  <string name="signatures">Signatures</string>
+  <string name="start">Start</string>
+  <string name="status">STATUS</string>
+  <string name="subtotal">Subtotal:</string>
+  <string name="swipe">Swipe</string>
+  <string name="tax">Tax:</string>
+  <string name="tender">Tender:</string>
+  <string name="test">Test</string>
+  <string name="_tip">Tip</string>
+  <string name="tip">Tip:</string>
+  <string name="tip_adjust">Tip Adjust</string>
+  <string name="tip_mode">Tip Mode</string>
+  <string name="tips">Tips</string>
+  <string name="title_activity_example_pos">Native Clover Example POS</string>
+  <string name="title_activity_miscellaneous">MiscellaneousActivity</string>
+  <string name="title_activity_orders">OrdersActivity</string>
+  <string name="title_activity_startup">StartupActivity</string>
+  <string name="there_are_no_transactions">There are currently no transactions.</string>
+  <string name="token">Token:</string>
+  <string name="_total">Total</string>
+  <string name="total">Total:</string>
+  <string name="transactions">Transactions</string>
+  <string name="transaction_settings">Transaction Settings</string>
+  <string name="transaction_state">Transaction State:</string>
+  <string name="transaction_type">Transaction Type:</string>
+  <string name="usb_clover_connector">USB Clover Connector</string>
+  <string name="unknown">Unknown</string>
+  <string name="unknown_payload">The payload received in a message from the calling system is not a known class.  messageType = </string>
+  <string name="vault_card">Vault Card</string>
+  <string name="vault_card_num">%1$sxxxxxx%2$s</string>
+  <string name="vault_new_card">Vault New Card</string>
+  <string name="vaulted_cards_associated_w_customers">Vaulted Cards Associated w/ Customers</string>
+  <string name="view_orders">View Orders</string>
+  <string name="_void">Void</string>
+  <string name="void_payment">Void Payment</string>
+  <string name="would_you_like_to_tip">Would you like to provide a tip?</string>
+  <string name="x">X</string>
+  <string name="yes">Yes</string>
+
+  <string-array name="pref_protocol_list_titles">
+    <item>WS</item>
+    <item>WSS</item>
+  </string-array>
+  <string-array name="pref_protocol_list_values">
+    <item>ws</item>
+    <item>wss</item>
+  </string-array>
+
+  <item type="id" name="button_exit"/>
+
+</resources>

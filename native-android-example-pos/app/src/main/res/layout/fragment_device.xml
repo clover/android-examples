@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ Copyright (C) 2018 Clover Network, Inc.
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~
+ ~ You may obtain a copy of the License at
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing, software
+ ~ distributed under the License is distributed on an "AS IS" BASIS,
+ ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ~ See the License for the specific language governing permissions and
+ ~ limitations under the License.
+ -->
+  <LinearLayout
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="vertical"
+      android:background="@color/white"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingTop="10dp"
+      android:paddingBottom="20dp"
+      android:gravity="center_horizontal">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/device_options"
+        android:textSize="30sp"
+        android:textStyle="normal|bold"
+        android:gravity="center_horizontal"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+      <LinearLayout
+          style="@style/OptionsRow">
+        <EditText
+            android:id="@+id/ShowMessageText"
+            style="@style/OptionsEditTextFlex"
+            android:text="@string/hello_message"/>
+        <Button
+            android:id="@+id/ShowMessageButton"
+            style="@style/OptionsButtonFlex"
+            android:onClick="showMessageClick"
+            android:text="@string/show_message"/>
+      </LinearLayout>
+      <LinearLayout
+          style="@style/OptionsRow">
+        <EditText
+            android:id="@+id/PrintTextText"
+            style="@style/OptionsEditTextFlex"
+            android:text="@string/print_this"/>
+        <Button
+            android:id="@+id/PrintTextButton"
+            style="@style/OptionsButtonFlex"
+            android:onClick="printTextClick"
+            android:text="@string/print_text"/>
+      </LinearLayout>
+      <LinearLayout
+          style="@style/OptionsRow">
+        <EditText
+            android:id="@+id/PrintImageURLText"
+            style="@style/OptionsEditTextFlex"
+            android:text="@string/print_image_sample_url"/>
+        <Button
+            android:id="@+id/PrintImageURLButton"
+            style="@style/OptionsButtonFlex"
+            android:onClick="printImageURLClick"
+            android:text="@string/print_image_from_url"/>
+      </LinearLayout>
+      <LinearLayout
+          style="@style/OptionsRow">
+        <Button
+            android:id="@+id/PrintImageButton"
+            style="@style/OptionsButtonFlex.Left"
+            android:onClick="printImageClick"
+            android:text="@string/print_image"/>
+        <Button
+            android:id="@+id/ReadCardDataButton"
+            style="@style/OptionsButtonFlex"
+            android:onClick="onReadCardDataClick"
+            android:text="@string/read_card_data"/>
+      </LinearLayout>
+      <LinearLayout
+          style="@style/OptionsRow">
+        <Button
+            android:id="@+id/showWelcomeMessageButton"
+            style="@style/OptionsButtonFlex.Left"
+            android:onClick="showWelcomeMessageClick"
+            android:text="@string/show_welcome_message"/>
+        <Button
+            android:id="@+id/showThankYouButton"
+            style="@style/OptionsButtonFlex"
+            android:onClick="showThankYouClick"
+            android:text="@string/show_thank_you"/>
+      </LinearLayout>
+      <LinearLayout
+          style="@style/OptionsRow">
+        <Button
+            android:id="@+id/CloseoutButton"
+            style="@style/OptionsButtonFlex.Left"
+            android:onClick="onClickCloseout"
+            android:text="@string/closeout_orders"/>
+        <Button
+            android:id="@+id/CashDrawerButton"
+            style="@style/OptionsButtonFlex"
+            android:onClick="onOpenCashDrawerClick"
+            android:text="@string/open_cash_drawer"/>
+      </LinearLayout>
+    </LinearLayout>
+  </LinearLayout>
