@@ -27,5 +27,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.clover.cfp:clover-cfp-sdk:19-SNAPSHOT'
+    compile 'com.clover.cfp:clover-cfp-sdk:1.0'
 }
