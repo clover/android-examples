@@ -1,20 +1,21 @@
 apply plugin: 'com.android.application'
 
 repositories {
-  mavenLocal()
-  maven { url "http://artifactory.corp.clover.com:8081/artifactory/repo" }
   mavenCentral()
+  mavenLocal()
+  maven { url 'https://maven.google.com' }
 }
 
 android {
   compileSdkVersion 21
-  buildToolsVersion '25.0.0'
+  buildToolsVersion '27.0.0'
 
   defaultConfig {
     minSdkVersion 17
     targetSdkVersion 17
     versionCode 1
     versionName "1.0"
+    multiDexEnabled true
   }
   buildTypes {
     release {
@@ -37,8 +38,8 @@ android {
 }
 
 dependencies {
-  compile 'com.clover.sdk:clover-android-connector-sdk:187-SNAPSHOT'
-  compile 'com.clover:common-payments:214-SNAPSHOT@aar'
-  compile 'com.clover:common:214-SNAPSHOT'
+  compile 'com.clover.sdk:clover-android-connector-sdk:191.6'
+  compile 'com.clover:common-payments:233-SNAPSHOT@aar'
+  compile 'com.clover:common:233-SNAPSHOT'
 }
 

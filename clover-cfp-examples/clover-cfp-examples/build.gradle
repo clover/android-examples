@@ -5,7 +5,6 @@ apply plugin: 'com.android.application'
 
 repositories {
     mavenLocal()
-    maven { url "http://artifactory.corp.clover.com:8081/artifactory/repo" }
     mavenCentral()
     maven { url "https://maven.google.com" }
 }
@@ -29,6 +28,8 @@ android {
 dependencies {
     compile "com.clover.cfp:clover-cfp-sdk:1.0"
     compile "com.google.guava:guava:20.0"
-    compile "com.clover:clover-remote-common:226"
+    compile "com.clover:clover-remote-interface:217.10"
     compile "com.google.code.gson:gson:2.3.1"
+    compile 'com.clover.sdk:clover-android-sdk:191.6'
+
 }
