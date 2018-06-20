@@ -1,0 +1,13 @@
+include ':remote-protocol-lib',
+        ':remote-terminal-kiosk',
+        ':remote-protocol-merchantkeypad',
+        ':remote-protocol-broadcast',
+        ':remote-protocol-usb',
+        ':remote-protocol-websocket',
+        ':remote-test',
+        ':clover-cfp-sdk',
+        ':clover-cfp-examples',
+        ':remote-protocol-zvt',
+        ':payment-profile-common'
+
+

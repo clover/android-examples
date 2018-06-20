@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.clover.cfp.examples">
+
+    <uses-permission android:name="com.clover.remote.terminal.permission.REMOTE_TERMINAL"/>
+    <uses-permission android:name="android.permission.NFC"/>
+    <uses-feature android:name="android.hardware.nfc" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application>
+        <activity android:name="com.clover.cfp.examples.MainRatingsActivity"
+            android:launchMode="singleTop"
+            android:noHistory="true"
+            android:icon="@drawable/ic_launcher"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
+            android:label="@string/title_activity_main_ratings" >
+            <intent-filter>
+                <action android:name="com.clover.cfp.examples.RatingsExample"/>
+                <category android:name="com.clover.cfp.ACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.clover.cfp.examples.CarouselActivity"
+            android:launchMode="singleTop"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
+            android:label="@string/title_activity_carousel" >
+            <intent-filter>
+                <action android:name="com.clover.cfp.examples.CarouselExample"/>
+                <category android:name="com.clover.cfp.ACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.clover.cfp.examples.BasicExampleActivity"
+            android:launchMode="singleTop"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:label="@string/title_activity_basic_example" >
+            <intent-filter>
+                <action android:name="com.clover.cfp.examples.BasicExample"/>
+                <category android:name="com.clover.cfp.ACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.clover.cfp.examples.BasicExampleConversationalActivity"
+            android:launchMode="singleTop"
+            android:noHistory="true"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
+            android:label="@string/title_activity_conversational_example" >
+            <intent-filter>
+                <action android:name="com.clover.cfp.examples.BasicConversationalExample"/>
+                <category android:name="com.clover.cfp.ACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.clover.cfp.examples.WebViewActivity"
+            android:launchMode="singleTop"
+            android:noHistory="true"
+            android:windowSoftInputMode="adjustResize"
+            android:fitsSystemWindows="true"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
+            android:label="@string/title_activity_web_view" >
+            <intent-filter>
+                <action android:name="com.clover.cfp.examples.WebViewExample"/>
+                <category android:name="com.clover.cfp.ACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.clover.cfp.examples.NFCExampleActivity"
+            android:launchMode="singleTop"
+            android:noHistory="true"
+            android:label="@string/title_activity_nfc_example" >
+            <intent-filter>
+                <action android:name="com.clover.cfp.examples.NFCExample"/>
+                <category android:name="com.clover.cfp.ACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.TAG_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
+

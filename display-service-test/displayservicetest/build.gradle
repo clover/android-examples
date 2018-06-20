@@ -1,23 +1,12 @@
 buildscript {
   repositories {
-    mavenLocal()
-    if (project.properties.containsKey("localArtifactoryUrl")) {
-      maven { url localArtifactoryUrl }
-    }
     jcenter()
     mavenCentral()
-  }
-  dependencies {
-    classpath 'com.android.tools.build:gradle:1.2.3'
   }
 }
 apply plugin: 'com.android.application'
 
 repositories {
-  mavenLocal()
-  if (project.properties.containsKey("localArtifactoryUrl")) {
-    maven { url localArtifactoryUrl }
-  }
   jcenter()
   mavenCentral()
 }
@@ -49,5 +38,5 @@ android {
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
-  compile 'com.clover.sdk:clover-android-connector-sdk:188-SNAPSHOT'
+  compile 'com.clover.sdk:clover-android-connector-sdk:191.6'
 }

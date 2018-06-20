@@ -1,0 +1,15 @@
+// Library version numbers that should be consistent across all modules.
+// NOTE: gradle sync after modifying this file!!!
+ext {
+  GSON_VERSION = "2.3.1"
+  GUAVA_VERSION = "20.0"
+  ANDROID_SUPPORT_MULTIDEX_VERSION = "1.0.1"
+  ANDROID_SUPPORT_V4_VERSION = "23.0.1"
+  ANDROID_SUPPORT_ANNOTATIONS_VERSION = "23.0.1"
+  ANDROID_QR_GEN_VERSION = "2.2.0"
+  AUTO_FIX_TEXTVIEW_VERSION = "0.2.0"
+  JAVA_WEB_SOCKET_VERSION = "1.3.0"
+  NINE_OLD_ANDROIDS_VERSION = "2.4.0"
+  LIST_VIEW_ANIMATIONS_CORE_VERSION = "3.1.0@aar"
+  LIST_VIEW_ANIMATIONS_MANIPULATION_VERSION = "3.1.0@aar"
+}

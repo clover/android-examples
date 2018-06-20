@@ -1,12 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-  compileSdkVersion 'android-17'
-  buildToolsVersion '22.0.1'
+  compileSdkVersion 21
+  buildToolsVersion '27.0.0'
   repositories {
-    mavenLocal()
-    maven { url "http://artifactory.corp.clover.com:8081/artifactory/repo" }
     mavenCentral()
+    google()
+  }
+
+  defaultConfig {
+    minSdkVersion 17
   }
 
   buildTypes {
@@ -19,5 +22,5 @@ android {
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
-  compile 'com.clover.sdk:clover-android-sdk:147-SNAPSHOT'
+  compile 'com.clover.sdk:clover-android-sdk:191.6'
 }

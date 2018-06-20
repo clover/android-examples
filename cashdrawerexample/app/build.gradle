@@ -1,8 +1,12 @@
 apply plugin: 'android'
 
 android {
-  compileSdkVersion 'android-17'
+  compileSdkVersion 21
   buildToolsVersion '22.0.1'
+
+  defaultConfig {
+    minSdkVersion 17
+  }
 
   buildTypes {
     release {
@@ -13,5 +17,5 @@ android {
 }
 
 dependencies {
-  compile 'com.clover.sdk:clover-android-sdk:145-SNAPSHOT'
+  compile 'com.clover.sdk:clover-android-sdk:191.6'
 }
