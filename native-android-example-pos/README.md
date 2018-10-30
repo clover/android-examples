@@ -1,0 +1,1 @@
+Example app has moved to https://github.com/clover/remote-pay-android-examples
