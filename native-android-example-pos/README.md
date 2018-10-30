@@ -1,0 +1,1 @@
+Moved to https://github.com/clover/remote-pay-android-examples/tree/master/native-android-example-pos
