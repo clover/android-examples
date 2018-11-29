@@ -21,6 +21,7 @@ public class MainActivity extends Activity {
   private MerchantConnector merchantConnector;
 
   private TextView merchantName;
+  private TextView merchantId;
   private TextView address1;
   private TextView address2;
   private TextView address3;
@@ -40,6 +41,7 @@ public class MainActivity extends Activity {
 
     // Find all the TextView objects
     merchantName = (TextView) findViewById(R.id.merchant_name);
+    merchantId = (TextView) findViewById(R.id.merchant_id);
     address1 = (TextView) findViewById(R.id.merchant_address1);
     address2 = (TextView) findViewById(R.id.merchant_address2);
     address3 = (TextView) findViewById(R.id.merchant_address3);
@@ -133,6 +135,7 @@ public class MainActivity extends Activity {
           // Populate the merchant information
           if (merchant != null) {
             merchantName.setText(merchant.getName());
+            merchantId.setText(merchant.getId());
             address1.setText(merchant.getAddress().getAddress1());
             address2.setText(merchant.getAddress().getAddress2());
             address3.setText(merchant.getAddress().getAddress3());
