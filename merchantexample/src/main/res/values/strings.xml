@@ -2,7 +2,6 @@
 <resources>
 
   <string name="app_name">MerchantExample</string>
-
   <string name="no_account">There is no Clover account.</string>
 
 </resources>
