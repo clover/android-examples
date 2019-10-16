@@ -29,12 +29,17 @@ import com.clover.example.model.POSTransaction;
 import com.clover.example.utils.CurrencyUtils;
 import com.clover.example.utils.IdUtils;
 import com.clover.example.utils.ImageUtil;
+import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.v3.base.CardData;
 import com.clover.sdk.v3.base.Challenge;
 import com.clover.sdk.v3.connector.IDisplayConnector;
 import com.clover.sdk.v3.connector.IDisplayConnectorListener;
+import com.clover.sdk.v3.connector.IPaymentConnector;
+import com.clover.sdk.v3.connector.IPaymentConnectorListener;
 import com.clover.sdk.v3.payments.CardTransaction;
 import com.clover.sdk.v3.payments.CardType;
+import com.clover.sdk.v3.payments.Credit;
+import com.clover.sdk.v3.payments.Payment;
 import com.clover.sdk.v3.payments.Result;
 import com.clover.sdk.v3.remotepay.AuthResponse;
 import com.clover.sdk.v3.remotepay.CapturePreAuthResponse;
@@ -50,20 +55,16 @@ import com.clover.sdk.v3.remotepay.ReadCardDataRequest;
 import com.clover.sdk.v3.remotepay.ReadCardDataResponse;
 import com.clover.sdk.v3.remotepay.RefundPaymentResponse;
 import com.clover.sdk.v3.remotepay.ResponseCode;
-import com.clover.sdk.v3.remotepay.RetrievePaymentRequest;
 import com.clover.sdk.v3.remotepay.RetrievePaymentResponse;
 import com.clover.sdk.v3.remotepay.RetrievePendingPaymentsResponse;
 import com.clover.sdk.v3.remotepay.SaleResponse;
+import com.clover.sdk.v3.remotepay.TipAdded;
 import com.clover.sdk.v3.remotepay.TipAdjustAuthResponse;
 import com.clover.sdk.v3.remotepay.VaultCardResponse;
 import com.clover.sdk.v3.remotepay.VerifySignatureRequest;
+import com.clover.sdk.v3.remotepay.VoidPaymentRefundResponse;
 import com.clover.sdk.v3.remotepay.VoidPaymentResponse;
-import com.clover.sdk.util.CloverAccount;
-import com.clover.sdk.v3.connector.IPaymentConnector;
-import com.clover.sdk.v3.connector.IPaymentConnectorListener;
-import com.clover.sdk.v3.payments.Credit;
-import com.clover.sdk.v3.payments.Payment;
-import com.clover.sdk.v3.remotepay.TipAdded;
+
 import android.accounts.Account;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -89,6 +90,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -149,7 +151,6 @@ public class NativePOSActivity extends Activity implements CurrentOrderFragment.
     }
 
     public void onDeviceConnected() {
-
       runOnUiThread(new Runnable() {
         @Override
         public void run() {
@@ -629,6 +630,11 @@ public class NativePOSActivity extends Activity implements CurrentOrderFragment.
       } else {
         showPopupMessage(null, new String[]{"Retrieve Payment error: " + response.getResult()}, false);
       }
+    }
+
+    @Override
+    public void onVoidPaymentRefundResponse(VoidPaymentRefundResponse response) {
+      // Not Implemented yet.
     }
 
     @Override
@@ -1322,8 +1328,6 @@ public class NativePOSActivity extends Activity implements CurrentOrderFragment.
     request.setExternalId(IdUtils.getNextId());
     request.setCardEntryMethods(store.getCardEntryMethods());
     request.setDisablePrinting(store.getDisablePrinting());
-    request.setSignatureEntryLocation(store.getSignatureEntryLocation());
-    request.setSignatureThreshold(store.getSignatureThreshold());
     request.setDisableReceiptSelection(store.getDisableReceiptOptions());
     request.setDisableDuplicateChecking(store.getDisableDuplicateChecking());
     paymentConnector.preAuth(request);
