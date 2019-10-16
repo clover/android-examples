@@ -277,8 +277,6 @@ public class RegisterFragment extends Fragment implements CurrentOrderFragmentLi
     request.setExternalId(IdUtils.getNextId());
     request.setCardEntryMethods(store.getCardEntryMethods());
     request.setDisablePrinting(store.getDisablePrinting());
-    request.setSignatureEntryLocation(store.getSignatureEntryLocation());
-    request.setSignatureThreshold(store.getSignatureThreshold());
     request.setDisableReceiptSelection(store.getDisableReceiptOptions());
     request.setDisableDuplicateChecking(store.getDisableDuplicateChecking());
     final IPaymentConnector cloverConnector = paymentConnectorWeakReference.get();
