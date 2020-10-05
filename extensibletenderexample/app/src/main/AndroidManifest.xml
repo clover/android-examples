@@ -23,7 +23,7 @@
         </activity>
 
         <activity
-            android:name=".CustomerFacingTenderActivity"
+            android:name="com.example.extensibletenderexample.CustomerFacingTenderActivity"
             android:exported="true"
             android:label="@string/title_activity_test_tender"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
@@ -41,7 +41,7 @@
 
 
         <activity
-            android:name=".MerchantFacingTenderActivity"
+            android:name="com.example.extensibletenderexample.MerchantFacingTenderActivity"
             android:exported="true"
             android:label="@string/title_activity_test_tender">
 

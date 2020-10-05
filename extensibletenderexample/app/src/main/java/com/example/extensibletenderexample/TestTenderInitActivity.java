@@ -65,7 +65,7 @@ public class TestTenderInitActivity extends Activity {
         if (tenders != null) {
             boolean tenderExists = false;
             for (Tender tender : tenders) {
-                if (getString(R.string.tender_name).equals(tender.getLabel())) {
+                if (getPackageName().equals(tender.getLabelKey())) {
                     tenderExists = true;
                     break;
                 }
@@ -91,7 +91,7 @@ public class TestTenderInitActivity extends Activity {
                 try {
                     tenderConnector.checkAndCreateTender(getString(R.string.tender_name), getPackageName(), true, false);
                 } catch (Exception exception) {
-                    Log.e(TAG, exception.getMessage(), exception.getCause());
+                    Log.e(TAG, "An exception occurred checking/creating the tender, message:" + exception.getMessage(), exception.getCause());
                     return exception;
                 }
                 return null;
