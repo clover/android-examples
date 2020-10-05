@@ -1,18 +1,24 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 29
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 
     defaultConfig {
+        // !!! You must modify the applicationId to be unique, otherwise, you will be unable to upload the APK.
         applicationId "com.example.extensibletenderexample"
         minSdkVersion 17
-        targetSdkVersion 19
-        versionCode 7
-        versionName "7.0"
+        //noinspection ExpiredTargetSdkVersion
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
     }
 }
 
 dependencies {
-    compile 'com.clover.sdk:clover-android-sdk:117'
+    implementation 'com.clover.sdk:clover-android-sdk:262.2'
 }
