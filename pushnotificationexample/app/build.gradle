@@ -9,7 +9,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.butters.example.pushnotificationexample"
+        applicationId "com.clover.example.pushnotificationexample"
         minSdkVersion 17
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 25

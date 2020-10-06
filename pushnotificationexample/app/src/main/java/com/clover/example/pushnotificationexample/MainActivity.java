@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
-    public static final String EXTRA_PAYLOAD = "payload";
+    public static final String EXTRA_DATA = "data";
 
     private TextView resultText;
 
@@ -24,6 +24,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onNewIntent(Intent intent) {
         resultText.setVisibility(View.VISIBLE);
-        resultText.setText(getString(R.string.result, intent.getStringExtra(EXTRA_PAYLOAD)));
+        resultText.setText(getString(R.string.result, intent.getStringExtra(EXTRA_DATA)));
     }
 }

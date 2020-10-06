@@ -18,7 +18,7 @@ public class NotificationReceiver extends AppNotificationReceiver {
     public void onReceive(Context context, AppNotification notification) {
         if (notification.appEvent.equals(TEST_NOTIFICATION_ACTION)) {
             Intent intent = new Intent(context, MainActivity.class);
-            intent.putExtra(MainActivity.EXTRA_PAYLOAD, notification.payload);
+            intent.putExtra(MainActivity.EXTRA_DATA, notification.payload);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
