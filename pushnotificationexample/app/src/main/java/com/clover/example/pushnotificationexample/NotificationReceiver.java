@@ -12,8 +12,7 @@ import com.clover.sdk.v1.app.AppNotificationReceiver;
 public class NotificationReceiver extends AppNotificationReceiver {
     public final static String TEST_NOTIFICATION_ACTION = "test_notification";
 
-    public NotificationReceiver() {
-    }
+    public NotificationReceiver() {}
 
     @Override
     public void onReceive(Context context, AppNotification notification) {
