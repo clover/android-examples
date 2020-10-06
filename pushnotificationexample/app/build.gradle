@@ -1,16 +1,22 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 'android-17'
-    buildToolsVersion '22.0.1'
+    compileSdkVersion 29
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 
     defaultConfig {
-        applicationId "com.clover.example.pushnotificationexample"
-        minSdkVersion 16
-        targetSdkVersion 17
-        versionCode 2
-        versionName "2.0"
+        applicationId "com.butters.example.pushnotificationexample"
+        minSdkVersion 17
+        //noinspection ExpiredTargetSdkVersion
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -20,7 +26,5 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
-    compile 'com.clover.sdk:clover-android-sdk:86'
+    implementation 'com.clover.sdk:clover-android-sdk:262.2'
 }
