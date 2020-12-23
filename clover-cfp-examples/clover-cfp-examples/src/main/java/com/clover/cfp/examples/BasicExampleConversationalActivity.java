@@ -71,9 +71,9 @@ public class BasicExampleConversationalActivity extends CloverCFPActivity {
   @Override protected void onResume() {
     super.onResume();
     String payload = getIntent().getStringExtra(CFPConstants.EXTRA_PAYLOAD);
-    if (getIntent().getAction().equals(receiver)) {
+    //if (getIntent().getAction().equals(receiver)) {
       onMessage(payload);
-    } else {
+    /*} else {
       findViewById(R.id.send_window).setVisibility(View.INVISIBLE);
       findViewById(R.id.messagePayload).setVisibility(View.INVISIBLE);
       findViewById(R.id.message_payload).setVisibility(View.INVISIBLE);
@@ -81,14 +81,15 @@ public class BasicExampleConversationalActivity extends CloverCFPActivity {
       findViewById(R.id.outMessagePayload).setVisibility(View.INVISIBLE);
       ((TextView) findViewById(R.id.payload)).setText(payload);
       findViewById(R.id.register_image).setVisibility(View.INVISIBLE);
-    }
+    }*/
   }
 
   @Override protected void onDestroy() {
     super.onDestroy();
   }
 
-  @Override protected void onMessage(String payload) {
+  @Override
+  public void onMessage(String payload) {
     findViewById(R.id.send_window).setVisibility(View.VISIBLE);
     findViewById(R.id.messagePayload).setVisibility(View.VISIBLE);
     findViewById(R.id.button1).setVisibility(View.VISIBLE);

@@ -26,10 +26,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.clover.cfp.activity.CFPConstants;
 import com.clover.cfp.examples.objects.Rating;
 import com.clover.cfp.examples.objects.RatingsMessage;
 import com.clover.cfp.activity.CloverCFPActivity;
-import com.clover.remote.common.RemoteConstants;
 
 import com.google.gson.Gson;
 
@@ -113,7 +113,7 @@ public class RatingsFragment extends Fragment implements View.OnClickListener{
     Intent result = new Intent();
     RatingsMessage ratingsMessage = new RatingsMessage(ratings);
     String rawMsg = new Gson().toJson(ratingsMessage);
-    result.putExtra(RemoteConstants.EXTRA_PAYLOAD, rawMsg);
+    result.putExtra(CFPConstants.EXTRA_PAYLOAD, rawMsg);
     getActivity().setResult(Activity.RESULT_OK, result);
     ((CloverCFPActivity)getActivity()).setResultAndFinish(Activity.RESULT_OK, rawMsg);
   }

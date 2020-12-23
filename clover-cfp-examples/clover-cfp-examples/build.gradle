@@ -1,7 +1,5 @@
 group 'com.clover.cfp'
-version = '19-SNAPSHOT'
 apply plugin: 'com.android.application'
-
 
 repositories {
     mavenLocal()
@@ -12,8 +10,8 @@ repositories {
 android {
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 21
-        compileSdkVersion 21
+        targetSdkVersion 25
+        compileSdkVersion 28
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     packagingOptions {
@@ -22,14 +20,19 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'LICENSE.txt'
     }
-    buildToolsVersion '25.0.0'
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
-    compile "com.clover.cfp:clover-cfp-sdk:1.0"
-    compile "com.google.guava:guava:20.0"
-    compile "com.clover:clover-remote-interface:217.10"
-    compile "com.google.code.gson:gson:2.3.1"
-    compile 'com.clover.sdk:clover-android-sdk:191.6'
-
+    implementation "com.clover.cfp:clover-cfp-sdk:4.2.1"
+    implementation "com.clover:clover-remote-interface:290.8"
+    implementation 'com.clover.sdk:clover-android-sdk:248.4'
+    implementation "com.google.guava:guava:20.0"
+    implementation "com.google.code.gson:gson:2.3.1"
 }

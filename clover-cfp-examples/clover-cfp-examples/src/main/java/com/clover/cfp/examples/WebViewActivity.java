@@ -44,15 +44,10 @@ public class WebViewActivity extends CloverCFPActivity {
   }
 
   @Override
-  protected void onMessage(String payload) {
+  public void onMessage(String payload) {
     // implement if doing conversational activities
     WebViewRequest wvr = new Gson().fromJson(payload, WebViewRequest.class);
-
-
     webView.loadData(wvr.html, "text/html", "UTF-8");
-
-
-
   }
 
   @Override protected void onResume() {
@@ -62,7 +57,8 @@ public class WebViewActivity extends CloverCFPActivity {
 
     String htmlContent = null;
 
-    if(getIntent().getAction().equals(receiver) && payload != null) {
+    //if(getIntent().getAction().equals(receiver) && payload != null) {
+    if(payload != null) {
       onMessage(payload);
     }
     else {
