@@ -59,9 +59,7 @@ public class BasicExampleActivity extends CloverCFPActivity {
   }
 
   @Override
-  protected void onMessage(String payload) {
-
-  }
+  public void onMessage(String payload) {}
 
   @Override protected void onResume() {
     super.onResume();
